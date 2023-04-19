@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "469645491694",
+    "firebase_url": "https://english-ssc-default-rtdb.firebaseio.com",
+    "project_id": "english-ssc",
+    "storage_bucket": "english-ssc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469645491694:android:06c350a35636f27fbde2ff",
+        "android_client_info": {
+          "package_name": "com.sscenglishpractice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469645491694-4s8nm286enncg5j53o1gnvebmdt644kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDzVG8SDcsu2m0FBBBVs8dZWZuKVALe9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469645491694-4s8nm286enncg5j53o1gnvebmdt644kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

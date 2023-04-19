@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@color/white">
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/action_bar_back"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_toEndOf="@+id/action_bar_back"
+                android:id="@+id/action_bar_Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="SSC English"
+                android:textSize="18sp"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/action_bar_share"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_baseline_share_24"
+                android:visibility="visible" />
+
+
+        </RelativeLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+
+
+</LinearLayout>

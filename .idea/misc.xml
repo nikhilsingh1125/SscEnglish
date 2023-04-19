@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable-v24/bg_submit.xml" value="0.1935" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable-v24/quiz_bg.xml" value="0.1335" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable/bg_answer.xml" value="0.1725" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable/bg_selected_answer.xml" value="0.109" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable/bg_wrong_answer.xml" value="0.1" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.225" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable/right.xml" value="0.1" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/activity_category.xml" value="0.264" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/activity_category2.xml" value="0.25416666666666665" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/activity_home.xml" value="0.264" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/activity_quiz.xml" value="0.25416666666666665" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/custom_dialog_layout.xml" value="0.2" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/custom_toolbar.xml" value="0.25416666666666665" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_Category.xml" value="0.25416666666666665" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_category.xml" value="0.4" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_home_category.xml" value="0.4" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_items.xml" value="0.25416666666666665" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_note.xml" value="0.264" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_question_list.xml" value="0.264" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_quiz.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
