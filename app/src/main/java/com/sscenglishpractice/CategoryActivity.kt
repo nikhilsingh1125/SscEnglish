@@ -25,6 +25,7 @@ class CategoryActivity : AppCompatActivity() {
         val array = ArrayList<ListCategoryData>()
         array.add(ListCategoryData("SSC CGL", "SSC CGL 2022 Tier-I"))
         array.add(ListCategoryData("SSC CHSL", "SSC CGL 2022 Tier-I"))
+        array.add(ListCategoryData("SSC CPO", "SSC CPO 2022 Tier-I"))
 
         recyclerView.layoutManager = LinearLayoutManager(this@CategoryActivity)
         val rvAdapter = CategoryAdapter(this@CategoryActivity, array)
@@ -37,6 +38,8 @@ class CategoryActivity : AppCompatActivity() {
             intent.putExtra("TYPE", "CGL")
         } else if (position == 1) {
             intent.putExtra("TYPE", "CHCL")
+        } else if (position == 2) {
+            intent.putExtra("TYPE", "CPO")
         }
         startActivity(intent)
     }

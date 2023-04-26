@@ -7,21 +7,11 @@
     android:background="@color/quiz_background"
     tools:context=".QuizActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/toolbar"
+
+    <com.sscenglishpractice.utils.NonScrollableViewPager
+        android:id="@+id/idViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include layout="@layout/custom_toolbar" />
-
-        <com.sscenglishpractice.utils.NonScrollableViewPager
-            android:id="@+id/idViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
+        android:layout_height="match_parent" />
 
 
     <com.airbnb.lottie.LottieAnimationView

@@ -4,110 +4,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/quiz_background"
-    android:orientation="vertical"
-  >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/llQuiz"
-        android:background="@drawable/quiz_bg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_220sdp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/quiz_bg"
         android:orientation="vertical">
 
-       <!-- <LinearLayout
-            android:layout_marginTop="@dimen/_20sdp"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:weightSum="2">
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:layout_centerVertical="true">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_extra_bold"
-                    android:text="Current Questions: "
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:fontFamily="@font/general_sans_medium"
+                    android:text="Questions :"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13ssp" />
+
+                <TextView
+                    android:id="@+id/txtTotalQuestions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-
-                <TextView
-                    android:id="@+id/txtCorrect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/raleway_extra_bold"
-                    android:text=""
-                    android:textColor="#00FF57"
-                    android:textSize="@dimen/_18ssp" />
-
+                    android:textSize="@dimen/_16ssp" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_width="0dp"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/bg_submit"
+                android:fontFamily="@font/pt_sans_bold"
+                android:text="Result"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_extra_bold"
-                    android:text="InCurrent Questions: "
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-
-                <TextView
-                    android:id="@+id/txtInCorrect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/raleway_extra_bold"
-                    android:text=""
-                    android:textColor="#F30000"
-                    android:textSize="@dimen/_18ssp" />
-
-
-            </LinearLayout>
-
-        </LinearLayout>-->
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:textColor="@color/black"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/bg_submit"
-            android:fontFamily="@font/pt_sans_bold"
-            android:layout_gravity="end"
-            android:textAllCaps="false"/>
+        </RelativeLayout>
 
         <TextView
-            android:layout_marginStart="@dimen/_10sdp"
-            android:id="@+id/txtQuestionCount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:fontFamily="@font/general_sans_medium"
-            android:text="question"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_22ssp" />
-
-        <TextView
-            android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/quizQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/general_sans_medium"
             android:text="question"
@@ -117,9 +76,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@+id/llQuiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/llQuiz"
         android:layout_marginTop="@dimen/_40sdp"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/_13sdp">
@@ -349,15 +308,15 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:textColor="@color/white"
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/purple"
+        android:background="@drawable/quiz_next_bg"
         android:fontFamily="@font/roboto_regular"
         android:padding="@dimen/_10sdp"
         android:text="next"
+        android:textColor="@color/white"
         android:textSize="@dimen/_15ssp" />
 
 

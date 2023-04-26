@@ -2,6 +2,9 @@ package com.sscenglishpractice.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +28,7 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
     private var optionCSelected = false
     private var optionDSelected = false
     var correctAnswerCount = 0
+    var questionCount = 0
     var incorrectAnswerCount = 0
     var answeredCorrectly = false
 
@@ -52,7 +56,14 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
 
         displayQuestion(position, itemView)
 
-        val model = arrayList?.get(position)
+        val model = arrayList.get(position)
+
+
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            itemView.txtTotalQuestions.text = "${model.question_count}/${arrayList.size}"
+        },100)
+
 
         itemView.cvA.setOnClickListener {
             selectOptionA(itemView, model)
@@ -71,8 +82,6 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
         }
 
 
-
-
         itemView.btnNext.setOnClickListener {
             (context as QuizActivity).clickOnBtnNext(position)
           //  itemView.btnNext.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
@@ -80,7 +89,6 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
 
         itemView.btnSubmit.setOnClickListener {
             (context as QuizActivity).clickOnSubmitNext(position,correctAnswerCount,incorrectAnswerCount,arrayList.size)
-            //  itemView.btnNext.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
         }
 
         // on the below line we are adding this
@@ -140,7 +148,6 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
         if (questionData != null) {
             // Update the UI to display the question and answer options
 
-            itemView.txtQuestionCount.text = "Q.${questionData.question_count}"
 
             itemView.quizQuestion.text = "${questionData.question}"
             itemView.txtAnswerA.text = questionData.option_A
@@ -198,6 +205,8 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
         }
 
         if (selectedAnswer != null) {
+            questionCount++
+            Log.e("updateOptionSelectedUI", "questionCount: $questionCount" )
             if (selectedAnswer == model?.answer) {
                 // If the question hasn't been answered correctly before, increment count and set flag to true
                 correctAnswerCount++

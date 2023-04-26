@@ -8,12 +8,49 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:469645491694:android:c7d58e6ae5fd22c4bde2ff",
+        "android_client_info": {
+          "package_name": "com.admin_quiz_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469645491694-4s8nm286enncg5j53o1gnvebmdt644kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDzVG8SDcsu2m0FBBBVs8dZWZuKVALe9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469645491694-4s8nm286enncg5j53o1gnvebmdt644kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:469645491694:android:06c350a35636f27fbde2ff",
         "android_client_info": {
           "package_name": "com.sscenglishpractice"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "469645491694-m7acvflk9nfe35dc0brsqtrjn0l1br21.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sscenglishpractice",
+            "certificate_hash": "40b2581affac7b8967aa9c72ad6967177ab88324"
+          }
+        },
         {
           "client_id": "469645491694-4s8nm286enncg5j53o1gnvebmdt644kq.apps.googleusercontent.com",
           "client_type": 3

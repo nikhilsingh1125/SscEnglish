@@ -34,15 +34,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (type == "CGL"){
-            array.add(ListCategoryData("SYNONYMS", ""))
-            array.add(ListCategoryData("ANTONYMS", ""))
-            array.add(ListCategoryData("ONEWORD", ""))
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
             array.add(ListCategoryData("Idioms and pharses", ""))
         }
         else if (type == "CHCL"){
-            array.add(ListCategoryData("SYNONYMS", ""))
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
         }
-
+        else if (type == "CPO"){
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+        }
 
         recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
         val rvAdapter = QuestionAdapter(this@MainActivity, array)
@@ -67,6 +74,26 @@ class MainActivity : AppCompatActivity() {
         else if (type == "CHCL"){
             if (position == 0) {
                 intent.putExtra("TYPE", "CHCL_1")
+            }
+            else if (position == 1) {
+                intent.putExtra("TYPE", "CHCL_2")
+            }
+            else if (position == 2) {
+                intent.putExtra("TYPE", "CHCL_3")
+            }
+            else if (position == 3) {
+                intent.putExtra("TYPE", "CHCL_4")
+            }
+        }
+        else if (type == "CPO"){
+            if (position == 0) {
+                intent.putExtra("TYPE", "CPO_1")
+            }
+            else if (position == 1) {
+                intent.putExtra("TYPE", "CPO_2")
+            }
+            else if (position == 2) {
+                intent.putExtra("TYPE", "CPO_3")
             }
         }
 

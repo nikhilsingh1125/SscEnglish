@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable-v24/bg_submit.xml" value="0.1935" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable-v24/quiz.xml" value="0.1155" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable-v24/quiz_bg.xml" value="0.1335" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable/bg_answer.xml" value="0.1725" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/drawable/bg_selected_answer.xml" value="0.109" />
@@ -15,11 +16,11 @@
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/activity_quiz.xml" value="0.25416666666666665" />
-        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/custom_dialog_layout.xml" value="0.2" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/custom_dialog_layout.xml" value="0.264" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/custom_toolbar.xml" value="0.25416666666666665" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_Category.xml" value="0.25416666666666665" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_category.xml" value="0.4" />
-        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_home_category.xml" value="0.4" />
+        <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_home_category.xml" value="0.264" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_items.xml" value="0.25416666666666665" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_note.xml" value="0.264" />
         <entry key="..\:/Android Workshop/SscEnglishPractice/app/src/main/res/layout/row_question_list.xml" value="0.264" />

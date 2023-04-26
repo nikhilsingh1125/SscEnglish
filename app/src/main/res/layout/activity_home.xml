@@ -4,16 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".HomeActivity">
 
-    <include layout="@layout/custom_toolbar"/>
+    <include layout="@layout/custom_toolbar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/_10sdp"
-        android:paddingHorizontal="@dimen/_10sdp"
+    <RelativeLayout
+        android:id="@+id/llQuiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recyclerView"/>
+        android:orientation="vertical">
 
+        <View
+            android:background="@drawable/quiz_bg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180sdp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:paddingHorizontal="@dimen/_10sdp" />
+
+    </RelativeLayout>
 </LinearLayout>
