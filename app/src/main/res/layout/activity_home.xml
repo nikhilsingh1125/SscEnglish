@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".HomeActivity">
+    tools:context=".HomeActivity"
+    android:background="@color/dark_blue">
 
     <include layout="@layout/custom_toolbar" />
 
@@ -15,10 +16,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <View
-            android:background="@drawable/quiz_bg"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_180sdp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

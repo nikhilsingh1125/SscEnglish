@@ -7,7 +7,8 @@ class QuestionData(
     val option_A: String?=null,
     val option_B: String?=null,
     val option_C: String?=null,
-    val option_D: String?=null
+    val option_D: String?=null,
+    val Solutions : String?=null
 ) {
     override fun toString(): String {
         return "Question $question_count: $question\n" +
@@ -15,7 +16,8 @@ class QuestionData(
                 "B. $option_B\n" +
                 "C. $option_C\n" +
                 "D. $option_D\n" +
-                "Answer: $answer"
+                "Answer: $answer" +
+                "solutions :$Solutions"
     }
 //    constructor() : this(null, null, null, null, null, null,null)
 }

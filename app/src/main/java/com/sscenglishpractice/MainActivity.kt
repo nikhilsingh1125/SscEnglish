@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        btnSubmit.visibility = View.GONE
         val intent = intent
         type = intent.getStringExtra("TYPE").toString()
         val array = ArrayList<ListCategoryData>()
@@ -49,7 +49,27 @@ class MainActivity : AppCompatActivity() {
             array.add(ListCategoryData("Synonyms", ""))
             array.add(ListCategoryData("Antonyms", ""))
             array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
         }
+        else if (type == "CGL_2021") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
+        else if (type == "CHCL_2021") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
+        else if (type == "MTS_2021") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
+
 
         recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
         val rvAdapter = QuestionAdapter(this@MainActivity, array)
@@ -95,11 +115,56 @@ class MainActivity : AppCompatActivity() {
             else if (position == 2) {
                 intent.putExtra("TYPE", "CPO_3")
             }
+            else if (position == 3) {
+                intent.putExtra("TYPE", "CPO_4")
+            }
+        }
+        else if (type == "CGL_2021"){
+            if (position == 0) {
+                intent.putExtra("TYPE", "CGL_2021_1")
+            }
+            else if (position == 1) {
+                intent.putExtra("TYPE", "CGL_2021_2")
+            }
+            else if (position == 2) {
+                intent.putExtra("TYPE", "CGL_2021_3")
+            }
+            else if (position == 3) {
+                intent.putExtra("TYPE", "CGL_2021_4")
+            }
+        }
+        else if (type == "CHCL_2021"){
+            if (position == 0) {
+                intent.putExtra("TYPE", "CHCL_2021_1")
+            }
+            else if (position == 1) {
+                intent.putExtra("TYPE", "CHCL_2021_2")
+            }
+            else if (position == 2) {
+                intent.putExtra("TYPE", "CHCL_2021_3")
+            }
+            else if (position == 3) {
+                intent.putExtra("TYPE", "CHCL_2021_4")
+            }
+        }
+        else if (type == "MTS_2021"){
+            if (position == 0) {
+                intent.putExtra("TYPE", "MTS_2021_1")
+            }
+            else if (position == 1) {
+                intent.putExtra("TYPE", "MTS_2021_2")
+            }
+            else if (position == 2) {
+                intent.putExtra("TYPE", "MTS_2021_3")
+            }
+            else if (position == 3) {
+                intent.putExtra("TYPE", "MTS_2021_4")
+            }
         }
 
 
 
-        startActivity(intent)
+            startActivity(intent)
     }
 
 }

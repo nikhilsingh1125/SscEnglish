@@ -13,6 +13,7 @@
         app:cardCornerRadius="@dimen/_10sdp">
 
     <LinearLayout
+        android:background="@color/dark_blue"
         android:padding="@dimen/_10sdp"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -30,7 +31,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/general_sans_medium"
                 android:text="Total Attempt"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp" />
 
             <TextView
@@ -41,7 +42,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/raleway_extra_bold"
                 android:text="0"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_19ssp" />
 
         </RelativeLayout>
@@ -57,8 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/general_sans_medium"
-                android:text="Correct Question"
-                android:textColor="@color/black"
+                android:text="Attempt Question"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp" />
 
             <TextView
@@ -69,7 +70,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/raleway_extra_bold"
                 android:text="0"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_19ssp" />
 
         </RelativeLayout>
@@ -85,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/general_sans_medium"
-                android:text="InCorrect Question"
-                android:textColor="@color/black"
+                android:text="Skip Question"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp" />
 
             <TextView
@@ -97,7 +98,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/raleway_extra_bold"
                 android:text="0"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_19ssp" />
 
         </RelativeLayout>
@@ -115,7 +116,8 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="#FF5722"
+                android:background="@color/purple"
+                android:textColor="@color/white"
                 android:text="No" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -125,7 +127,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:textColor="@color/white"
-                android:background="@color/right_answer"
+                android:background="@color/light_red"
                 android:text="Submit" />
 
 

@@ -3,12 +3,14 @@ package com.sscenglishpractice
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.lottie.utils.Utils
@@ -24,11 +26,12 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val TAG= "HomeActivity"
+        val TAG = "HomeActivity"
 
         action_bar_share.setOnClickListener {
             Constants.shareApp(this)
         }
+        btnSubmit.visibility = View.GONE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "22"
             val channelName = "SSC-English"
@@ -37,7 +40,8 @@ class HomeActivity : AppCompatActivity() {
             val channel = NotificationChannel(channelId, channelName, importance).apply {
                 description = channelDescription
             }
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
 
@@ -51,24 +55,14 @@ class HomeActivity : AppCompatActivity() {
             }
 
         val array = ArrayList<CategoryModel>()
+        array.add(CategoryModel("2022", R.drawable.practice))
+        array.add(CategoryModel("2021", R.drawable.practice))
 
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-        array.add(CategoryModel("Practice", R.drawable.practice))
-
-        recyclerView.layoutManager = GridLayoutManager(this@HomeActivity,2)
+        recyclerView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         val rvAdapter = HomeAdapter(this@HomeActivity, array)
         recyclerView.adapter = rvAdapter
     }
+
     private var doubleBackToExitPressedOnce = false
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -82,5 +76,16 @@ class HomeActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             doubleBackToExitPressedOnce = false
         }, 2000)
+    }
+
+    fun goToCategory(model: CategoryModel, position: Int) {
+        val intent = Intent(this, CategoryActivity::class.java)
+
+        if (position == 0) {
+            intent.putExtra("TYPE", "2022")
+        } else if (position == 1) {
+            intent.putExtra("TYPE", "2021")
+        }
+        startActivity(intent)
     }
 }

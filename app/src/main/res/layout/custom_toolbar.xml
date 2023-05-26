@@ -5,21 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <androidx.appcompat.widget.Toolbar
+    <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple"
+        android:background="@color/dark_blue"
         android:minHeight="?attr/actionBarSize"
         app:titleTextColor="@color/white">
 
 
-
         <RelativeLayout
+            android:minHeight="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_marginStart="@dimen/_10sdp"
                 android:id="@+id/action_bar_back"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -28,15 +29,16 @@
                 android:visibility="gone" />
 
             <TextView
-                android:layout_marginStart="@dimen/_25sdp"
-                android:layout_toEndOf="@+id/action_bar_back"
+                android:layout_centerVertical="true"
                 android:id="@+id/action_bar_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_toEndOf="@+id/action_bar_back"
                 android:fontFamily="@font/roboto_medium"
                 android:text="SSC English"
-                android:textSize="18sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/action_bar_share"
@@ -48,11 +50,24 @@
                 android:src="@drawable/ic_baseline_share_24"
                 android:visibility="visible" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/bg_submit"
+                android:fontFamily="@font/pt_sans_bold"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
 
         </RelativeLayout>
 
 
-    </androidx.appcompat.widget.Toolbar>
+    </RelativeLayout>
 
 
 

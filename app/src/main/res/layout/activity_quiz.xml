@@ -4,14 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/quiz_background"
-    tools:context=".QuizActivity">
+    tools:context=".QuizActivity"
+    android:background="@color/dark_blue"
+   >
+
+  <!--  <LinearLayout
+        android:id="@+id/toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+
+        <include layout="@layout/custom_toolbar" />
+    </LinearLayout>-->
 
 
     <com.sscenglishpractice.utils.NonScrollableViewPager
         android:id="@+id/idViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+       />
 
 
     <com.airbnb.lottie.LottieAnimationView

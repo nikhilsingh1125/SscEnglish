@@ -1,24 +1,27 @@
 package com.sscenglishpractice.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.sscenglishpractice.QuizActivity
 import com.sscenglishpractice.R
 import com.sscenglishquiz.model.QuestionData
+import kotlinx.android.synthetic.main.custom_toolbar.view.btnSubmit
 import kotlinx.android.synthetic.main.row_question_list.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionData>) :
+class ViewPagerAdapter(
+    val context: Context,
+    val arrayList: ArrayList<QuestionData>
+) :
     PagerAdapter() {
     // on below line we are creating a method
     // as get count to return the size of the list.
@@ -31,14 +34,16 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
     var questionCount = 0
     var incorrectAnswerCount = 0
     var answeredCorrectly = false
+    var givenAnswerCount = 0
+    var skipedAnswer = 0
 
     override fun getCount(): Int {
-        return arrayList?.size!!
+        return arrayList.size
     }
 
     // on below line we are returning the object
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view === `object` as RelativeLayout
+        return view === `object` as LinearLayout
     }
 
     // on below line we are initializing
@@ -62,7 +67,7 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
 
         Handler(Looper.getMainLooper()).postDelayed({
             itemView.txtTotalQuestions.text = "${model.question_count}/${arrayList.size}"
-        },100)
+        }, 100)
 
 
         itemView.cvA.setOnClickListener {
@@ -81,14 +86,23 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
             selectOptionD(itemView, model)
         }
 
-
         itemView.btnNext.setOnClickListener {
             (context as QuizActivity).clickOnBtnNext(position)
-          //  itemView.btnNext.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
+            //  itemView.btnNext.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
         }
 
         itemView.btnSubmit.setOnClickListener {
-            (context as QuizActivity).clickOnSubmitNext(position,correctAnswerCount,incorrectAnswerCount,arrayList.size)
+
+            skipedAnswer = arrayList.size - givenAnswerCount
+            Log.e("instantiateItem", "skipedAnswer: $skipedAnswer", )
+            (context as QuizActivity).clickOnSubmitNext(
+                position,
+                correctAnswerCount,
+                incorrectAnswerCount,
+                arrayList.size,
+                givenAnswerCount,
+                skipedAnswer
+            )
         }
 
         // on the below line we are adding this
@@ -156,10 +170,11 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
             itemView.txtAnswerD.text = questionData.option_D
 
             // Reset the answer option views to their default state
-            itemView.cvA.setBackgroundColor(Color.WHITE)
-            itemView.cvB.setBackgroundColor(Color.WHITE)
-            itemView.cvC.setBackgroundColor(Color.WHITE)
-            itemView.cvD.setBackgroundColor(Color.WHITE)
+            itemView.cvA.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz))
+            itemView.cvB.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz))
+            itemView.cvC.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz))
+            itemView.cvD.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz))
+
             itemView.cvA.isEnabled = true
             itemView.cvB.isEnabled = true
             itemView.cvC.isEnabled = true
@@ -174,22 +189,26 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
     }
 
     private fun updateOptionSelectedUI(itemView: View, model: QuestionData?) {
-        itemView.cvA.setBackgroundColor(Color.WHITE)
-        itemView.cvB.setBackgroundColor(Color.WHITE)
-        itemView.cvC.setBackgroundColor(Color.WHITE)
-        itemView.cvD.setBackgroundColor(Color.WHITE)
+
+
+
+        itemView.llSolutions.visibility = View.VISIBLE
+        itemView.cvA.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+        itemView.cvB.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+        itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+        itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
 
         if (optionASelected) {
-            itemView.cvA.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer))
+            itemView.cvA.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
         }
         if (optionBSelected) {
-            itemView.cvB.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer))
+            itemView.cvB.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
         }
         if (optionCSelected) {
-            itemView.cvC.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer))
+            itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
         }
         if (optionDSelected) {
-            itemView.cvD.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer))
+            itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
         }
 
         val selectedAnswer = if (optionASelected) {
@@ -205,8 +224,46 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
         }
 
         if (selectedAnswer != null) {
+            givenAnswerCount++
+            if (model != null) {
+
+                Log.e("updateOptionSelectedUI", " Solutions: ${model.Solutions}", )
+                if (model.Solutions != null) {
+                    var isSolutionVisible = false
+
+                    // Set initial visibility of buttons
+                    itemView.seeSolutionButton.visibility = View.VISIBLE
+                    itemView.hideSolutionButton.visibility = View.GONE
+
+                    itemView.seeSolutionButton.setOnClickListener {
+                        if (!isSolutionVisible) {
+                            isSolutionVisible = true
+                            // Show the solution
+                            itemView.solutionTextView.text = model.Solutions
+                            itemView.solutionTextView.visibility = View.VISIBLE
+                            itemView.seeSolutionButton.visibility = View.GONE
+                            itemView.hideSolutionButton.visibility = View.VISIBLE
+                        }
+                    }
+
+                    itemView.hideSolutionButton.setOnClickListener {
+                        if (isSolutionVisible) {
+                            isSolutionVisible = false
+                            // Hide the solution
+                            itemView.solutionTextView.visibility = View.GONE
+                            itemView.seeSolutionButton.visibility = View.VISIBLE
+                            itemView.hideSolutionButton.visibility = View.GONE
+                        }
+                    }
+                }
+                else
+                {
+                    itemView.llSolutions.visibility = View.GONE
+                }
+            }
+
             questionCount++
-            Log.e("updateOptionSelectedUI", "questionCount: $questionCount" )
+            Log.e("updateOptionSelectedUI", "questionCount: $questionCount")
             if (selectedAnswer == model?.answer) {
                 // If the question hasn't been answered correctly before, increment count and set flag to true
                 correctAnswerCount++
@@ -223,6 +280,7 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
                             )
                             itemView.imgA.visibility = View.VISIBLE
                         }
+
                         model.option_B -> {
                             itemView.cvB.setBackground(
                                 ContextCompat.getDrawable(
@@ -232,6 +290,7 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
                             )
                             itemView.imgB.visibility = View.VISIBLE
                         }
+
                         model.option_C -> {
                             itemView.cvC.setBackground(
                                 ContextCompat.getDrawable(
@@ -241,6 +300,7 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
                             )
                             itemView.imgC.visibility = View.VISIBLE
                         }
+
                         model.option_D -> {
                             itemView.cvD.setBackground(
                                 ContextCompat.getDrawable(
@@ -253,7 +313,6 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
                     }
                 }
             }
-
             else {
                 // Set background color of selected option to red
                 if (model != null) {
@@ -266,18 +325,21 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
                                 R.drawable.bg_wrong_answer
                             )
                         )
+
                         model.option_B -> itemView.cvB.setBackground(
                             ContextCompat.getDrawable(
                                 context,
                                 R.drawable.bg_wrong_answer
                             )
                         )
+
                         model.option_C -> itemView.cvC.setBackground(
                             ContextCompat.getDrawable(
                                 context,
                                 R.drawable.bg_wrong_answer
                             )
                         )
+
                         model.option_D -> itemView.cvD.setBackground(
                             ContextCompat.getDrawable(
                                 context,
@@ -308,6 +370,7 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
                             )
                             itemView.imgB.visibility = View.VISIBLE
                         }
+
                         model.option_C -> {
                             itemView.cvC.setBackground(
                                 ContextCompat.getDrawable(
@@ -317,6 +380,7 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
                             )
                             itemView.imgC.visibility = View.VISIBLE
                         }
+
                         model.option_D -> {
                             itemView.cvD.setBackground(
                                 ContextCompat.getDrawable(
@@ -341,17 +405,11 @@ class ViewPagerAdapter(val context: Context, val arrayList: ArrayList<QuestionDa
             itemView.cvC.isEnabled = false
             itemView.cvD.isEnabled = false
             // Show the updated count in a toast message
-
         }
-
-
-
-
-
-
-        }
-
 
 
     }
+
+
+}
 

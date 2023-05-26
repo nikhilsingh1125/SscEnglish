@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sscenglishpractice.CategoryActivity
+import com.sscenglishpractice.HomeActivity
+import com.sscenglishpractice.MainActivity
 import com.sscenglishpractice.R
 import com.sscenglishpractice.model.CategoryModel
 import kotlinx.android.synthetic.main.row_home_category.view.*
@@ -30,7 +32,7 @@ class HomeAdapter(
         Glide.with(context).load(model.image).into(holder.itemView.catImg);
 
         holder.itemView.catCV.setOnClickListener {
-            context.startActivity(Intent(context,CategoryActivity::class.java))
+            (context as HomeActivity).goToCategory(model,position)
         }
 
     }
