@@ -1,5 +1,7 @@
 package com.sscenglishpractice.adapter
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -20,7 +22,8 @@ import kotlin.collections.ArrayList
 
 class ViewPagerAdapter(
     val context: Context,
-    val arrayList: ArrayList<QuestionData>
+    val arrayList: ArrayList<QuestionData>,
+    val title: String
 ) :
     PagerAdapter() {
     // on below line we are creating a method
@@ -62,6 +65,8 @@ class ViewPagerAdapter(
         displayQuestion(position, itemView)
 
         val model = arrayList.get(position)
+
+        itemView.txtQuizTitle.text = title
 
 
 
@@ -319,33 +324,45 @@ class ViewPagerAdapter(
 
                     incorrectAnswerCount++
                     when (selectedAnswer) {
-                        model.option_A -> itemView.cvA.setBackground(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.bg_wrong_answer
+                        model.option_A -> {
+                            itemView.cvA.setBackground(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.bg_wrong_answer
+                                )
                             )
-                        )
+                            shakeButton(itemView.cvA)
+                        }
 
-                        model.option_B -> itemView.cvB.setBackground(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.bg_wrong_answer
+                        model.option_B -> {
+                            itemView.cvB.setBackground(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.bg_wrong_answer
+                                )
                             )
-                        )
+                            shakeButton(itemView.cvB)
+                        }
 
-                        model.option_C -> itemView.cvC.setBackground(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.bg_wrong_answer
+                        model.option_C -> {
+                            itemView.cvC.setBackground(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.bg_wrong_answer
+                                )
                             )
-                        )
+                            shakeButton(itemView.cvC)
+                        }
 
-                        model.option_D -> itemView.cvD.setBackground(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.bg_wrong_answer
+                        model.option_D -> {
+                            itemView.cvD.setBackground(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.bg_wrong_answer
+                                )
                             )
-                        )
+                            shakeButton(itemView.cvD)
+                        }
                     }
                 }
                 // Set background color of correct option to green
@@ -410,6 +427,28 @@ class ViewPagerAdapter(
 
     }
 
+    private fun shakeButton(view: View) {
+        val animatorSet = AnimatorSet()
+
+        // Define the shaking animation for the button
+        val animation1 =  ObjectAnimator.ofFloat(view, "translationX", -10f)
+        val animation2 = ObjectAnimator.ofFloat(view, "translationX", 10f)
+
+        // Configure the animation properties
+        animation1.duration = 100
+        animation1.repeatCount = 5
+        animation1.repeatMode = ObjectAnimator.REVERSE
+
+        animation2.duration = 100
+        animation2.repeatCount = 5
+        animation2.repeatMode = ObjectAnimator.REVERSE
+
+        // Play the animations sequentially
+        animatorSet.playSequentially(animation1, animation2)
+
+        // Start the animation
+        animatorSet.start()
+    }
 
 }
 

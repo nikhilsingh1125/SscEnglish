@@ -83,82 +83,110 @@ class MainActivity : AppCompatActivity() {
         if (type =="CGL"){
             if (position == 0) {
                 intent.putExtra("TYPE", "0")
+                intent.putExtra("Title","SYNONYMS 2022")
             } else if (position == 1) {
                 intent.putExtra("TYPE", "1")
+                intent.putExtra("Title","ANTONYMS 2022")
             } else if (position == 2) {
                 intent.putExtra("TYPE", "2")
+                intent.putExtra("Title","ONEWORD 2022")
             } else if (position == 3) {
                 intent.putExtra("TYPE", "3")
+                intent.putExtra("Title","Idioms 2022")
             }
         }
+
         else if (type == "CHCL"){
             if (position == 0) {
                 intent.putExtra("TYPE", "CHCL_1")
+                intent.putExtra("Title","SYNONYMS 2022")
             }
             else if (position == 1) {
                 intent.putExtra("TYPE", "CHCL_2")
+                intent.putExtra("Title","ANTONYMS 2022")
             }
             else if (position == 2) {
                 intent.putExtra("TYPE", "CHCL_3")
+                intent.putExtra("Title","ONEWORD 2022")
             }
             else if (position == 3) {
                 intent.putExtra("TYPE", "CHCL_4")
+                intent.putExtra("Title","IDIOMS 2022")
             }
         }
         else if (type == "CPO"){
             if (position == 0) {
                 intent.putExtra("TYPE", "CPO_1")
+                intent.putExtra("Title","SYNONYMS 2022")
             }
             else if (position == 1) {
                 intent.putExtra("TYPE", "CPO_2")
+                intent.putExtra("Title","ANTONYMS 2022")
             }
             else if (position == 2) {
                 intent.putExtra("TYPE", "CPO_3")
+                intent.putExtra("Title","ONEWORD 2022")
             }
             else if (position == 3) {
                 intent.putExtra("TYPE", "CPO_4")
+                intent.putExtra("Title","IDIOMS 2022")
             }
         }
+
         else if (type == "CGL_2021"){
             if (position == 0) {
                 intent.putExtra("TYPE", "CGL_2021_1")
+                intent.putExtra("Title","SYNONYMS 2021")
             }
             else if (position == 1) {
                 intent.putExtra("TYPE", "CGL_2021_2")
+                intent.putExtra("Title","ANTONYMS 2021")
             }
             else if (position == 2) {
                 intent.putExtra("TYPE", "CGL_2021_3")
+                intent.putExtra("Title","ONEWORD 2021")
             }
             else if (position == 3) {
                 intent.putExtra("TYPE", "CGL_2021_4")
+                intent.putExtra("Title","IDIOMS 2021")
             }
         }
+
         else if (type == "CHCL_2021"){
             if (position == 0) {
                 intent.putExtra("TYPE", "CHCL_2021_1")
+                intent.putExtra("Title","SYNONYMS 2021")
             }
             else if (position == 1) {
                 intent.putExtra("TYPE", "CHCL_2021_2")
+                intent.putExtra("Title","ANTONYMS 2021")
             }
             else if (position == 2) {
                 intent.putExtra("TYPE", "CHCL_2021_3")
+                intent.putExtra("Title","ONEWORD 2021")
             }
             else if (position == 3) {
                 intent.putExtra("TYPE", "CHCL_2021_4")
+                intent.putExtra("Title","IDIOMS 2021")
             }
         }
+
         else if (type == "MTS_2021"){
             if (position == 0) {
                 intent.putExtra("TYPE", "MTS_2021_1")
+                intent.putExtra("Title","SYNONYMS 2021")
             }
             else if (position == 1) {
                 intent.putExtra("TYPE", "MTS_2021_2")
+                intent.putExtra("Title","ANTONYMS 2021")
             }
             else if (position == 2) {
                 intent.putExtra("TYPE", "MTS_2021_3")
+                intent.putExtra("Title","ONEWORD 2021")
             }
             else if (position == 3) {
                 intent.putExtra("TYPE", "MTS_2021_4")
+                intent.putExtra("Title","IDIOMS 2021")
             }
         }
 

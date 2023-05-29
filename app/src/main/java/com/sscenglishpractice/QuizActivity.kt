@@ -9,9 +9,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewPagerAdapter
+import com.sscenglishpractice.model.SubmitData
 import com.sscenglishquiz.model.QuestionData
 import com.sscenglishquiz.model.QuestionWiseModel
 import kotlinx.android.synthetic.main.activity_quiz.*
@@ -23,6 +26,8 @@ class QuizActivity : AppCompatActivity() {
 
     val TAG = "QuizActivity"
     var type = ""
+    var title = ""
+    lateinit var db : FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +37,11 @@ class QuizActivity : AppCompatActivity() {
         loader.visibility = View.VISIBLE
         loader.playAnimation()
 
+        db = FirebaseFirestore.getInstance()
 
         val intent = intent
         type = intent.getStringExtra("TYPE").toString()
+        title = intent.getStringExtra("Title").toString()
 
         Log.e(TAG, "onCreate: $type", )
 
@@ -54,7 +61,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions,title)
                     idViewPager.adapter = adapter
                 }
 
@@ -81,7 +88,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "questions: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -106,7 +113,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -131,7 +138,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions )
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -165,7 +172,7 @@ class QuizActivity : AppCompatActivity() {
                     }
 
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -191,7 +198,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -217,7 +224,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -243,7 +250,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -271,7 +278,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -297,7 +304,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -323,7 +330,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -349,7 +356,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -375,8 +382,11 @@ class QuizActivity : AppCompatActivity() {
 
 
 
-                        val adapter = ViewPagerAdapter(this@QuizActivity,
-                            questions as ArrayList<QuestionData>)
+                        val adapter = ViewPagerAdapter(
+                            this@QuizActivity,
+                            questions as ArrayList<QuestionData>,
+                            title
+                        )
                         idViewPager.adapter = adapter
                     }
 
@@ -401,8 +411,11 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity,
-                        questions as ArrayList<QuestionData>)
+                    val adapter = ViewPagerAdapter(
+                        this@QuizActivity,
+                        questions as ArrayList<QuestionData>,
+                        title
+                    )
                     idViewPager.adapter = adapter
                 }
 
@@ -428,7 +441,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -454,7 +467,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -488,7 +501,7 @@ class QuizActivity : AppCompatActivity() {
                     }
 
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -514,7 +527,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -540,7 +553,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -566,7 +579,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -600,7 +613,7 @@ class QuizActivity : AppCompatActivity() {
                     }
 
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -626,7 +639,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -652,7 +665,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -678,7 +691,7 @@ class QuizActivity : AppCompatActivity() {
                     // Do something with the quiz object
                     Log.e(TAG, "onDataChange: $questions")
 
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions)
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title)
                     idViewPager.adapter = adapter
                 }
 
@@ -707,11 +720,38 @@ class QuizActivity : AppCompatActivity() {
         editor.putString("correctAnswer", correctAnswerCount.toString())
         editor.putString("incorrectAnswer", incorrectAnswerCount.toString())
         editor.putString("totalQuestion", size.toString())
+        editor.putString("Title",type)
         editor.putBoolean("key3", true)
         editor.apply()
 
+        if (title != null) {
+            addDataToFireStore(title = type,correctAnswerCount,incorrectAnswerCount.toString(),size)
+        }
 
         showDialogSubmit(givenAnswerCount, skipedAnswer, size)
+    }
+
+    private fun addDataToFireStore(
+        title: String,
+        correctAnswer: Int?,
+        incorrectAnswer: String?,
+        totalQuestion: Int?
+    ) {
+
+        val dbNotes = db.collection("Submit_Test")
+
+        val data = SubmitData(title,correctAnswer.toString(),incorrectAnswer)
+
+
+        dbNotes.add(data).addOnSuccessListener {
+            db.collection("Submit_Test").document(it.id).set(SubmitData(it.id, title, correctAnswer = correctAnswer.toString(),totalQuestion.toString(),incorrectAnswer.toString()))
+            println("test id"+it.id)
+
+        }
+            .addOnFailureListener {
+                Toast.makeText(this, "Fail to add Data", Toast.LENGTH_SHORT).show();
+            }
+
     }
 
     private fun showDialogSubmit(correctAnswerCount: Int, incorrectAnswerCount: Int, size: Int) {

@@ -1,5 +1,6 @@
 package com.sscenglishpractice
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -7,28 +8,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.firebase.firestore.FirebaseFirestore
+import com.sscenglishpractice.model.SubmitData
 import kotlinx.android.synthetic.main.activity_quiz_submit.btnReattempt
 import kotlinx.android.synthetic.main.activity_quiz_submit.pieChart
+import kotlinx.android.synthetic.main.activity_quiz_submit.txtCorrectAccuracy
 import kotlinx.android.synthetic.main.activity_quiz_submit.txtCorrectCount
 import kotlinx.android.synthetic.main.activity_quiz_submit.txtWrongCount
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_Title
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
 import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
+import kotlin.math.roundToInt
 
 class QuizSubmitActivity : AppCompatActivity() {
 
 
+
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_submit)
@@ -43,23 +46,26 @@ class QuizSubmitActivity : AppCompatActivity() {
         val correctAnswer = sharedPreferences.getString("correctAnswer", null)?.toIntOrNull()
         val totalQuestion = sharedPreferences.getString("totalQuestion", null)?.toIntOrNull()
         val incorrectAnswer = sharedPreferences.getString("incorrectAnswer", null)
+        val title = sharedPreferences.getString("Title", null)
 
 
         val accuracy = if (correctAnswer != null && totalQuestion != null && totalQuestion > 0) {
-            (correctAnswer.toFloat() / totalQuestion.toFloat()) * 100
+            (correctAnswer.toDouble() / totalQuestion.toDouble()) * 100
         } else {
             0f
         }
 
 // You can use the accuracy value as needed, such as displaying it in a TextView or logging it
         Log.e("Accuracy", "Accuracy: $accuracy%")
+        val accuracyPercentage: Double = accuracy as Double
+        val accuracy1: Int = accuracyPercentage.roundToInt()
+        println("Accuracy aaa: $accuracy1%")
         Log.e("Accuracy", "totalQuestion: $totalQuestion")
-
-
-
+        Log.e("Accuracy", "title: $title")
 
         txtCorrectCount.text = correctAnswer.toString()
         txtWrongCount.text = incorrectAnswer
+        txtCorrectAccuracy.text = "$accuracy1%"
 
 
 
@@ -109,4 +115,6 @@ class QuizSubmitActivity : AppCompatActivity() {
 
 
     }
+
+
 }
