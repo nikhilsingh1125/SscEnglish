@@ -11,14 +11,26 @@ import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewPagerAdapter
 import com.sscenglishpractice.model.SubmitData
 import com.sscenglishquiz.model.QuestionData
 import com.sscenglishquiz.model.QuestionWiseModel
-import kotlinx.android.synthetic.main.activity_quiz.*
-import kotlinx.android.synthetic.main.custom_dialog_layout.*
+import kotlinx.android.synthetic.main.activity_quiz.idViewPager
+import kotlinx.android.synthetic.main.activity_quiz.loader
+import kotlinx.android.synthetic.main.custom_dialog_layout.noBtn
+import kotlinx.android.synthetic.main.custom_dialog_layout.txtCorrect
+import kotlinx.android.synthetic.main.custom_dialog_layout.txtIncorrect
+import kotlinx.android.synthetic.main.custom_dialog_layout.txtTotal
+import kotlinx.android.synthetic.main.custom_dialog_layout.yesBtn
 import libs.mjn.prettydialog.PrettyDialog
 
 
@@ -28,6 +40,7 @@ class QuizActivity : AppCompatActivity() {
     var type = ""
     var title = ""
     lateinit var db : FirebaseFirestore
+    lateinit var adView: AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +50,19 @@ class QuizActivity : AppCompatActivity() {
         loader.visibility = View.VISIBLE
         loader.playAnimation()
 
+        Log.e(TAG, "onCreate: onCreate ")
+
         db = FirebaseFirestore.getInstance()
 
         val intent = intent
         type = intent.getStringExtra("TYPE").toString()
         title = intent.getStringExtra("Title").toString()
+
+        MobileAds.initialize(this)
+
+        adView = findViewById(R.id.ad_view)
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
 
         Log.e(TAG, "onCreate: $type", )
 
@@ -713,19 +734,22 @@ class QuizActivity : AppCompatActivity() {
         incorrectAnswerCount: Int,
         size: Int,
         givenAnswerCount: Int,
-        skipedAnswer: Int
+        skipedAnswer: Int,
+        title: String
     ) {
+
         val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("correctAnswer", correctAnswerCount.toString())
         editor.putString("incorrectAnswer", incorrectAnswerCount.toString())
         editor.putString("totalQuestion", size.toString())
         editor.putString("Title",type)
+        editor.putString("Title_Subject",title)
         editor.putBoolean("key3", true)
         editor.apply()
 
-        if (title != null) {
-            addDataToFireStore(title = type,correctAnswerCount,incorrectAnswerCount.toString(),size)
+        if (this.title != null) {
+            addDataToFireStore(title = type,correctAnswerCount,incorrectAnswerCount.toString(),size,title)
         }
 
         showDialogSubmit(givenAnswerCount, skipedAnswer, size)
@@ -735,7 +759,8 @@ class QuizActivity : AppCompatActivity() {
         title: String,
         correctAnswer: Int?,
         incorrectAnswer: String?,
-        totalQuestion: Int?
+        totalQuestion: Int?,
+        titleSubject: String
     ) {
 
         val dbNotes = db.collection("Submit_Test")
@@ -744,7 +769,7 @@ class QuizActivity : AppCompatActivity() {
 
 
         dbNotes.add(data).addOnSuccessListener {
-            db.collection("Submit_Test").document(it.id).set(SubmitData(it.id, title, correctAnswer = correctAnswer.toString(),totalQuestion.toString(),incorrectAnswer.toString()))
+            db.collection("Submit_Test").document(it.id).set(SubmitData(it.id, title, correctAnswer = correctAnswer.toString(),totalQuestion.toString(),incorrectAnswer.toString(),titleSubject.toString()))
             println("test id"+it.id)
 
         }
@@ -805,6 +830,25 @@ class QuizActivity : AppCompatActivity() {
             )  // button background color
             { pDialog.dismiss() }
             .show()
+    }
+
+    override fun onPause() {
+        adView.pause()
+        super.onPause()
+        Log.e(TAG, "onPause: onPause ")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adView.resume()
+        Log.e(TAG, "onResume: onResume ")
+    }
+
+    override fun onDestroy() {
+        adView.destroy()
+        super.onDestroy()
+        Log.e(TAG, "onDestroy: onDestroy ")
+
     }
 
 

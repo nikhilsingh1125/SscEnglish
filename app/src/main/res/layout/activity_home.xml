@@ -16,13 +16,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:paddingHorizontal="@dimen/_10sdp" />
+
 
     </RelativeLayout>
 </LinearLayout>

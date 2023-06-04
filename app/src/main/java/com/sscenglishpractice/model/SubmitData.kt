@@ -5,7 +5,8 @@ class SubmitData(
     val paperType :String? = null,
     val correctAnswer :String?= null,
     val totalQuestion :String?= null,
-    val incorrectAnswer :String?= null)
+    val incorrectAnswer :String?= null,
+    val titleSubject :String?= null)
 {
 
 }

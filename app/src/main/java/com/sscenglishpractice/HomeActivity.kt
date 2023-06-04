@@ -14,6 +14,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.lottie.utils.Utils
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.messaging.FirebaseMessaging
 import com.sscenglishpractice.adapter.HomeAdapter
 import com.sscenglishpractice.model.CategoryModel
@@ -22,16 +25,21 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
 
 class HomeActivity : AppCompatActivity() {
+
+    val TAG = "HomeActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         val TAG = "HomeActivity"
 
+
         action_bar_share.setOnClickListener {
             Constants.shareApp(this)
         }
         btnSubmit.visibility = View.GONE
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "22"
             val channelName = "SSC-English"
@@ -55,8 +63,9 @@ class HomeActivity : AppCompatActivity() {
             }
 
         val array = ArrayList<CategoryModel>()
-        array.add(CategoryModel("2022", R.drawable.practice))
-        array.add(CategoryModel("2021", R.drawable.practice))
+        array.add(CategoryModel("2022", R.drawable.study))
+        array.add(CategoryModel("2021", R.drawable.study))
+        array.add(CategoryModel("Result", R.drawable.mission))
 
         recyclerView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         val rvAdapter = HomeAdapter(this@HomeActivity, array)
@@ -79,13 +88,21 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun goToCategory(model: CategoryModel, position: Int) {
-        val intent = Intent(this, CategoryActivity::class.java)
+
 
         if (position == 0) {
+            val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2022")
+            startActivity(intent)
         } else if (position == 1) {
+            val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2021")
+            startActivity(intent)
+        } else if (position ==2){
+            startActivity(Intent(this,ResultActivity::class.java))
         }
-        startActivity(intent)
+
     }
+
+
 }

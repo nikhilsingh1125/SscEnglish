@@ -106,7 +106,8 @@ class ViewPagerAdapter(
                 incorrectAnswerCount,
                 arrayList.size,
                 givenAnswerCount,
-                skipedAnswer
+                skipedAnswer,
+                title
             )
         }
 
