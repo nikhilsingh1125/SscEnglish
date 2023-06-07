@@ -10,8 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
+import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.QuizActivity
 import com.sscenglishpractice.R
 import com.sscenglishquiz.model.QuestionData
@@ -318,6 +320,7 @@ class ViewPagerAdapter(
                         }
                     }
                 }
+
             }
             else {
                 // Set background color of selected option to red
@@ -410,6 +413,7 @@ class ViewPagerAdapter(
                         }
                     }
                 }
+
             }
 
             val sharedPreferences = context.getSharedPreferences("quiz", Context.MODE_PRIVATE)

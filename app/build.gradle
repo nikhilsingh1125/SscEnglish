@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+
 }
 
 android {
@@ -69,6 +71,5 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-ads:22.1.0'
 
-
-
+    
 }

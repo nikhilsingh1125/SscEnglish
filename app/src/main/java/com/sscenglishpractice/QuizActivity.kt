@@ -40,7 +40,7 @@ class QuizActivity : AppCompatActivity() {
     var type = ""
     var title = ""
     lateinit var db : FirebaseFirestore
-    lateinit var adView: AdView
+//    lateinit var adView: AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +58,11 @@ class QuizActivity : AppCompatActivity() {
         type = intent.getStringExtra("TYPE").toString()
         title = intent.getStringExtra("Title").toString()
 
-        MobileAds.initialize(this)
+        /*MobileAds.initialize(this)
 
         adView = findViewById(R.id.ad_view)
         val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
+        adView.loadAd(adRequest)*/
 
         Log.e(TAG, "onCreate: $type", )
 
@@ -832,7 +832,7 @@ class QuizActivity : AppCompatActivity() {
             .show()
     }
 
-    override fun onPause() {
+   /* override fun onPause() {
         adView.pause()
         super.onPause()
         Log.e(TAG, "onPause: onPause ")
@@ -849,7 +849,7 @@ class QuizActivity : AppCompatActivity() {
         super.onDestroy()
         Log.e(TAG, "onDestroy: onDestroy ")
 
-    }
+    }*/
 
 
 }

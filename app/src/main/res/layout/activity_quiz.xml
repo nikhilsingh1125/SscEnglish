@@ -31,6 +31,7 @@
       android:layout_centerHorizontal="true"
       android:layout_alignParentBottom="true"
       app:adSize="BANNER"
+      android:visibility="gone"
       app:adUnitId="@string/banner_ad_unit_id"
       />
 

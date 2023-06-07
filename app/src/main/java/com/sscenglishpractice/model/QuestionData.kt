@@ -8,7 +8,8 @@ class QuestionData(
     val option_B: String?=null,
     val option_C: String?=null,
     val option_D: String?=null,
-    val Solutions : String?=null
+    val Solutions : String?=null,
+    var isGivenAnswer : Boolean = false
 ) {
     override fun toString(): String {
         return "Question $question_count: $question\n" +
