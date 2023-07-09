@@ -10,13 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.QuizActivity
 import com.sscenglishpractice.R
 import com.sscenglishquiz.model.QuestionData
+import com.sscenglishquiz.model.ResultShowData
 import kotlinx.android.synthetic.main.custom_toolbar.view.btnSubmit
 import kotlinx.android.synthetic.main.row_question_list.view.*
 import java.util.*
@@ -25,12 +25,14 @@ import kotlin.collections.ArrayList
 class ViewPagerAdapter(
     val context: Context,
     val arrayList: ArrayList<QuestionData>,
-    val title: String
+    val title: String,
+    val category: String
 ) :
     PagerAdapter() {
     // on below line we are creating a method
     // as get count to return the size of the list.
 
+    var selectedAnswer = ""
     private var optionASelected = false
     private var optionBSelected = false
     private var optionCSelected = false
@@ -40,6 +42,7 @@ class ViewPagerAdapter(
     var incorrectAnswerCount = 0
     var answeredCorrectly = false
     var givenAnswerCount = 0
+    val resultDataList = mutableListOf<ResultShowData>()
     var skipedAnswer = 0
 
     override fun getCount(): Int {
@@ -101,7 +104,7 @@ class ViewPagerAdapter(
         itemView.btnSubmit.setOnClickListener {
 
             skipedAnswer = arrayList.size - givenAnswerCount
-            Log.e("instantiateItem", "skipedAnswer: $skipedAnswer", )
+            Log.e("instantiateItem", "skipedAnswer: $skipedAnswer")
             (context as QuizActivity).clickOnSubmitNext(
                 position,
                 correctAnswerCount,
@@ -109,8 +112,67 @@ class ViewPagerAdapter(
                 arrayList.size,
                 givenAnswerCount,
                 skipedAnswer,
-                title
+                title, category
             )
+            val resultDataList = mutableListOf<ResultShowData>()
+            var serialNumber = 1
+// Assume you have a list of questions called 'arrayList'
+            for ((index, model) in arrayList.withIndex()) {
+                if (model.isGivenAnswer) {
+                    val userAnswer = when {
+                        optionASelected -> model.option_A
+                        optionBSelected -> model.option_B
+                        optionCSelected -> model.option_C
+                        optionDSelected -> model.option_D
+                        else -> null
+                    }
+
+                    val resultShow = ResultShowData()
+                    resultShow.question_count = serialNumber.toString()
+                    resultShow.question = model.question
+                    resultShow.answer = model.answer
+                    resultShow.option_A = model.option_A
+                    resultShow.option_B = model.option_B
+                    resultShow.option_C = model.option_C
+                    resultShow.option_D = model.option_D
+                    resultShow.Solutions = model.Solutions
+                    resultShow.selectedAnswer = selectedAnswer
+                    resultShow.isGivenAnswer = true
+                    resultShow.optionsSelected = model.optionsSelected
+                    resultShow.selectedOptions = model.selectedOptionsAnswer
+
+                    resultDataList.add(resultShow)
+
+                    serialNumber++
+                }
+            }
+
+            Log.e("instantiateItem", "resultDataList==>: $resultDataList", )
+            val firestore = FirebaseFirestore.getInstance()
+            val collectionRef = firestore.collection("your_collection_name")
+
+// Assuming you have a list of ResultShowData objects called 'resultDataList'
+            for (question in resultDataList) {
+                val questionId = question.question_count ?: ""
+                val category = category // Replace with the actual category name
+
+                val documentRef =
+                    collectionRef.document(category).collection("your_subcollection_name")
+                        .document(questionId)
+                documentRef.set(question)
+                    .addOnSuccessListener {
+                        // Data saved successfully for the current question
+                        Log.d("SelectedUI", "Data saved successfully for question: $questionId")
+                    }
+                    .addOnFailureListener { e ->
+                        // Handle any errors
+                        Log.e(
+                            "SelectedUI",
+                            "Error saving data for question: $questionId - ${e.message}",
+                            e
+                        )
+                    }
+            }
         }
 
         // on the below line we are adding this
@@ -123,41 +185,63 @@ class ViewPagerAdapter(
     }
 
     private fun selectOptionA(itemView: View, model: QuestionData?) {
+
+        model?.optionsSelected = "A"
         optionASelected = true
         optionBSelected = false
         optionCSelected = false
         optionDSelected = false
+
         if (model != null) {
             updateOptionSelectedUI(itemView, model)
-        }
+
+            if (optionASelected){
+                    model.selectedOptionsAnswer = model.option_A
+                }
+            }
     }
 
     private fun selectOptionB(itemView: View, model: QuestionData?) {
+        model?.optionsSelected = "B"
         optionASelected = false
         optionBSelected = true
         optionCSelected = false
         optionDSelected = false
         if (model != null) {
             updateOptionSelectedUI(itemView, model)
+            if (optionBSelected){
+                model.selectedOptionsAnswer = model.option_B
+            }
         }
     }
 
     private fun selectOptionC(itemView: View, model: QuestionData?) {
+        model?.optionsSelected = "C"
         optionASelected = false
         optionBSelected = false
         optionCSelected = true
         optionDSelected = false
         if (model != null) {
             updateOptionSelectedUI(itemView, model)
+
+            if (optionCSelected){
+                model.selectedOptionsAnswer = model.option_C
+            }
         }
     }
 
     private fun selectOptionD(itemView: View, model: QuestionData?) {
+        model?.optionsSelected = "D"
         optionASelected = false
         optionBSelected = false
         optionCSelected = false
         optionDSelected = true
         updateOptionSelectedUI(itemView, model)
+        if (optionDSelected){
+            if (model != null) {
+                model.selectedOptionsAnswer = model.option_D
+            }
+        }
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
@@ -178,10 +262,10 @@ class ViewPagerAdapter(
             itemView.txtAnswerD.text = questionData.option_D
 
             // Reset the answer option views to their default state
-            itemView.cvA.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz))
-            itemView.cvB.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz))
-            itemView.cvC.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz))
-            itemView.cvD.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz))
+            itemView.cvA.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+            itemView.cvB.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+            itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+            itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
 
             itemView.cvA.isEnabled = true
             itemView.cvB.isEnabled = true
@@ -197,7 +281,6 @@ class ViewPagerAdapter(
     }
 
     private fun updateOptionSelectedUI(itemView: View, model: QuestionData?) {
-
 
 
         itemView.llSolutions.visibility = View.VISIBLE
@@ -232,10 +315,14 @@ class ViewPagerAdapter(
         }
 
         if (selectedAnswer != null) {
-            givenAnswerCount++
-            if (model != null) {
 
-                Log.e("updateOptionSelectedUI", " Solutions: ${model.Solutions}", )
+            givenAnswerCount++
+
+            if (model != null) {
+                model.isGivenAnswer = true
+
+
+                Log.e("updateOptionSelectedUI", " Solutions: ${model.Solutions}")
                 if (model.Solutions != null) {
                     var isSolutionVisible = false
 
@@ -247,10 +334,18 @@ class ViewPagerAdapter(
                         if (!isSolutionVisible) {
                             isSolutionVisible = true
                             // Show the solution
-                            itemView.solutionTextView.text = model.Solutions
-                            itemView.solutionTextView.visibility = View.VISIBLE
-                            itemView.seeSolutionButton.visibility = View.GONE
-                            itemView.hideSolutionButton.visibility = View.VISIBLE
+                            if (model.Solutions == "") {
+                                itemView.solutionTextView.visibility = View.VISIBLE
+                                itemView.solutionTextView.text = "Coming soon"
+                                itemView.seeSolutionButton.visibility = View.GONE
+                                itemView.hideSolutionButton.visibility = View.VISIBLE
+                            } else {
+                                itemView.solutionTextView.text = model.Solutions
+                                itemView.solutionTextView.visibility = View.VISIBLE
+                                itemView.seeSolutionButton.visibility = View.GONE
+                                itemView.hideSolutionButton.visibility = View.VISIBLE
+                            }
+
                         }
                     }
 
@@ -263,19 +358,18 @@ class ViewPagerAdapter(
                             itemView.hideSolutionButton.visibility = View.GONE
                         }
                     }
-                }
-                else
-                {
-                    itemView.llSolutions.visibility = View.GONE
+                } else {
+                    itemView.seeSolutionButton.text = "UpComing Solutions"
+                    itemView.seeSolutionButton.visibility = View.VISIBLE
                 }
             }
 
             questionCount++
             Log.e("updateOptionSelectedUI", "questionCount: $questionCount")
             if (selectedAnswer == model?.answer) {
+                Log.e("OptionSelected", "selectedAnswer: $selectedAnswer , answer: ${model.answer}")
                 // If the question hasn't been answered correctly before, increment count and set flag to true
                 correctAnswerCount++
-
                 // Set background color of selected option to green
                 if (model != null) {
                     when (selectedAnswer) {
@@ -321,8 +415,7 @@ class ViewPagerAdapter(
                     }
                 }
 
-            }
-            else {
+            } else {
                 // Set background color of selected option to red
                 if (model != null) {
 
@@ -416,6 +509,7 @@ class ViewPagerAdapter(
 
             }
 
+
             val sharedPreferences = context.getSharedPreferences("quiz", Context.MODE_PRIVATE)
             val editor = sharedPreferences.edit()
             editor.putInt("correctAnswerCount", correctAnswerCount)
@@ -436,7 +530,7 @@ class ViewPagerAdapter(
         val animatorSet = AnimatorSet()
 
         // Define the shaking animation for the button
-        val animation1 =  ObjectAnimator.ofFloat(view, "translationX", -10f)
+        val animation1 = ObjectAnimator.ofFloat(view, "translationX", -10f)
         val animation2 = ObjectAnimator.ofFloat(view, "translationX", 10f)
 
         // Configure the animation properties

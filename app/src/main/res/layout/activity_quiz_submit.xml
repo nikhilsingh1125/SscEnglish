@@ -220,20 +220,37 @@
     </ScrollView>
 
     <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/llReattempt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:weightSum="2">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnReattempt"
-            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@color/yellow"
             android:fontFamily="@font/roboto_regular"
             android:padding="@dimen/_14sdp"
             android:text="ReAttempt"
+            android:textAllCaps="false"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnViewSolution"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/yellow"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="@dimen/_14sdp"
+            android:text="View Solutions"
             android:textAllCaps="false"
             android:textColor="@color/dark_blue"
             android:textSize="@dimen/_12ssp"

@@ -65,7 +65,8 @@ class HomeActivity : AppCompatActivity() {
         val array = ArrayList<CategoryModel>()
         array.add(CategoryModel("2022", R.drawable.study))
         array.add(CategoryModel("2021", R.drawable.study))
-        array.add(CategoryModel("Result", R.drawable.mission))
+        array.add(CategoryModel("2020", R.drawable.study))
+        array.add(CategoryModel("2019", R.drawable.study))
 
         recyclerView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         val rvAdapter = HomeAdapter(this@HomeActivity, array)
@@ -98,8 +99,16 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2021")
             startActivity(intent)
-        } else if (position ==2){
-            startActivity(Intent(this,ResultActivity::class.java))
+        }
+        else if (position == 2) {
+            val intent = Intent(this, CategoryActivity::class.java)
+            intent.putExtra("TYPE", "2020")
+            startActivity(intent)
+        }
+        else if (position == 3) {
+            val intent = Intent(this, CategoryActivity::class.java)
+            intent.putExtra("TYPE", "2019")
+            startActivity(intent)
         }
 
     }

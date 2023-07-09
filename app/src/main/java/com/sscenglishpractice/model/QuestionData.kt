@@ -9,7 +9,10 @@ class QuestionData(
     val option_C: String?=null,
     val option_D: String?=null,
     val Solutions : String?=null,
-    var isGivenAnswer : Boolean = false
+    var isGivenAnswer : Boolean = false,
+    var optionsSelected : String? =null,
+    var selectedOptionsAnswer : String? = null,
+    var testCategory : String? =null
 ) {
     override fun toString(): String {
         return "Question $question_count: $question\n" +

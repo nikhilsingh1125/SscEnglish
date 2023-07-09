@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.model.SubmitData
 import kotlinx.android.synthetic.main.activity_quiz_submit.btnReattempt
+import kotlinx.android.synthetic.main.activity_quiz_submit.btnViewSolution
 import kotlinx.android.synthetic.main.activity_quiz_submit.pieChart
 import kotlinx.android.synthetic.main.activity_quiz_submit.txtCorrectAccuracy
 import kotlinx.android.synthetic.main.activity_quiz_submit.txtCorrectCount
@@ -27,9 +28,6 @@ import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
 import kotlin.math.roundToInt
 
 class QuizSubmitActivity : AppCompatActivity() {
-
-
-
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +45,7 @@ class QuizSubmitActivity : AppCompatActivity() {
         val totalQuestion = sharedPreferences.getString("totalQuestion", null)?.toIntOrNull()
         val incorrectAnswer = sharedPreferences.getString("incorrectAnswer", null)
         val title = sharedPreferences.getString("Title", null)
+        val category = sharedPreferences.getString("categoryData", null)
 
 
         val accuracy = if (correctAnswer != null && totalQuestion != null && totalQuestion > 0) {
@@ -104,6 +103,7 @@ class QuizSubmitActivity : AppCompatActivity() {
 
 
 
+
         btnReattempt.setOnClickListener {
             startActivity(Intent(this,HomeActivity::class.java))
         }
@@ -112,6 +112,9 @@ class QuizSubmitActivity : AppCompatActivity() {
         Log.d("QuizSubmitActivity", "incorrectAnswer 2: $incorrectAnswer")
         Log.d("QuizSubmitActivity", "totalQuestion 3: $totalQuestion")
 
+        btnViewSolution.setOnClickListener {
+            startActivity(Intent(this,ViewSolutionActivity::class.java))
+        }
 
 
     }
