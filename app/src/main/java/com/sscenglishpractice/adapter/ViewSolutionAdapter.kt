@@ -16,6 +16,32 @@ import com.sscenglishpractice.R
 import com.sscenglishpractice.ViewSolutionActivity
 import com.sscenglishquiz.model.ResultShowData
 import kotlinx.android.synthetic.main.row_question_list.view.*
+import kotlinx.android.synthetic.main.row_solution_list.view.btnNextSol
+import kotlinx.android.synthetic.main.row_solution_list.view.cvASol
+import kotlinx.android.synthetic.main.row_solution_list.view.cvBSol
+import kotlinx.android.synthetic.main.row_solution_list.view.cvCSol
+import kotlinx.android.synthetic.main.row_solution_list.view.cvDSol
+import kotlinx.android.synthetic.main.row_solution_list.view.hideSolutionButtonSol
+import kotlinx.android.synthetic.main.row_solution_list.view.llSolutionsSol
+import kotlinx.android.synthetic.main.row_solution_list.view.quizQuestionSol
+import kotlinx.android.synthetic.main.row_solution_list.view.seeSolutionButtonSol
+import kotlinx.android.synthetic.main.row_solution_list.view.solutionTextViewSol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtASol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtAnswerASol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtAnswerBSol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtAnswerCSol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtAnswerDSol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtBSol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtCSol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtChosenAnswer
+import kotlinx.android.synthetic.main.row_solution_list.view.txtDSol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtQuizTitleSol
+import kotlinx.android.synthetic.main.row_solution_list.view.txtSelectedAnswer
+import kotlinx.android.synthetic.main.row_solution_list.view.txtTotalQuestionsSol
+import kotlinx.android.synthetic.main.row_solution_list.view.wrongASol
+import kotlinx.android.synthetic.main.row_solution_list.view.wrongBSol
+import kotlinx.android.synthetic.main.row_solution_list.view.wrongCSol
+import kotlinx.android.synthetic.main.row_solution_list.view.wrongDSol
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -45,26 +71,27 @@ class ViewSolutionAdapter(
 
         // on below line we are inflating our custom
         // layout file which we have created.
-        val itemView: View = mLayoutInflater.inflate(R.layout.row_question_list, container, false)
+        val itemView: View = mLayoutInflater.inflate(R.layout.row_solution_list, container, false)
 
         displayQuestion(position, itemView)
 
         val model = arrayList.get(position)
 
-        itemView.txtQuizTitle.text = categoryType
+        itemView.txtQuizTitleSol.text = categoryType
 
-        itemView.btnSubmit.visibility = View.GONE
 
 
         Handler(Looper.getMainLooper()).postDelayed({
-            itemView.txtTotalQuestions.text = "${position+1}/${arrayList.size}"
+            itemView.txtTotalQuestionsSol.text = "${position+1}/${arrayList.size}"
         }, 100)
 
 
+        itemView.txtChosenAnswer.text =  "Selected Answer : "+model.selectedOptions
+        itemView.txtSelectedAnswer.text = "Correct Answer : " +model.answer
         resultSelectedUI(itemView, model)
 
 
-        itemView.btnNext.setOnClickListener {
+        itemView.btnNextSol.setOnClickListener {
             (context as ViewSolutionActivity).clickOnBtnNext(position,arrayList)
             //  itemView.btnNext.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
         }
@@ -98,22 +125,22 @@ class ViewSolutionAdapter(
             // Update the UI to display the question and answer options
 
 
-            itemView.quizQuestion.text = "${questionData.question}"
-            itemView.txtAnswerA.text = questionData.option_A
-            itemView.txtAnswerB.text = questionData.option_B
-            itemView.txtAnswerC.text = questionData.option_C
-            itemView.txtAnswerD.text = questionData.option_D
+            itemView.quizQuestionSol.text = "${questionData.question}"
+            itemView.txtAnswerASol.text = questionData.option_A
+            itemView.txtAnswerBSol.text = questionData.option_B
+            itemView.txtAnswerCSol.text = questionData.option_C
+            itemView.txtAnswerDSol.text = questionData.option_D
 
             // Reset the answer option views to their default state
-            itemView.cvA.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
-            itemView.cvB.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
-            itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
-            itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+            itemView.cvASol.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+            itemView.cvBSol.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+            itemView.cvCSol.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+            itemView.cvDSol.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
 
-            itemView.cvA.isEnabled = true
-            itemView.cvB.isEnabled = true
-            itemView.cvC.isEnabled = true
-            itemView.cvD.isEnabled = true
+            itemView.cvASol.isEnabled = true
+            itemView.cvBSol.isEnabled = true
+            itemView.cvCSol.isEnabled = true
+            itemView.cvDSol.isEnabled = true
 
             val sharedPreferences = context.getSharedPreferences("quiz", Context.MODE_PRIVATE)
             val correct = sharedPreferences.getInt("correctAnswerCount", 0)
@@ -129,11 +156,11 @@ class ViewSolutionAdapter(
         val correctAnswer = model?.answer
 
         // Reset the background color of all answer options
-        itemView.llSolutions.visibility = View.VISIBLE
-        itemView.cvA.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
-        itemView.cvB.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
-        itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
-        itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+        itemView.llSolutionsSol.visibility = View.VISIBLE
+        itemView.cvASol.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+        itemView.cvBSol.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+        itemView.cvCSol.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
+        itemView.cvDSol.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
 
         // Change the background color of the selected answer option if given answer is true and matches the correct answer
         if (model != null) {
@@ -143,40 +170,40 @@ class ViewSolutionAdapter(
                 var isSolutionVisible = false
 
                 // Set initial visibility of buttons
-                itemView.seeSolutionButton.visibility = View.VISIBLE
-                itemView.hideSolutionButton.visibility = View.GONE
+                itemView.seeSolutionButtonSol.visibility = View.VISIBLE
+                itemView.hideSolutionButtonSol.visibility = View.GONE
 
-                itemView.seeSolutionButton.setOnClickListener {
+                itemView.seeSolutionButtonSol.setOnClickListener {
                     if (!isSolutionVisible) {
                         isSolutionVisible = true
                         // Show the solution
                         if (model.Solutions == "") {
-                            itemView.solutionTextView.visibility = View.VISIBLE
-                            itemView.solutionTextView.text = "Coming soon"
-                            itemView.seeSolutionButton.visibility = View.GONE
-                            itemView.hideSolutionButton.visibility = View.VISIBLE
+                            itemView.solutionTextViewSol.visibility = View.VISIBLE
+                            itemView.solutionTextViewSol.text = "Solution will be available soon"
+                            itemView.seeSolutionButtonSol.visibility = View.GONE
+                            itemView.hideSolutionButtonSol.visibility = View.VISIBLE
                         } else {
-                            itemView.solutionTextView.text = model.Solutions
-                            itemView.solutionTextView.visibility = View.VISIBLE
-                            itemView.seeSolutionButton.visibility = View.GONE
-                            itemView.hideSolutionButton.visibility = View.VISIBLE
+                            itemView.solutionTextViewSol.text = model.Solutions
+                            itemView.solutionTextViewSol.visibility = View.VISIBLE
+                            itemView.seeSolutionButtonSol.visibility = View.GONE
+                            itemView.hideSolutionButtonSol.visibility = View.VISIBLE
                         }
 
                     }
                 }
 
-                itemView.hideSolutionButton.setOnClickListener {
+                itemView.hideSolutionButtonSol.setOnClickListener {
                     if (isSolutionVisible) {
                         isSolutionVisible = false
                         // Hide the solution
-                        itemView.solutionTextView.visibility = View.GONE
-                        itemView.seeSolutionButton.visibility = View.VISIBLE
-                        itemView.hideSolutionButton.visibility = View.GONE
+                        itemView.solutionTextViewSol.visibility = View.GONE
+                        itemView.seeSolutionButtonSol.visibility = View.VISIBLE
+                        itemView.hideSolutionButtonSol.visibility = View.GONE
                     }
                 }
             } else {
-                itemView.seeSolutionButton.text = "UpComing Solutions"
-                itemView.seeSolutionButton.visibility = View.VISIBLE
+                itemView.seeSolutionButtonSol.text = "UpComing Solutions"
+                itemView.seeSolutionButtonSol.visibility = View.VISIBLE
             }
 
             Log.e("resultSelectedUI", "answer ==>${model.answer} selectedAnswer==> ${model.selectedAnswer}")
@@ -186,21 +213,21 @@ class ViewSolutionAdapter(
                 "A" -> {
                     if (model.answer == model.selectedOptions) {
 
-                        itemView.cvA.background = ContextCompat.getDrawable(
+                        itemView.cvASol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_selected_answer
                         )
                     } else {
-                        itemView.cvA.background = ContextCompat.getDrawable(
+                        itemView.cvASol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_wrong_answer
                         )
-                        itemView.wrongA.visibility = View.VISIBLE
-                        itemView.txtA.visibility = View.GONE
+                        itemView.wrongASol.visibility = View.VISIBLE
+                        itemView.txtASol.visibility = View.GONE
 
                         Log.e("resultSelectedUI", "answer ==>${model.answer} option_A==> ${model.option_A}")
                         if (model.answer == model.option_A){
-                            itemView.cvA.background = ContextCompat.getDrawable(
+                            itemView.cvASol.background = ContextCompat.getDrawable(
                                 context,
                                 R.drawable.bg_selected_answer
                             )
@@ -210,20 +237,20 @@ class ViewSolutionAdapter(
 
                 "B" -> {
                     if (model.answer == model.selectedOptions) {
-                        itemView.cvB.background = ContextCompat.getDrawable(
+                        itemView.cvBSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_selected_answer
                         )
                     } else {
-                        itemView.cvB.background = ContextCompat.getDrawable(
+                        itemView.cvBSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_wrong_answer
                         )
-                        itemView.wrongB.visibility = View.VISIBLE
-                        itemView.txtB.visibility = View.GONE
+                        itemView.wrongBSol.visibility = View.VISIBLE
+                        itemView.txtBSol.visibility = View.GONE
                         Log.e("resultSelectedUI", "answer ==>${model.answer} option_B==> ${model.option_B}")
                         if (model.answer == model.option_B){
-                            itemView.cvA.background = ContextCompat.getDrawable(
+                            itemView.cvASol.background = ContextCompat.getDrawable(
                                 context,
                                 R.drawable.bg_selected_answer
                             )
@@ -233,21 +260,21 @@ class ViewSolutionAdapter(
 
                 "C" -> {
                     if (model.answer == model.selectedOptions) {
-                        itemView.cvC.background = ContextCompat.getDrawable(
+                        itemView.cvCSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_selected_answer
                         )
                     } else {
-                        itemView.cvC.background = ContextCompat.getDrawable(
+                        itemView.cvCSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_wrong_answer
                         )
-                        itemView.wrongC.visibility = View.VISIBLE
-                        itemView.txtC.visibility = View.GONE
+                        itemView.wrongCSol.visibility = View.VISIBLE
+                        itemView.txtCSol.visibility = View.GONE
 
                         Log.e("resultSelectedUI", "answer ==>${model.answer} option_C==> ${model.option_C}")
                         if (model.answer ==model.option_C){
-                            itemView.cvC.background = ContextCompat.getDrawable(
+                            itemView.cvCSol.background = ContextCompat.getDrawable(
                                 context,
                                 R.drawable.bg_selected_answer
                             )
@@ -257,20 +284,20 @@ class ViewSolutionAdapter(
 
                 "D" -> {
                     if (model.answer == model.selectedOptions) {
-                        itemView.cvD.background = ContextCompat.getDrawable(
+                        itemView.cvDSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_selected_answer
                         )
                     } else {
-                        itemView.cvD.background = ContextCompat.getDrawable(
+                        itemView.cvDSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_wrong_answer
                         )
-                        itemView.wrongD.visibility = View.VISIBLE
-                        itemView.txtD.visibility = View.GONE
+                        itemView.wrongDSol.visibility = View.VISIBLE
+                        itemView.txtDSol.visibility = View.GONE
                         Log.e("resultSelectedUI", "answer ==>${model.answer} option_D==> ${model.option_D}")
                         if (model.answer == model.option_D){
-                            itemView.cvD.background = ContextCompat.getDrawable(
+                            itemView.cvDSol.background = ContextCompat.getDrawable(
                                 context,
                                 R.drawable.bg_selected_answer
                             )

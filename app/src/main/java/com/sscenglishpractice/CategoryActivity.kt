@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.sscenglishpractice.adapter.CategoryAdapter
 import com.sscenglishpractice.model.ListCategoryData
+import kotlinx.android.synthetic.main.activity_category2.ad_view_category
+import kotlinx.android.synthetic.main.activity_home.ad_view_home
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
 
@@ -20,6 +24,12 @@ class CategoryActivity : AppCompatActivity() {
         btnSubmit.visibility = View.GONE
         val intent = intent
         type = intent.getStringExtra("TYPE").toString()
+
+        MobileAds.initialize(this)
+
+
+        val adRequest = AdRequest.Builder().build()
+        ad_view_category.loadAd(adRequest)
 
         action_bar_back.visibility = View.VISIBLE
         action_bar_share.visibility = View.GONE
@@ -40,9 +50,12 @@ class CategoryActivity : AppCompatActivity() {
             array.add(ListCategoryData("SSC MTS", "SSC MTS 2021 Tier-I"))
         } else if (type == "2020") {
             array.add(ListCategoryData("SSC CGL", "SSC CGL 2020 Tier-I"))
+            array.add(ListCategoryData("SSC CHSL", "SSC CHSL 2020 Tier-I"))
+            array.add(ListCategoryData("SSC MTS", "SSC MTS 2020 Tier-I"))
         } else if (type == "2019") {
             array.add(ListCategoryData("SSC CGL", "SSC CGL 2019 Tier-I"))
             array.add(ListCategoryData("SSC MTS", "SSC MTS 2019 Tier-I"))
+            array.add(ListCategoryData("SSC CPO", "SSC CPO 2019 Tier-I"))
         }
 
 
@@ -77,12 +90,20 @@ class CategoryActivity : AppCompatActivity() {
         } else if (type == "2020") {
             if (position == 0) {
                 intent.putExtra("TYPE", "CGL_2020")
+            }else if (position == 1) {
+                intent.putExtra("TYPE", "MTS_2020")
+            }
+            else if (position == 2) {
+                intent.putExtra("TYPE", "CHSL_2020")
             }
         } else if (type == "2019") {
             if (position == 0) {
                 intent.putExtra("TYPE", "CGL_2019")
             } else if (position == 1) {
                 intent.putExtra("TYPE", "MTS_2019")
+            }
+            else if (position == 2) {
+                intent.putExtra("TYPE", "CPO_2019")
             }
         }
 

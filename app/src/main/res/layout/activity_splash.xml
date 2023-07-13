@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashActivity"
+    android:background="@color/dark_blue">
+
+
+    <ImageView
+        android:layout_marginTop="@dimen/_35sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:src="@drawable/sprrow" />
+
+
+    <LinearLayout
+        android:padding="@dimen/_22sdp"
+        android:background="@drawable/row_lay_bg"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ssc English"
+            android:textStyle="bold"
+            android:textColor="@color/yellow"
+            android:textSize="@dimen/_30sdp"
+            />
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <View
+                android:background="@color/yellow"
+                android:layout_width="50dp"
+                android:layout_height="@dimen/_4sdp"/>
+
+            <TextView
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Practice"
+                android:textStyle="bold"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/_30sdp"
+                />
+
+            <View
+                android:background="@color/yellow"
+                android:layout_width="50dp"
+                android:layout_height="@dimen/_4sdp"/>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/imgSplash"
+        android:layout_width="match_parent"
+        android:layout_height="327dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/splash1" />
+
+    <View
+        android:layout_alignParentBottom="true"
+        android:background="@color/yellow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"/>
+
+</RelativeLayout>

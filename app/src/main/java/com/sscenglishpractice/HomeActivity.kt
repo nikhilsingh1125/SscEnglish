@@ -5,33 +5,67 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.airbnb.lottie.utils.Utils
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.OnUserEarnedRewardListener
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.messaging.FirebaseMessaging
+import com.sscenglishpractice.adapter.BannerAdapter
 import com.sscenglishpractice.adapter.HomeAdapter
 import com.sscenglishpractice.model.CategoryModel
+import com.sscenglishpractice.model.HomeBannerData
 import com.sscenglishpractice.utils.Constants
+import kotlinx.android.synthetic.main.activity_home.ad_view_home
+import kotlinx.android.synthetic.main.activity_home.indicator
+import kotlinx.android.synthetic.main.activity_home.viewPagerMain
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
+
 
 class HomeActivity : AppCompatActivity() {
 
     val TAG = "HomeActivity"
+    private var rewardedAd: RewardedAd? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         val TAG = "HomeActivity"
+
+        MobileAds.initialize(this)
+
+
+        val adRequest = AdRequest.Builder().build()
+        ad_view_home.loadAd(adRequest)
+
+        addBannerImages()
+
+
+        RewardedAd.load(
+            this,
+            "ca-app-pub-3940256099942544/5224354917",
+            adRequest,
+            object : RewardedAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    adError?.toString()?.let { Log.d(TAG, it) }
+                    rewardedAd = null
+                }
+
+                override fun onAdLoaded(ad: RewardedAd) {
+                    Log.d(TAG, "Ad was loaded.")
+                    rewardedAd = ad
+                }
+            })
 
 
         action_bar_share.setOnClickListener {
@@ -73,6 +107,22 @@ class HomeActivity : AppCompatActivity() {
         recyclerView.adapter = rvAdapter
     }
 
+    private fun addBannerImages() {
+
+        val images = ArrayList<HomeBannerData>()
+        images.add(HomeBannerData(R.drawable.b1))
+        images.add(HomeBannerData(R.drawable.quotes))
+
+
+        val mViewPagerAdapter = BannerAdapter(this@HomeActivity, images)
+
+        // Adding the Adapter to the ViewPager
+
+        // Adding the Adapter to the ViewPager
+        viewPagerMain.adapter = mViewPagerAdapter
+        indicator.setViewPager(viewPagerMain)
+    }
+
     private var doubleBackToExitPressedOnce = false
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -99,19 +149,29 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2021")
             startActivity(intent)
-        }
-        else if (position == 2) {
+        } else if (position == 2) {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2020")
             startActivity(intent)
-        }
-        else if (position == 3) {
+        } else if (position == 3) {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2019")
             startActivity(intent)
         }
 
+        fun showAd() {
+            rewardedAd?.let { ad ->
+                ad.show(this, OnUserEarnedRewardListener { rewardItem ->
+                    // Handle the reward.
+                    val rewardAmount = rewardItem.amount
+                    val rewardType = rewardItem.type
+                    Toast.makeText(this, "UnLocked", Toast.LENGTH_SHORT).show()
+                })
+            } ?: run {
+                Log.d(TAG, "The rewarded ad wasn't ready yet.")
+            }
+        }
+
+
     }
-
-
 }

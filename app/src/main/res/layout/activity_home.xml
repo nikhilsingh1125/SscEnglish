@@ -10,6 +10,21 @@
 
     <include layout="@layout/custom_toolbar" />
 
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPagerMain"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"/>
+
+
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="4dp"/>
     <RelativeLayout
         android:id="@+id/llQuiz"
         android:layout_width="match_parent"
@@ -23,6 +38,16 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:paddingHorizontal="@dimen/_10sdp" />
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            app:adSize="BANNER"
+            android:visibility="visible"
+            app:adUnitId="@string/banner_ad_unit_id"
+            />
 
     </RelativeLayout>
 </LinearLayout>

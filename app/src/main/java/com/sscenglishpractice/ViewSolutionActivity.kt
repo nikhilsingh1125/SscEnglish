@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewSolutionAdapter
 import com.sscenglishquiz.model.ResultShowData
+import kotlinx.android.synthetic.main.activity_quiz.ad_view_quiz
 import kotlinx.android.synthetic.main.activity_quiz.loader
+import kotlinx.android.synthetic.main.activity_view_solution.ad_view_solutions
 import kotlinx.android.synthetic.main.activity_view_solution.idViewPagerSol
 import libs.mjn.prettydialog.PrettyDialog
 
@@ -33,6 +37,11 @@ class ViewSolutionActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         arrResultDetailsData = arrayListOf()
+
+        MobileAds.initialize(this)
+
+        val adRequest = AdRequest.Builder().build()
+        ad_view_solutions.loadAd(adRequest)
 
         val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val categoryType = sharedPreferences.getString("categoryData", null)
@@ -149,6 +158,7 @@ class ViewSolutionActivity : AppCompatActivity() {
                 R.color.black_light
             )  // button background color
             {
+                deleteCollection()
                 pDialog.dismiss()
                 startActivity(Intent(this@ViewSolutionActivity,HomeActivity::class.java))
 //                deleteCollection()
@@ -162,7 +172,7 @@ class ViewSolutionActivity : AppCompatActivity() {
             .show()
     }
 
-   /* private fun deleteCollection() {
+    private fun deleteCollection() {
         val firestore = FirebaseFirestore.getInstance()
         val collectionRef = firestore.collection("your_collection_name")
 
@@ -234,7 +244,7 @@ class ViewSolutionActivity : AppCompatActivity() {
                 )
             }
 
-    }*/
+    }
 
     override fun onDestroy() {
         super.onDestroy()

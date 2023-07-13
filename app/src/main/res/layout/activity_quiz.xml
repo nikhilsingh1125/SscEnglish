@@ -18,20 +18,20 @@
     </LinearLayout>-->
 
     <com.sscenglishpractice.utils.NonScrollableViewPager
-        android:layout_above="@+id/ad_view"
+        android:layout_above="@+id/ad_view_quiz"
         android:id="@+id/idViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
        />
 
   <com.google.android.gms.ads.AdView
-      android:id="@+id/ad_view"
+      android:id="@+id/ad_view_quiz"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_centerHorizontal="true"
       android:layout_alignParentBottom="true"
       app:adSize="BANNER"
-      android:visibility="gone"
+      android:visibility="visible"
       app:adUnitId="@string/banner_ad_unit_id"
       />
 

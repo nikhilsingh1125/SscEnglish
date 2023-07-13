@@ -12,6 +12,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.QuizActivity
 import com.sscenglishpractice.R
@@ -68,6 +73,8 @@ class ViewPagerAdapter(
         val itemView: View = mLayoutInflater.inflate(R.layout.row_question_list, container, false)
 
         displayQuestion(position, itemView)
+
+
 
         val model = arrayList.get(position)
 
@@ -183,6 +190,8 @@ class ViewPagerAdapter(
         // returning our item view.
         return itemView
     }
+
+
 
     private fun selectOptionA(itemView: View, model: QuestionData?) {
 
@@ -336,7 +345,7 @@ class ViewPagerAdapter(
                             // Show the solution
                             if (model.Solutions == "") {
                                 itemView.solutionTextView.visibility = View.VISIBLE
-                                itemView.solutionTextView.text = "Coming soon"
+                                itemView.solutionTextView.text = "Solution will be available soon"
                                 itemView.seeSolutionButton.visibility = View.GONE
                                 itemView.hideSolutionButton.visibility = View.VISIBLE
                             } else {
