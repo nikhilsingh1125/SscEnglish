@@ -1,4 +1,4 @@
-package com.sscenglishquiz.model
+package com.sscenglishpractice.model
 
 class ResultShowData(
     var question_count: String?=null,

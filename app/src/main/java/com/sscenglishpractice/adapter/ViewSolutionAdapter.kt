@@ -14,8 +14,8 @@ import androidx.viewpager.widget.PagerAdapter
 import com.sscenglishpractice.HomeActivity
 import com.sscenglishpractice.R
 import com.sscenglishpractice.ViewSolutionActivity
-import com.sscenglishquiz.model.ResultShowData
-import kotlinx.android.synthetic.main.row_question_list.view.*
+import com.sscenglishpractice.model.ResultShowData
+import kotlinx.android.synthetic.main.row_question_list.view.btnSubmit
 import kotlinx.android.synthetic.main.row_solution_list.view.btnNextSol
 import kotlinx.android.synthetic.main.row_solution_list.view.cvASol
 import kotlinx.android.synthetic.main.row_solution_list.view.cvBSol
@@ -42,8 +42,7 @@ import kotlinx.android.synthetic.main.row_solution_list.view.wrongASol
 import kotlinx.android.synthetic.main.row_solution_list.view.wrongBSol
 import kotlinx.android.synthetic.main.row_solution_list.view.wrongCSol
 import kotlinx.android.synthetic.main.row_solution_list.view.wrongDSol
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Objects
 
 class ViewSolutionAdapter(
     val context: Context,

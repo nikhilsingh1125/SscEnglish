@@ -11,6 +11,8 @@ import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewPagerAdapter
 import com.sscenglishpractice.model.SubmitData
+import com.sscenglishpractice.viewModel.QuizViewModel
 import com.sscenglishquiz.model.QuestionData
 import com.sscenglishquiz.model.QuestionWiseModel
 import kotlinx.android.synthetic.main.activity_quiz.ad_view_quiz
@@ -41,12 +44,14 @@ import libs.mjn.prettydialog.PrettyDialog
 class QuizActivity : AppCompatActivity() {
 
     val TAG = "QuizActivity"
+    val TAGAD = "QuizActivityADs"
     var type = ""
     var title = ""
     var category = ""
     lateinit var db: FirebaseFirestore
     var rewardedAd: RewardedAd? = null
     var adRequest = AdRequest.Builder().build()
+    private lateinit var viewModel: QuizViewModel
 //    lateinit var adView: AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,21 +77,24 @@ class QuizActivity : AppCompatActivity() {
 
         RewardedAd.load(
             this,
-            "@string/rewarded_ad_unit_id",
+            "ca-app-pub-7484865336777284/3660075926",
             adRequest,
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    adError.toString()?.let { Log.d(TAG, it) }
+                    adError.toString()?.let { Log.d(TAGAD, it) }
                     rewardedAd = null
                 }
 
                 override fun onAdLoaded(ad: RewardedAd) {
-                    Log.d(TAG, "Ad was loaded.")
+                    Log.d(TAGAD, "Ad was loaded.")
                     rewardedAd = ad
                 }
             })
 
         Log.e(TAG, "onCreate: $type")
+
+        init()
+        keepObserve()
 
         if (type == "0") {
             val database = FirebaseDatabase.getInstance().getReference("SSC_CGL_2022/SYNONYMS_2022")
@@ -974,38 +982,7 @@ class QuizActivity : AppCompatActivity() {
         }
 
 
-        else if (type == "MTS_2020_1") {
-            val database =
-                FirebaseDatabase.getInstance().getReference("SSC_MTS_2020/SYNONYMS_2020")
-            database.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    loader.visibility = View.GONE
-                    val description = dataSnapshot.child("Description").getValue(String::class.java)
-                    val questions = dataSnapshot.child("Questions")
-                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
-                    val quiz = QuestionWiseModel(
-                        "SYNONYMS_2021",
-                        description,
-                        questions as ArrayList<QuestionData>
-                    )
-                    // Do something with the quiz object
-//                    Log.e(TAG, "onDataChange: $questions")
 
-                    questions.forEach {
-                        it.Solutions
-                        Log.e(TAG, "Solutions: ${it.Solutions}")
-                    }
-
-
-                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
-                    idViewPager.adapter = adapter
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // Handle errors here
-                }
-            })
-        }
         else if (type == "MTS_2020_2") {
             val database =
                 FirebaseDatabase.getInstance().getReference("SSC_MTS_2020/ANTONYMS_2020")
@@ -1549,6 +1526,21 @@ class QuizActivity : AppCompatActivity() {
 
     }
 
+    private fun keepObserve() {
+        viewModel.questions.observe(this) { questions ->
+            // Update your UI or do something with the questions
+            val adapter = ViewPagerAdapter(this@QuizActivity,
+                questions as ArrayList<QuestionData>, title, category)
+            idViewPager.adapter = adapter
+        }
+
+    }
+
+
+    fun init(){
+        viewModel = ViewModelProvider(this)[QuizViewModel::class.java]
+        viewModel.loadQuiz()
+    }
     fun clickOnBtnNext(position: Int) {
         idViewPager.setCurrentItem(idViewPager.currentItem + 1, true)
     }

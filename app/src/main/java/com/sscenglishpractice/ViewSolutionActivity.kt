@@ -10,8 +10,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewSolutionAdapter
-import com.sscenglishquiz.model.ResultShowData
-import kotlinx.android.synthetic.main.activity_quiz.ad_view_quiz
+import com.sscenglishpractice.model.ResultShowData
 import kotlinx.android.synthetic.main.activity_quiz.loader
 import kotlinx.android.synthetic.main.activity_view_solution.ad_view_solutions
 import kotlinx.android.synthetic.main.activity_view_solution.idViewPagerSol

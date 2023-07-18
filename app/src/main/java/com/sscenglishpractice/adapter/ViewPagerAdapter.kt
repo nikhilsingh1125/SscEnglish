@@ -12,19 +12,18 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.QuizActivity
 import com.sscenglishpractice.R
+import com.sscenglishpractice.utils.AppDatabase
+import com.sscenglishquiz.model.DbResultShowData
 import com.sscenglishquiz.model.QuestionData
-import com.sscenglishquiz.model.ResultShowData
+import com.sscenglishpractice.model.ResultShowData
 import kotlinx.android.synthetic.main.custom_toolbar.view.btnSubmit
 import kotlinx.android.synthetic.main.row_question_list.view.*
 import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
 class ViewPagerAdapter(
@@ -121,7 +120,7 @@ class ViewPagerAdapter(
                 skipedAnswer,
                 title, category
             )
-            val resultDataList = mutableListOf<ResultShowData>()
+            val resultDataList = mutableListOf<DbResultShowData>()
             var serialNumber = 1
 // Assume you have a list of questions called 'arrayList'
             for ((index, model) in arrayList.withIndex()) {
@@ -134,24 +133,32 @@ class ViewPagerAdapter(
                         else -> null
                     }
 
-                    val resultShow = ResultShowData()
+                    val resultShow = DbResultShowData()
                     resultShow.question_count = serialNumber.toString()
-                    resultShow.question = model.question
-                    resultShow.answer = model.answer
-                    resultShow.option_A = model.option_A
-                    resultShow.option_B = model.option_B
-                    resultShow.option_C = model.option_C
-                    resultShow.option_D = model.option_D
-                    resultShow.Solutions = model.Solutions
+                    resultShow.question = model.question.toString()
+                    resultShow.answer = model.answer.toString()
+                    resultShow.option_A = model.option_A.toString()
+                    resultShow.option_B = model.option_B.toString()
+                    resultShow.option_C = model.option_C.toString()
+                    resultShow.option_D = model.option_D.toString()
+                    resultShow.Solutions = model.Solutions.toString()
                     resultShow.selectedAnswer = selectedAnswer
                     resultShow.isGivenAnswer = true
-                    resultShow.optionsSelected = model.optionsSelected
-                    resultShow.selectedOptions = model.selectedOptionsAnswer
+                    resultShow.optionsSelected = model.optionsSelected.toString()
+                    resultShow.testCategory = category
+                    resultShow.selectedOptions = model.selectedOptionsAnswer.toString()
 
                     resultDataList.add(resultShow)
+                    val db = AppDatabase.getInstance(context)
 
+                    val executor: ExecutorService = Executors.newSingleThreadExecutor()
+                    executor.execute {
+                        db.resultShowDataDao().insert(resultShow)
+                    }
                     serialNumber++
                 }
+
+
             }
 
             Log.e("instantiateItem", "resultDataList==>: $resultDataList", )
