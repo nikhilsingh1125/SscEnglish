@@ -1,7 +1,9 @@
 package com.sscenglishpractice
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +11,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.sscenglishpractice.adapter.CategoryAdapter
 import com.sscenglishpractice.model.ListCategoryData
+import com.sscenglishpractice.utils.Constants
 import kotlinx.android.synthetic.main.activity_category2.ad_view_category
 import kotlinx.android.synthetic.main.activity_home.ad_view_home
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,6 +30,17 @@ class CategoryActivity : AppCompatActivity() {
 
         MobileAds.initialize(this)
 
+
+        val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val categoryType = sharedPreferences.getString("categoryData", null)
+
+        Log.d("sharedPreferences", "categoryType: $categoryType")
+
+        Constants.getCategoryNames()
+
+        if (categoryType != null) {
+            Constants.getBookmarkDataForCategory(categoryType)
+        }
 
         val adRequest = AdRequest.Builder().build()
         ad_view_category.loadAd(adRequest)
@@ -56,6 +70,9 @@ class CategoryActivity : AppCompatActivity() {
             array.add(ListCategoryData("SSC CGL", "SSC CGL 2019 Tier-I"))
             array.add(ListCategoryData("SSC MTS", "SSC MTS 2019 Tier-I"))
             array.add(ListCategoryData("SSC CPO", "SSC CPO 2019 Tier-I"))
+            array.add(ListCategoryData("SSC CHSL", "SSC CHSL 2019 Tier-I"))
+        } else if (type == "2023") {
+            array.add(ListCategoryData("SSC PHASE", "SSC PHASE 11 2023 Tier-I"))
         }
 
 
@@ -75,8 +92,7 @@ class CategoryActivity : AppCompatActivity() {
                 intent.putExtra("TYPE", "CHCL")
             } else if (position == 2) {
                 intent.putExtra("TYPE", "CPO")
-            }
-            else if (position == 3) {
+            } else if (position == 3) {
                 intent.putExtra("TYPE", "MTS")
             }
         } else if (type == "2021") {
@@ -90,10 +106,9 @@ class CategoryActivity : AppCompatActivity() {
         } else if (type == "2020") {
             if (position == 0) {
                 intent.putExtra("TYPE", "CGL_2020")
-            }else if (position == 1) {
+            } else if (position == 1) {
                 intent.putExtra("TYPE", "MTS_2020")
-            }
-            else if (position == 2) {
+            } else if (position == 2) {
                 intent.putExtra("TYPE", "CHSL_2020")
             }
         } else if (type == "2019") {
@@ -101,9 +116,11 @@ class CategoryActivity : AppCompatActivity() {
                 intent.putExtra("TYPE", "CGL_2019")
             } else if (position == 1) {
                 intent.putExtra("TYPE", "MTS_2019")
-            }
-            else if (position == 2) {
+            } else if (position == 2) {
                 intent.putExtra("TYPE", "CPO_2019")
+            }
+            else if (position == 3) {
+                intent.putExtra("TYPE", "CHSL_2019")
             }
         }
 

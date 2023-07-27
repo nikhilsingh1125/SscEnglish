@@ -28,9 +28,9 @@
 
                     <TextView
                         android:id="@+id/txtQuizTitle"
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="@dimen/_6sdp"
                         android:fontFamily="@font/pt_sans_bold"
@@ -54,47 +54,78 @@
                         android:textColor="@color/dark_blue" />
                 </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/_6sdp"
-                        android:fontFamily="@font/general_sans_medium"
-                        android:text="Questions :"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_13ssp" />
-
-                    <TextView
-                        android:id="@+id/txtTotalQuestions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="0"
-                        android:textColor="@color/light_white"
-                        android:textSize="@dimen/_16ssp" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/quizQuestion"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/general_sans_medium"
-                    android:padding="@dimen/_10sdp"
-                    android:text="question"
-                    android:textColor="@color/light_white"
-                    android:textSize="@dimen/_18ssp" />
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="Questions :"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_13ssp" />
+
+                        <TextView
+                            android:id="@+id/txtTotalQuestions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="0"
+                            android:textColor="@color/light_white"
+                            android:textSize="@dimen/_16ssp" />
+
+
+                    </LinearLayout>
+
+             <!--       <ImageView
+                        android:visibility="visible"
+                        android:id="@+id/imgBookmarkUnfill"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/unfill_book"
+                       />-->
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/imgBookmarkFill"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/fill_book"
+                        />
+
+                </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/quizQuestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/general_sans_medium"
+                        android:padding="@dimen/_10sdp"
+                        android:text="question"
+                        android:textColor="@color/light_white"
+                        android:textSize="@dimen/_18ssp" />
+
+
+
 
             </LinearLayout>
 
@@ -370,22 +401,22 @@
                     android:visibility="gone">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:padding="@dimen/_5sdp"
                         android:id="@+id/seeSolutionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/btn_solution"
+                        android:padding="@dimen/_5sdp"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingEnd="@dimen/_10sdp"
                         android:text="See Solution"
                         android:textColor="@color/quiz_background" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:padding="@dimen/_5sdp"
                         android:id="@+id/hideSolutionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/hide_solution"
+                        android:padding="@dimen/_5sdp"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingEnd="@dimen/_10sdp"
                         android:text="Hide Solution"
@@ -398,10 +429,10 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_marginHorizontal="@dimen/_10sdp"
                             android:id="@+id/solutionTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
                             android:layout_marginTop="16dp"
                             android:textColor="@color/quiz_background"
                             android:textSize="16sp"

@@ -14,8 +14,15 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.OnUserEarnedRewardListener
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.model.SubmitData
+import kotlinx.android.synthetic.main.activity_quiz.ad_view_quiz
 import kotlinx.android.synthetic.main.activity_quiz_submit.btnReattempt
 import kotlinx.android.synthetic.main.activity_quiz_submit.btnViewSolution
 import kotlinx.android.synthetic.main.activity_quiz_submit.pieChart
@@ -29,6 +36,10 @@ import kotlin.math.roundToInt
 
 class QuizSubmitActivity : AppCompatActivity() {
 
+    var rewardedAd: RewardedAd? = null
+    var adRequest = AdRequest.Builder().build()
+    val TAGAD = "QuizSubmitActivity"
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +50,25 @@ class QuizSubmitActivity : AppCompatActivity() {
         action_bar_Title.text = "Overall Result"
         btnSubmit.visibility = View.GONE
         action_bar_share.visibility = View.GONE
+
+        MobileAds.initialize(this)
+
+
+        RewardedAd.load(
+            this,
+            "ca-app-pub-7484865336777284/3660075926",
+            adRequest,
+            object : RewardedAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    adError.toString()?.let { Log.d(TAGAD, it) }
+                    rewardedAd = null
+                }
+
+                override fun onAdLoaded(ad: RewardedAd) {
+                    Log.d(TAGAD, "Ad was loaded.")
+                    rewardedAd = ad
+                }
+            })
 
 
         val correctAnswer = sharedPreferences.getString("correctAnswer", null)?.toIntOrNull()
@@ -67,9 +97,10 @@ class QuizSubmitActivity : AppCompatActivity() {
         txtCorrectAccuracy.text = "$accuracy1%"
 
 
-
-        val correctAnswerValue = correctAnswer?.toFloat() ?: 0f // Replace with the actual value of correct answers
-        val incorrectAnswerValue = incorrectAnswer?.toFloat() ?: 0f // Replace with the actual value of incorrect answers
+        val correctAnswerValue =
+            correctAnswer?.toFloat() ?: 0f // Replace with the actual value of correct answers
+        val incorrectAnswerValue =
+            incorrectAnswer?.toFloat() ?: 0f // Replace with the actual value of incorrect answers
 
 
         val entries = listOf(
@@ -105,7 +136,7 @@ class QuizSubmitActivity : AppCompatActivity() {
 
 
         btnReattempt.setOnClickListener {
-            startActivity(Intent(this,HomeActivity::class.java))
+            startActivity(Intent(this, HomeActivity::class.java))
         }
 
         Log.d("QuizSubmitActivity", "correctAnswer 1: $correctAnswer")
@@ -113,7 +144,15 @@ class QuizSubmitActivity : AppCompatActivity() {
         Log.d("QuizSubmitActivity", "totalQuestion 3: $totalQuestion")
 
         btnViewSolution.setOnClickListener {
-            startActivity(Intent(this,ViewSolutionActivity::class.java))
+            rewardedAd?.let { ad ->
+                ad.show(this, OnUserEarnedRewardListener { rewardItem ->
+                    startActivity(Intent(this, ViewSolutionActivity::class.java))
+                    finishAffinity()
+                })
+            } ?: run {
+                startActivity(Intent(this, ViewSolutionActivity::class.java))
+                finishAffinity()
+            }
         }
 
 

@@ -1,9 +1,13 @@
 package com.sscenglishpractice
 
+import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -30,6 +34,7 @@ import kotlinx.android.synthetic.main.activity_home.indicator
 import kotlinx.android.synthetic.main.activity_home.viewPagerMain
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
+import libs.mjn.prettydialog.PrettyDialog
 
 
 class HomeActivity : AppCompatActivity() {
@@ -44,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
 
         MobileAds.initialize(this)
 
-
+        Constants.checkAndUpdateApp(this)
         val adRequest = AdRequest.Builder().build()
         ad_view_home.loadAd(adRequest)
 
@@ -57,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
             adRequest,
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    adError?.toString()?.let { Log.d(TAG, it) }
+                    adError.toString().let { Log.d(TAG, it) }
                     rewardedAd = null
                 }
 
@@ -97,10 +102,12 @@ class HomeActivity : AppCompatActivity() {
             }
 
         val array = ArrayList<CategoryModel>()
+        array.add(CategoryModel("2023", R.drawable.study))
         array.add(CategoryModel("2022", R.drawable.study))
         array.add(CategoryModel("2021", R.drawable.study))
         array.add(CategoryModel("2020", R.drawable.study))
         array.add(CategoryModel("2019", R.drawable.study))
+
 
         recyclerView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         val rvAdapter = HomeAdapter(this@HomeActivity, array)
@@ -110,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
     private fun addBannerImages() {
 
         val images = ArrayList<HomeBannerData>()
-        images.add(HomeBannerData(R.drawable.b1))
+        images.add(HomeBannerData(R.drawable.quotes_banner))
         images.add(HomeBannerData(R.drawable.quotes))
 
 
@@ -140,20 +147,24 @@ class HomeActivity : AppCompatActivity() {
 
     fun goToCategory(model: CategoryModel, position: Int) {
 
-
         if (position == 0) {
+            Toast.makeText(this, "Upcoming Feature", Toast.LENGTH_SHORT).show()
+           /* val intent = Intent(this, CategoryActivity::class.java)
+            intent.putExtra("TYPE", "2023")
+            startActivity(intent)*/
+        } else if (position == 1) {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2022")
             startActivity(intent)
-        } else if (position == 1) {
+        } else if (position == 2) {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2021")
             startActivity(intent)
-        } else if (position == 2) {
+        } else if (position == 3) {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2020")
             startActivity(intent)
-        } else if (position == 3) {
+        } else if (position == 4) {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2019")
             startActivity(intent)
@@ -174,4 +185,6 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
+
+
 }

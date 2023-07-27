@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.sscenglishpractice.model.ResultShowDataDao
 import com.sscenglishquiz.model.DbResultShowData
 
-@Database(entities = [DbResultShowData::class], version = 2)
+@Database(entities = [DbResultShowData::class], version =2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun resultShowDataDao(): ResultShowDataDao
 

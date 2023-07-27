@@ -32,7 +32,7 @@
       android:layout_alignParentBottom="true"
       app:adSize="BANNER"
       android:visibility="visible"
-      app:adUnitId="@string/banner_ad_unit_id"
+      app:adUnitId="@string/quiz_banner_ad_unit_id"
       />
 
 

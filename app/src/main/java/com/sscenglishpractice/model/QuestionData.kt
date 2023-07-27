@@ -1,18 +1,19 @@
 package com.sscenglishquiz.model
 
 class QuestionData(
-    val question_count: String?=null,
-    val question: String?=null,
-    val answer: String?=null,
-    val option_A: String?=null,
-    val option_B: String?=null,
-    val option_C: String?=null,
-    val option_D: String?=null,
-    val Solutions : String?=null,
+    var question_count: String?=null,
+    var question: String?=null,
+    var answer: String?=null,
+    var option_A: String?=null,
+    var option_B: String?=null,
+    var option_C: String?=null,
+    var option_D: String?=null,
+    var Solutions : String?=null,
     var isGivenAnswer : Boolean = false,
     var optionsSelected : String? =null,
     var selectedOptionsAnswer : String? = null,
-    var testCategory : String? =null
+    var testCategory : String? =null,
+    var isBookmark : Boolean = false,
 ) {
     override fun toString(): String {
         return "Question $question_count: $question\n" +

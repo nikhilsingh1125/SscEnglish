@@ -1,15 +1,15 @@
 package com.sscenglishpractice
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ResultAdapter
 import com.sscenglishpractice.model.SubmitDetailsData
-import kotlinx.android.synthetic.main.activity_main.recyclerView
+import com.sscenglishquiz.model.QuestionData
 import kotlinx.android.synthetic.main.activity_quiz.loader
 import kotlinx.android.synthetic.main.activity_result.rvResults
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_back
@@ -41,7 +41,15 @@ class ResultActivity : AppCompatActivity() {
         action_bar_back.setOnClickListener {
             onBackPressed()
         }
-        Log.e("Submit_Test", "onCreate:")
+
+        val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val categoryType = sharedPreferences.getString("categoryData", null)
+
+        Log.d("sharedPreferences", "categoryType: $categoryType")
+        if (categoryType != null) {
+            getBookmarkDataForCategory(categoryType)
+        }
+       /* Log.e("Submit_Test", "onCreate:")
         db.collection("Submit_Test").get()
             .addOnSuccessListener {
                 loader.visibility = View.GONE
@@ -69,10 +77,35 @@ class ResultActivity : AppCompatActivity() {
             }
             .addOnFailureListener {
                 Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+            }*/
+
+
+
+
+    }
+    fun getBookmarkDataForCategory(category: String) {
+        val firestore = FirebaseFirestore.getInstance()
+        val collectionRef = firestore.collection("category").document(category).collection("bookData")
+
+        collectionRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                val bookmarkedQuestions = ArrayList<QuestionData>()
+                loader.visibility = View.GONE
+                for (documentSnapshot in querySnapshot.documents) {
+                    val questionData = documentSnapshot.toObject(QuestionData::class.java)
+                    if (questionData != null) {
+                        bookmarkedQuestions.add(questionData)
+                        rvResults.layoutManager = LinearLayoutManager(this@ResultActivity)
+                        rvAdapter = ResultAdapter(this@ResultActivity, bookmarkedQuestions)
+                        rvResults.adapter = rvAdapter
+                        Log.e("BookmarkData", "bookmarkedQuestions ==>: $bookmarkedQuestions", )
+                    }
+                }
+
             }
-
-
-
-
+            .addOnFailureListener { e ->
+                // Handle any errors
+                Log.e("SelectedUI", "Error fetching bookmarked data for category $category: ${e.message}", e)
+            }
     }
 }

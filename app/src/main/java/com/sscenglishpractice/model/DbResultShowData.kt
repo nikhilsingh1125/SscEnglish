@@ -20,5 +20,5 @@ data class DbResultShowData(
     var isGivenAnswer: Boolean = false,
     var optionsSelected: String = "",
     var testCategory : String ="",
-    var selectedOptions: String = ""
+    var selectedOptions: String = "",
 )

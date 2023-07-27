@@ -119,6 +119,12 @@ class MainActivity : AppCompatActivity() {
             array.add(ListCategoryData("Oneword", ""))
             array.add(ListCategoryData("Idioms and pharses", ""))
         }
+        else if (type == "CHSL_2019") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
 
 
         recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -378,6 +384,26 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("TYPE", "CPO_2019_4")
                 intent.putExtra("Title", "IDIOMS 2019")
                 intent.putExtra("Category", "CPO IDIOMS 2019")
+            }
+        }
+
+        else if (type == "CHSL_2019") {
+            if (position == 0) {
+                intent.putExtra("TYPE", "CHSL_2019_1")
+                intent.putExtra("Title", "SYNONYMS 2019")
+                intent.putExtra("Category", "CHSL SYNONYMS 2019")
+            } else if (position == 1) {
+                intent.putExtra("TYPE", "CHSL_2019_2")
+                intent.putExtra("Title", "ANTONYMS 2019")
+                intent.putExtra("Category", "CHSL ANTONYMS 2019")
+            } else if (position == 2) {
+                intent.putExtra("TYPE", "CHSL_2019_3")
+                intent.putExtra("Title", "ONEWORD 2019")
+                intent.putExtra("Category", "CHSL ONEWORD 2019")
+            } else if (position == 3) {
+                intent.putExtra("TYPE", "CHSL_2019_4")
+                intent.putExtra("Title", "IDIOMS 2019")
+                intent.putExtra("Category", "CHSL IDIOMS 2019")
             }
         }
 

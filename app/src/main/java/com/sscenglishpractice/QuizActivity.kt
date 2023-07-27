@@ -11,12 +11,10 @@ import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.database.DataSnapshot
@@ -26,8 +24,11 @@ import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewPagerAdapter
+import com.sscenglishpractice.model.ResultShowData
 import com.sscenglishpractice.model.SubmitData
+import com.sscenglishpractice.utils.AppDatabase
 import com.sscenglishpractice.viewModel.QuizViewModel
+import com.sscenglishquiz.model.DbResultShowData
 import com.sscenglishquiz.model.QuestionData
 import com.sscenglishquiz.model.QuestionWiseModel
 import kotlinx.android.synthetic.main.activity_quiz.ad_view_quiz
@@ -39,6 +40,8 @@ import kotlinx.android.synthetic.main.custom_dialog_layout.txtIncorrect
 import kotlinx.android.synthetic.main.custom_dialog_layout.txtTotal
 import kotlinx.android.synthetic.main.custom_dialog_layout.yesBtn
 import libs.mjn.prettydialog.PrettyDialog
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class QuizActivity : AppCompatActivity() {
@@ -1524,6 +1527,111 @@ class QuizActivity : AppCompatActivity() {
             })
         }
 
+        else if (type == "CHSL_2019_1") {
+            val database =
+                FirebaseDatabase.getInstance().getReference("SSC_CHSL_2019/SYNONYMS_2019")
+            database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    loader.visibility = View.GONE
+                    val description = dataSnapshot.child("Description").getValue(String::class.java)
+                    val questions = dataSnapshot.child("Questions")
+                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
+                    val quiz = QuestionWiseModel(
+                        "SYNONYMS_2019",
+                        description,
+                        questions as ArrayList<QuestionData>
+                    )
+                    // Do something with the quiz object
+                    Log.e(TAG, "onDataChange: $questions")
+
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
+                    idViewPager.adapter = adapter
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors here
+                }
+            })
+        }
+        else if (type == "CHSL_2019_2") {
+            val database =
+                FirebaseDatabase.getInstance().getReference("SSC_CHSL_2019/ANTONYMS_2019")
+            database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    loader.visibility = View.GONE
+                    val description = dataSnapshot.child("Description").getValue(String::class.java)
+                    val questions = dataSnapshot.child("Questions")
+                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
+                    val quiz = QuestionWiseModel(
+                        "ANTONYMS_2021",
+                        description,
+                        questions as ArrayList<QuestionData>
+                    )
+                    // Do something with the quiz object
+                    Log.e(TAG, "onDataChange: $questions")
+
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
+                    idViewPager.adapter = adapter
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors here
+                }
+            })
+        }
+        else if (type == "CHSL_2019_3") {
+            val database =
+                FirebaseDatabase.getInstance().getReference("SSC_CHSL_2019/ONE_WORDS_2019")
+            database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    loader.visibility = View.GONE
+                    val description = dataSnapshot.child("Description").getValue(String::class.java)
+                    val questions = dataSnapshot.child("Questions")
+                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
+                    val quiz = QuestionWiseModel(
+                        "ANTONYMS_2021",
+                        description,
+                        questions as ArrayList<QuestionData>
+                    )
+                    // Do something with the quiz object
+                    Log.e(TAG, "onDataChange: $questions")
+
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
+                    idViewPager.adapter = adapter
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors here
+                }
+            })
+        }
+        else if (type == "CHSL_2019_4") {
+            val database =
+                FirebaseDatabase.getInstance().getReference("SSC_CHSL_2019/IDIOMS_2019")
+            database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    loader.visibility = View.GONE
+                    val description = dataSnapshot.child("Description").getValue(String::class.java)
+                    val questions = dataSnapshot.child("Questions")
+                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
+                    val quiz = QuestionWiseModel(
+                        "IDIOMS_2019",
+                        description,
+                        questions as ArrayList<QuestionData>
+                    )
+                    // Do something with the quiz object
+                    Log.e(TAG, "onDataChange: $questions")
+
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
+                    idViewPager.adapter = adapter
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors here
+                }
+            })
+        }
+
     }
 
     private fun keepObserve() {
@@ -1554,7 +1662,9 @@ class QuizActivity : AppCompatActivity() {
         givenAnswerCount: Int,
         skipedAnswer: Int,
         title: String,
-        category: String
+        category: String,
+        model: QuestionData,
+        arrayList: ArrayList<QuestionData>
     ) {
 
         val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
@@ -1568,7 +1678,7 @@ class QuizActivity : AppCompatActivity() {
         editor.putString("categoryData", category)
         editor.apply()
 
-        if (this.title != null) {
+      /*  if (this.title != null) {
             addDataToFireStore(
                 title = type,
                 correctAnswerCount,
@@ -1577,9 +1687,9 @@ class QuizActivity : AppCompatActivity() {
                 title,
                 category
             )
-        }
+        }*/
 
-        showDialogSubmit(givenAnswerCount, skipedAnswer, size)
+        showDialogSubmit(givenAnswerCount, skipedAnswer, size,arrayList)
     }
 
     private fun addDataToFireStore(
@@ -1617,7 +1727,12 @@ class QuizActivity : AppCompatActivity() {
 
     }
 
-    private fun showDialogSubmit(correctAnswerCount: Int, incorrectAnswerCount: Int, size: Int) {
+    private fun showDialogSubmit(
+        correctAnswerCount: Int,
+        incorrectAnswerCount: Int,
+        size: Int,
+        arrayList: ArrayList<QuestionData>
+    ) {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -1635,7 +1750,9 @@ class QuizActivity : AppCompatActivity() {
 
         dialog.yesBtn.setOnClickListener {
             dialog.dismiss()
-            rewardedAd?.let { ad ->
+            startActivity(Intent(this, QuizSubmitActivity::class.java))
+            finish()
+         /*   rewardedAd?.let { ad ->
                 ad.show(this, OnUserEarnedRewardListener { rewardItem ->
                     startActivity(Intent(this, QuizSubmitActivity::class.java))
                     finish()
@@ -1643,13 +1760,72 @@ class QuizActivity : AppCompatActivity() {
             } ?: run {
                 startActivity(Intent(this, QuizSubmitActivity::class.java))
                 finish()
-            }
+            }*/
+
+        //    bookmarkData(arrayList)
 
         }
         dialog.noBtn.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
+
+    }
+
+    private fun bookmarkData(arrayList: ArrayList<QuestionData>) {
+        val resultDataList = ArrayList<QuestionData>()
+        var serialNumber = 1
+// Assume you have a list of questions called 'arrayList'
+        for ((index, model) in arrayList.withIndex()) {
+            if (model.isBookmark) {
+
+                val resultShow = QuestionData()
+                resultShow.question_count = serialNumber.toString()
+                resultShow.question = model.question.toString()
+                resultShow.answer = model.answer.toString()
+                resultShow.option_A = model.option_A.toString()
+                resultShow.option_B = model.option_B.toString()
+                resultShow.option_C = model.option_C.toString()
+                resultShow.option_D = model.option_D.toString()
+                resultShow.Solutions = model.Solutions.toString()
+                resultShow.isGivenAnswer = true
+                resultShow.testCategory = category
+                resultShow.isBookmark = model.isBookmark
+
+                resultDataList.add(resultShow)
+                serialNumber++
+            }
+
+
+        }
+
+        val firestore = FirebaseFirestore.getInstance()
+        val collectionRef = firestore.collection("category")
+
+// Assuming you have a list of ResultShowData objects called 'resultDataList'
+        for (question in resultDataList) {
+            val questionId = question.question_count ?: ""
+            val category = "Your_Category_Name" // Replace with the actual category name
+            val bookDataDocumentId = "Your_BookData_Document_ID" // Replace with the desired document ID
+
+            // Create a reference to the specific "category" document and its "bookData" subcollection document
+            val categoryDocumentRef = collectionRef.document(category)
+            val bookDataDocumentRef = categoryDocumentRef.collection("bookData").document(bookDataDocumentId)
+
+            bookDataDocumentRef.set(question)
+                .addOnSuccessListener {
+                    // Data saved successfully for the current question
+                    Log.d("SelectedUI", "Data saved successfully for question: $questionId")
+                }
+                .addOnFailureListener { e ->
+                    // Handle any errors
+                    Log.e(
+                        "SelectedUI",
+                        "Error saving data for question: $questionId - ${e.message}",
+                        e
+                    )
+                }
+        }
 
     }
 
@@ -1677,25 +1853,6 @@ class QuizActivity : AppCompatActivity() {
             { pDialog.dismiss() }
             .show()
     }
-
-    /* override fun onPause() {
-         adView.pause()
-         super.onPause()
-         Log.e(TAG, "onPause: onPause ")
-     }
-
-     override fun onResume() {
-         super.onResume()
-         adView.resume()
-         Log.e(TAG, "onResume: onResume ")
-     }
-
-     override fun onDestroy() {
-         adView.destroy()
-         super.onDestroy()
-         Log.e(TAG, "onDestroy: onDestroy ")
-
-     }*/
 
 
 }

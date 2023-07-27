@@ -44,7 +44,7 @@ class ViewPagerAdapter(
     var correctAnswerCount = 0
     var questionCount = 0
     var incorrectAnswerCount = 0
-    var answeredCorrectly = false
+    var bookmarkQuestion = false
     var givenAnswerCount = 0
     val resultDataList = mutableListOf<ResultShowData>()
     var skipedAnswer = 0
@@ -118,7 +118,7 @@ class ViewPagerAdapter(
                 arrayList.size,
                 givenAnswerCount,
                 skipedAnswer,
-                title, category
+                title, category,model,arrayList
             )
             val resultDataList = mutableListOf<DbResultShowData>()
             var serialNumber = 1
@@ -189,6 +189,23 @@ class ViewPagerAdapter(
             }
         }
 
+    /*    itemView.imgBookmarkUnfill.setOnClickListener {
+            if (!model.isBookmark) {
+                itemView.imgBookmarkFill.visibility = View.VISIBLE
+                itemView.imgBookmarkUnfill.visibility = View.GONE // Hide the unfill bookmark icon
+                model.isBookmark = true
+            }
+        }
+
+        itemView.imgBookmarkFill.setOnClickListener {
+            if (model.isBookmark) {
+                itemView.imgBookmarkFill.visibility = View.GONE // Hide the fill bookmark icon
+                itemView.imgBookmarkUnfill.visibility = View.VISIBLE
+                model.isBookmark = false
+            }
+        }*/
+
+
         // on the below line we are adding this
         // item view to the container.
         Objects.requireNonNull(container).addView(itemView)
@@ -197,7 +214,6 @@ class ViewPagerAdapter(
         // returning our item view.
         return itemView
     }
-
 
 
     private fun selectOptionA(itemView: View, model: QuestionData?) {
@@ -564,6 +580,8 @@ class ViewPagerAdapter(
         // Start the animation
         animatorSet.start()
     }
+
+
 
 }
 
