@@ -16,6 +16,12 @@
         android:theme="@style/Theme.SscEnglishPractice"
         tools:targetApi="31">
         <activity
+            android:name=".QuizResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExamQuizsActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -52,7 +58,7 @@
         <activity
             android:name=".HomeActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".utils.MyFirebaseMessagingService"
@@ -60,10 +66,8 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-
-        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-<!--        real app id => @string/app_id-->
+        </service> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- real app id => @string/app_id -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/app_id" />

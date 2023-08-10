@@ -85,5 +85,6 @@ dependencies {
     kapt "androidx.room:room-compiler:2.2.4"
     implementation "androidx.room:room-ktx:2.2.5"
 
+    implementation 'com.sealwu.jsontokotlin:library:3.7.4'
     
 }

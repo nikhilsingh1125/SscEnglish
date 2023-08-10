@@ -406,11 +406,9 @@ class ViewPagerAdapter(
                 if (model != null) {
                     when (selectedAnswer) {
                         model.option_A -> {
-                            itemView.cvA.setBackground(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.bg_selected_answer
-                                )
+                            itemView.cvA.background = ContextCompat.getDrawable(
+                                context,
+                                R.drawable.bg_selected_answer
                             )
                             itemView.imgA.visibility = View.VISIBLE
                         }

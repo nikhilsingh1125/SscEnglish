@@ -24,11 +24,8 @@ import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewPagerAdapter
-import com.sscenglishpractice.model.ResultShowData
 import com.sscenglishpractice.model.SubmitData
-import com.sscenglishpractice.utils.AppDatabase
 import com.sscenglishpractice.viewModel.QuizViewModel
-import com.sscenglishquiz.model.DbResultShowData
 import com.sscenglishquiz.model.QuestionData
 import com.sscenglishquiz.model.QuestionWiseModel
 import kotlinx.android.synthetic.main.activity_quiz.ad_view_quiz
@@ -40,8 +37,6 @@ import kotlinx.android.synthetic.main.custom_dialog_layout.txtIncorrect
 import kotlinx.android.synthetic.main.custom_dialog_layout.txtTotal
 import kotlinx.android.synthetic.main.custom_dialog_layout.yesBtn
 import libs.mjn.prettydialog.PrettyDialog
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 
 class QuizActivity : AppCompatActivity() {
@@ -1088,7 +1083,6 @@ class QuizActivity : AppCompatActivity() {
                 FirebaseDatabase.getInstance().getReference("SSC_CHSL_2020/SYNONYMS_2020")
             database.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    loader.visibility = View.GONE
                     val description = dataSnapshot.child("Description").getValue(String::class.java)
                     val questions = dataSnapshot.child("Questions")
                         .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
@@ -1097,6 +1091,8 @@ class QuizActivity : AppCompatActivity() {
                         description,
                         questions as ArrayList<QuestionData>
                     )
+
+                    loader.visibility = View.GONE
                     // Do something with the quiz object
 //                    Log.e(TAG, "onDataChange: $questions")
 

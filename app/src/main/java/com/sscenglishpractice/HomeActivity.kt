@@ -148,10 +148,10 @@ class HomeActivity : AppCompatActivity() {
     fun goToCategory(model: CategoryModel, position: Int) {
 
         if (position == 0) {
-            Toast.makeText(this, "Upcoming Feature", Toast.LENGTH_SHORT).show()
-           /* val intent = Intent(this, CategoryActivity::class.java)
+//            Toast.makeText(this, "Upcoming Feature", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ExamQuizsActivity::class.java)
             intent.putExtra("TYPE", "2023")
-            startActivity(intent)*/
+            startActivity(intent)
         } else if (position == 1) {
             val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2022")
