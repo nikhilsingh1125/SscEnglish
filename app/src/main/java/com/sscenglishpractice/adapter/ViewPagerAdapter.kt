@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.sscenglishpractice.ExamQuizsActivity
 import com.sscenglishpractice.QuizActivity
 import com.sscenglishpractice.R
 import com.sscenglishpractice.utils.AppDatabase
@@ -20,7 +21,9 @@ import com.sscenglishquiz.model.DbResultShowData
 import com.sscenglishquiz.model.QuestionData
 import com.sscenglishpractice.model.ResultShowData
 import kotlinx.android.synthetic.main.custom_toolbar.view.btnSubmit
+import kotlinx.android.synthetic.main.row_exam_quizes.view.btnPrev
 import kotlinx.android.synthetic.main.row_question_list.view.*
+import kotlinx.android.synthetic.main.row_solution_list.view.btnPrevResult
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -48,6 +51,12 @@ class ViewPagerAdapter(
     var givenAnswerCount = 0
     val resultDataList = mutableListOf<ResultShowData>()
     var skipedAnswer = 0
+
+    private val selectedAnswers =
+        HashMap<Int, String?>() // Store selected answers for each question position
+
+    private val selectedOptionsAnswers =
+        HashMap<Int, String?>()
 
     override fun getCount(): Int {
         return arrayList.size
@@ -79,32 +88,68 @@ class ViewPagerAdapter(
 
         itemView.txtQuizTitle.text = title
 
-
-
         Handler(Looper.getMainLooper()).postDelayed({
             itemView.txtTotalQuestions.text = "${model.question_count}/${arrayList.size}"
         }, 100)
 
+        val selectedOption = selectedAnswers[position]
+        val options = selectedOptionsAnswers[position]
 
+        if (selectedOption != null) {
+            updateOptionSelectedUI(itemView,model,selectedOption,options)
+        }
+        handleClicks(itemView, model, position)
+
+    /*    itemView.imgBookmarkUnfill.setOnClickListener {
+            if (!model.isBookmark) {
+                itemView.imgBookmarkFill.visibility = View.VISIBLE
+                itemView.imgBookmarkUnfill.visibility = View.GONE // Hide the unfill bookmark icon
+                model.isBookmark = true
+            }
+        }
+
+        itemView.imgBookmarkFill.setOnClickListener {
+            if (model.isBookmark) {
+                itemView.imgBookmarkFill.visibility = View.GONE // Hide the fill bookmark icon
+                itemView.imgBookmarkUnfill.visibility = View.VISIBLE
+                model.isBookmark = false
+            }
+        }*/
+
+
+        // on the below line we are adding this
+        // item view to the container.
+        Objects.requireNonNull(container).addView(itemView)
+
+        // on below line we are simply
+        // returning our item view.
+        return itemView
+    }
+
+    private fun handleClicks(itemView: View, model: QuestionData, position: Int) {
         itemView.cvA.setOnClickListener {
-            selectOptionA(itemView, model)
+            selectOption(itemView, model, position, "A",model.option_A)
         }
 
         itemView.cvB.setOnClickListener {
-            selectOptionB(itemView, model)
+            selectOption(itemView, model, position, "B", model.option_B)
         }
 
         itemView.cvC.setOnClickListener {
-            selectOptionC(itemView, model)
+            selectOption(itemView, model, position, "C", model.option_C)
         }
 
         itemView.cvD.setOnClickListener {
-            selectOptionD(itemView, model)
+            selectOption(itemView, model, position, "D", model.option_D)
         }
 
         itemView.btnNext.setOnClickListener {
             (context as QuizActivity).clickOnBtnNext(position)
             //  itemView.btnNext.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
+        }
+
+        itemView.btnPrevQuiz.setOnClickListener {
+            (context as QuizActivity).onPrevClick(position)
         }
 
         itemView.btnSubmit.setOnClickListener {
@@ -189,97 +234,96 @@ class ViewPagerAdapter(
             }
         }
 
-    /*    itemView.imgBookmarkUnfill.setOnClickListener {
-            if (!model.isBookmark) {
-                itemView.imgBookmarkFill.visibility = View.VISIBLE
-                itemView.imgBookmarkUnfill.visibility = View.GONE // Hide the unfill bookmark icon
-                model.isBookmark = true
-            }
-        }
-
-        itemView.imgBookmarkFill.setOnClickListener {
-            if (model.isBookmark) {
-                itemView.imgBookmarkFill.visibility = View.GONE // Hide the fill bookmark icon
-                itemView.imgBookmarkUnfill.visibility = View.VISIBLE
-                model.isBookmark = false
-            }
-        }*/
-
-
-        // on the below line we are adding this
-        // item view to the container.
-        Objects.requireNonNull(container).addView(itemView)
-
-        // on below line we are simply
-        // returning our item view.
-        return itemView
     }
 
 
-    private fun selectOptionA(itemView: View, model: QuestionData?) {
+    /*    private fun selectOptionA(
+            itemView: View,
+            model: QuestionData?,
+            position: Int,
+            optionA: String?,
+            s1: String
+        ) {
 
-        model?.optionsSelected = "A"
-        optionASelected = true
-        optionBSelected = false
-        optionCSelected = false
-        optionDSelected = false
+            model?.optionsSelected = "A"
+            optionASelected = true
+            optionBSelected = false
+            optionCSelected = false
+            optionDSelected = false
 
-        if (model != null) {
-            updateOptionSelectedUI(itemView, model)
+            if (model != null) {
+                updateOptionSelectedUI(itemView, model, selectedOption, options)
+                model.isSelectedAnswer = true
+                if (optionASelected){
+                        model.selectedOptionsAnswer = model.option_A
+                    }
+                }
+        }
 
-            if (optionASelected){
-                    model.selectedOptionsAnswer = model.option_A
+        private fun selectOptionB(itemView: View, model: QuestionData?) {
+            model?.optionsSelected = "B"
+            optionASelected = false
+            optionBSelected = true
+            optionCSelected = false
+            optionDSelected = false
+            if (model != null) {
+                updateOptionSelectedUI(itemView, model, selectedOption, options)
+                model.isSelectedAnswer = true
+                if (optionBSelected){
+                    model.selectedOptionsAnswer = model.option_B
                 }
             }
-    }
-
-    private fun selectOptionB(itemView: View, model: QuestionData?) {
-        model?.optionsSelected = "B"
-        optionASelected = false
-        optionBSelected = true
-        optionCSelected = false
-        optionDSelected = false
-        if (model != null) {
-            updateOptionSelectedUI(itemView, model)
-            if (optionBSelected){
-                model.selectedOptionsAnswer = model.option_B
-            }
         }
-    }
 
-    private fun selectOptionC(itemView: View, model: QuestionData?) {
-        model?.optionsSelected = "C"
-        optionASelected = false
-        optionBSelected = false
-        optionCSelected = true
-        optionDSelected = false
-        if (model != null) {
-            updateOptionSelectedUI(itemView, model)
-
-            if (optionCSelected){
-                model.selectedOptionsAnswer = model.option_C
-            }
-        }
-    }
-
-    private fun selectOptionD(itemView: View, model: QuestionData?) {
-        model?.optionsSelected = "D"
-        optionASelected = false
-        optionBSelected = false
-        optionCSelected = false
-        optionDSelected = true
-        updateOptionSelectedUI(itemView, model)
-        if (optionDSelected){
+        private fun selectOptionC(itemView: View, model: QuestionData?) {
+            model?.optionsSelected = "C"
+            optionASelected = false
+            optionBSelected = false
+            optionCSelected = true
+            optionDSelected = false
             if (model != null) {
-                model.selectedOptionsAnswer = model.option_D
+                updateOptionSelectedUI(itemView, model, selectedOption, options)
+                model.isSelectedAnswer = true
+                if (optionCSelected){
+                    model.selectedOptionsAnswer = model.option_C
+                }
             }
         }
-    }
+
+        private fun selectOptionD(itemView: View, model: QuestionData?) {
+            model?.optionsSelected = "D"
+            optionASelected = false
+            optionBSelected = false
+            optionCSelected = false
+            optionDSelected = true
+            updateOptionSelectedUI(itemView, model, selectedOption, options)
+
+            if (optionDSelected){
+                if (model != null) {
+                    model.isSelectedAnswer = true
+                    model.selectedOptionsAnswer = model.option_D
+                }
+            }
+        }*/
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
         container.removeView(obj as View)
     }
+    private fun selectOption(
+        itemView: View,
+        model: QuestionData,
+        position: Int,
+        selectedOption: String,
+        options: String?
+    ) {
+        model.isSelectedAnswer = true
+        model.isGivenAnswer = true
+        Log.e("updateOptionSelectedUI", "isGivenAnswer: ${model.isGivenAnswer}")
 
+        selectedAnswers[position] = selectedOption
+        selectedOptionsAnswers[position] = options
+        updateOptionSelectedUI(itemView, model, selectedOption,options)
+    }
     private fun displayQuestion(index: Int, itemView: View) {
         val questionData = arrayList?.get(index)
 
@@ -312,8 +356,18 @@ class ViewPagerAdapter(
 
     }
 
-    private fun updateOptionSelectedUI(itemView: View, model: QuestionData?) {
-
+    private fun updateOptionSelectedUI(
+        itemView: View,
+        model: QuestionData?,
+        selectedOption: String,
+        options: String?
+    ) {
+        if (model != null) {
+            model.selectedOptionsAnswer = options
+            model.optionsSelected = selectedOption
+        }
+        Log.e("OptionSelected", "selectedOption ==>: $selectedOption")
+        Log.e("OptionSelected", "options==>: $options")
 
         itemView.llSolutions.visibility = View.VISIBLE
         itemView.cvA.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
@@ -321,18 +375,18 @@ class ViewPagerAdapter(
         itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
         itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
 
-        if (optionASelected) {
+      /*  if (options.equals("A")) {
             itemView.cvA.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
         }
-        if (optionBSelected) {
+        if (options.equals("B")) {
             itemView.cvB.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
         }
-        if (optionCSelected) {
+        if (options.equals("C")) {
             itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
         }
-        if (optionDSelected) {
+        if (options.equals("D")) {
             itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
-        }
+        }*/
 
         val selectedAnswer = if (optionASelected) {
             model?.option_A
@@ -346,7 +400,7 @@ class ViewPagerAdapter(
             null // No option is selected
         }
 
-        if (selectedAnswer != null) {
+        if (options != null) {
 
             givenAnswerCount++
 
@@ -398,50 +452,48 @@ class ViewPagerAdapter(
 
             questionCount++
             Log.e("updateOptionSelectedUI", "questionCount: $questionCount")
-            if (selectedAnswer == model?.answer) {
+            if (options == model?.answer) {
                 Log.e("OptionSelected", "selectedAnswer: $selectedAnswer , answer: ${model.answer}")
                 // If the question hasn't been answered correctly before, increment count and set flag to true
                 correctAnswerCount++
                 // Set background color of selected option to green
-                if (model != null) {
-                    when (selectedAnswer) {
-                        model.option_A -> {
-                            itemView.cvA.background = ContextCompat.getDrawable(
+                when (options) {
+                    model.option_A -> {
+                        itemView.cvA.background = ContextCompat.getDrawable(
+                            context,
+                            R.drawable.bg_selected_answer
+                        )
+                        itemView.imgA.visibility = View.VISIBLE
+                    }
+
+                    model.option_B -> {
+                        itemView.cvB.setBackground(
+                            ContextCompat.getDrawable(
                                 context,
                                 R.drawable.bg_selected_answer
                             )
-                            itemView.imgA.visibility = View.VISIBLE
-                        }
+                        )
+                        itemView.imgB.visibility = View.VISIBLE
+                    }
 
-                        model.option_B -> {
-                            itemView.cvB.setBackground(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.bg_selected_answer
-                                )
+                    model.option_C -> {
+                        itemView.cvC.setBackground(
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.bg_selected_answer
                             )
-                            itemView.imgB.visibility = View.VISIBLE
-                        }
+                        )
+                        itemView.imgC.visibility = View.VISIBLE
+                    }
 
-                        model.option_C -> {
-                            itemView.cvC.setBackground(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.bg_selected_answer
-                                )
+                    model.option_D -> {
+                        itemView.cvD.setBackground(
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.bg_selected_answer
                             )
-                            itemView.imgC.visibility = View.VISIBLE
-                        }
-
-                        model.option_D -> {
-                            itemView.cvD.setBackground(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.bg_selected_answer
-                                )
-                            )
-                            itemView.imgD.visibility = View.VISIBLE
-                        }
+                        )
+                        itemView.imgD.visibility = View.VISIBLE
                     }
                 }
 
@@ -450,7 +502,7 @@ class ViewPagerAdapter(
                 if (model != null) {
 
                     incorrectAnswerCount++
-                    when (selectedAnswer) {
+                    when (options) {
                         model.option_A -> {
                             itemView.cvA.setBackground(
                                 ContextCompat.getDrawable(

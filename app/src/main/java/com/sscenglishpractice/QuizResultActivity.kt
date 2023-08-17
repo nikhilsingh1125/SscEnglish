@@ -39,6 +39,7 @@ class QuizResultActivity : AppCompatActivity() {
         wrongAns = intent.getIntExtra("WrongAnswer",0)
         totalQuestions = intent.getIntExtra("TotalQuestions",0)
         val time = intent.getStringExtra("Time")
+        val totalTime = intent.getStringExtra("TotalTime")
 
         val accuracy = (correctAns.toFloat() / totalQuestions.toFloat()) * 100
         val formattedAccuracy = String.format("%.2f%%", accuracy)
@@ -48,32 +49,31 @@ class QuizResultActivity : AppCompatActivity() {
         Log.e(TAG, "totalQuestions : $totalQuestions")
         Log.e(TAG, "Time : $time")
         Log.e(TAG, "formattedAccuracy : $formattedAccuracy")
+        Log.e(TAG, "totalTime : $totalTime")
 
 
-        timeTaken(time)
+        if (time != ""){
+            timeTaken(time,totalTime)
+        }
+
         txtCorrectCount.text = correctAns.toString()
         txtWrongCount.text = wrongAns.toString()
         txtCorrectAccuracy.text = formattedAccuracy
-        // Split the time string into hours, minutes, and seconds
-        val timeParts = time?.split(":")
-        val hours = timeParts?.get(0)?.toInt()
-        val minutes = timeParts?.get(1)?.toInt()
-        val seconds = timeParts?.get(2)?.toInt()
 
-// Format the time as "mm min ss s"
-        val formattedTime = String.format("%d min %d s", minutes, seconds)
-
-
-       // getResultData()
         handleClicks()
 
         result_bird.setAnimation(R.raw.result_bird)
         result_bird.playAnimation()
     }
 
-    private fun timeTaken(time: String?) {
-        val startTime = time
-        val endTime = "00:12:00"
+    private fun timeTaken(time: String?, totalTime: String?) {
+        if (time.isNullOrEmpty()) {
+            // Handle the case when the time is null or empty
+            // You might want to display an error message or handle this situation in some way
+            return
+        }
+
+        val endTime = totalTime.toString()
 
         fun timeToSeconds(time: String): Int {
             val timeParts = time.split(":")
@@ -83,21 +83,20 @@ class QuizResultActivity : AppCompatActivity() {
             return (hours * 3600) + (minutes * 60) + seconds
         }
 
-        val startTimeInSeconds = timeToSeconds(startTime.toString())
+        val startTimeInSeconds = timeToSeconds(time)
         val endTimeInSeconds = timeToSeconds(endTime)
 
-
         val differenceInSeconds = endTimeInSeconds - startTimeInSeconds
-
 
         val differenceMinutes = differenceInSeconds / 60
         val differenceSeconds = differenceInSeconds % 60
 
-         formattedDifference = String.format("%d min %d s", differenceMinutes, differenceSeconds)
+        val formattedDifference = String.format("%d min %d s", differenceMinutes, differenceSeconds)
 
         Log.e(TAG, "formattedTime==> : $formattedDifference")
         txtTimeTaken.text = formattedDifference
     }
+
 
     private fun handleClicks() {
         btnViewSolutionQuiz.setOnClickListener {

@@ -30,28 +30,10 @@ class HomeAdapter(
 ) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     val TAG = "HomeActivity"
-    private var rewardedAd: RewardedAd? = null
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        MobileAds.initialize(context)
-        val adRequest = AdRequest.Builder().build()
-        RewardedAd.load(
-            context,
-            "ca-app-pub-3940256099942544/5224354917",
-            adRequest,
-            object : RewardedAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    adError.toString()?.let { Log.d(TAG, it) }
-                    rewardedAd = null
-                }
-
-                override fun onAdLoaded(ad: RewardedAd) {
-                    Log.d(TAG, "Ad was loaded.")
-                    rewardedAd = ad
-                }
-            })
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.row_home_category,parent,false))
     }
 

@@ -17,24 +17,11 @@
           <include layout="@layout/custom_toolbar" />
       </LinearLayout>-->
 
-    <com.sscenglishpractice.utils.NonScrollableViewPager
-        android:layout_above="@+id/ad_view_solutions"
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/idViewPagerSol"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/ad_view_solutions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        app:adSize="BANNER"
-        android:visibility="visible"
-        app:adUnitId="@string/solution_banner_ad_unit_id"
-        />
-
 
 
     <com.airbnb.lottie.LottieAnimationView

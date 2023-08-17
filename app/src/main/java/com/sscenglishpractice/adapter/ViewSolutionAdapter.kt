@@ -17,6 +17,7 @@ import com.sscenglishpractice.ViewSolutionActivity
 import com.sscenglishpractice.model.ResultShowData
 import kotlinx.android.synthetic.main.row_question_list.view.btnSubmit
 import kotlinx.android.synthetic.main.row_solution_list.view.btnNextSol
+import kotlinx.android.synthetic.main.row_solution_list.view.btnPrevResult
 import kotlinx.android.synthetic.main.row_solution_list.view.cvASol
 import kotlinx.android.synthetic.main.row_solution_list.view.cvBSol
 import kotlinx.android.synthetic.main.row_solution_list.view.cvCSol
@@ -91,10 +92,11 @@ class ViewSolutionAdapter(
 
 
         itemView.btnNextSol.setOnClickListener {
-            (context as ViewSolutionActivity).clickOnBtnNext(position,arrayList)
-            //  itemView.btnNext.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
+            (context as ViewSolutionActivity).clickOnBtnNext()
         }
-
+        itemView.btnPrevResult.setOnClickListener {
+            (context as ViewSolutionActivity).clickOnBtnPrev()
+        }
         if (position == arrayList.size) {
             itemView.btnSubmit.visibility = View.VISIBLE
             itemView.btnSubmit.setOnClickListener {

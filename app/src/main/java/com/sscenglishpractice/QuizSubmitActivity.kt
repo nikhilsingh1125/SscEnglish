@@ -4,11 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
@@ -20,9 +19,6 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.google.firebase.firestore.FirebaseFirestore
-import com.sscenglishpractice.model.SubmitData
-import kotlinx.android.synthetic.main.activity_quiz.ad_view_quiz
 import kotlinx.android.synthetic.main.activity_quiz_submit.btnReattempt
 import kotlinx.android.synthetic.main.activity_quiz_submit.btnViewSolution
 import kotlinx.android.synthetic.main.activity_quiz_submit.pieChart
@@ -77,6 +73,9 @@ class QuizSubmitActivity : AppCompatActivity() {
         val title = sharedPreferences.getString("Title", null)
         val category = sharedPreferences.getString("categoryData", null)
 
+        Log.e("Result", "correctAnswer: $correctAnswer")
+        Log.e("Result", "totalQuestion: $totalQuestion")
+        Log.e("Result", "incorrectAnswer: $incorrectAnswer")
 
         val accuracy = if (correctAnswer != null && totalQuestion != null && totalQuestion > 0) {
             (correctAnswer.toDouble() / totalQuestion.toDouble()) * 100

@@ -16,6 +16,9 @@
         android:theme="@style/Theme.SscEnglishPractice"
         tools:targetApi="31">
         <activity
+            android:name=".QuizCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".QuizResultActivity"
             android:exported="false" />
         <activity

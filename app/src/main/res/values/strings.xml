@@ -1,13 +1,4 @@
 <resources>
     <string name="app_name">Ssc Vocab Booster</string>
     <string name="app_id">ca-app-pub-7484865336777284~1316132581</string>
-    <string name="banner_ad_unit_id">ca-app-pub-7484865336777284/3755411900</string>
-    <string name="home_banner_ad_unit_id">ca-app-pub-7484865336777284/9323437893</string>
-    <string name="category_banner_ad_unit_id">ca-app-pub-7484865336777284/6893495924</string>
-    <string name="main_banner_ad_unit_id">ca-app-pub-7484865336777284/9750813301</string>
-    <string name="quiz_banner_ad_unit_id">ca-app-pub-7484865336777284/8585851548</string>
-    <string name="solution_banner_ad_unit_id">ca-app-pub-7484865336777284/5245711640</string>
-
-
-    <string name="rewarded_ad_unit_id">ca-app-pub-7484865336777284/3660075926</string>
 </resources>

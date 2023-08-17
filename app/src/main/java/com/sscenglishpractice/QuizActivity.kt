@@ -12,11 +12,7 @@ import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -28,7 +24,6 @@ import com.sscenglishpractice.model.SubmitData
 import com.sscenglishpractice.viewModel.QuizViewModel
 import com.sscenglishquiz.model.QuestionData
 import com.sscenglishquiz.model.QuestionWiseModel
-import kotlinx.android.synthetic.main.activity_quiz.ad_view_quiz
 import kotlinx.android.synthetic.main.activity_quiz.idViewPager
 import kotlinx.android.synthetic.main.activity_quiz.loader
 import kotlinx.android.synthetic.main.custom_dialog_layout.noBtn
@@ -48,7 +43,6 @@ class QuizActivity : AppCompatActivity() {
     var category = ""
     lateinit var db: FirebaseFirestore
     var rewardedAd: RewardedAd? = null
-    var adRequest = AdRequest.Builder().build()
     private lateinit var viewModel: QuizViewModel
 //    lateinit var adView: AdView
 
@@ -69,25 +63,7 @@ class QuizActivity : AppCompatActivity() {
         title = intent.getStringExtra("Title").toString()
         category = intent.getStringExtra("Category").toString()
 
-        MobileAds.initialize(this)
 
-        ad_view_quiz.loadAd(adRequest)
-
-        RewardedAd.load(
-            this,
-            "ca-app-pub-7484865336777284/3660075926",
-            adRequest,
-            object : RewardedAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    adError.toString()?.let { Log.d(TAGAD, it) }
-                    rewardedAd = null
-                }
-
-                override fun onAdLoaded(ad: RewardedAd) {
-                    Log.d(TAGAD, "Ad was loaded.")
-                    rewardedAd = ad
-                }
-            })
 
         Log.e(TAG, "onCreate: $type")
 
@@ -1848,6 +1824,10 @@ class QuizActivity : AppCompatActivity() {
             )  // button background color
             { pDialog.dismiss() }
             .show()
+    }
+
+    fun onPrevClick(position: Int) {
+        idViewPager.setCurrentItem(idViewPager.currentItem - 1, true)
     }
 
 

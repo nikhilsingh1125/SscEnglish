@@ -7,15 +7,13 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.sscenglishpractice.adapter.CategoryAdapter
 import com.sscenglishpractice.model.ListCategoryData
 import com.sscenglishpractice.utils.Constants
-import kotlinx.android.synthetic.main.activity_category2.ad_view_category
-import kotlinx.android.synthetic.main.activity_home.ad_view_home
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.custom_toolbar.*
+import kotlinx.android.synthetic.main.activity_main.recyclerView
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_back
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
+import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
 
 class CategoryActivity : AppCompatActivity() {
     var type = ""
@@ -28,7 +26,6 @@ class CategoryActivity : AppCompatActivity() {
         val intent = intent
         type = intent.getStringExtra("TYPE").toString()
 
-        MobileAds.initialize(this)
 
 
         val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
@@ -42,8 +39,6 @@ class CategoryActivity : AppCompatActivity() {
             Constants.getBookmarkDataForCategory(categoryType)
         }
 
-        val adRequest = AdRequest.Builder().build()
-        ad_view_category.loadAd(adRequest)
 
         action_bar_back.visibility = View.VISIBLE
         action_bar_share.visibility = View.GONE

@@ -15,19 +15,17 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ExamAdapter
 import com.sscenglishpractice.adapter.QuestionPositionAdapter
+import com.sscenglishpractice.model.Question
 import com.sscenglishpractice.model.QuizQuestion
 import com.sscenglishpractice.model.QuizResult
-import com.sscenglishpractice.viewModel.QuizViewModel
 import kotlinx.android.synthetic.main.activity_exam_quizs.rvQuestions
 import kotlinx.android.synthetic.main.activity_exam_quizs.toolbarQuiz
 import kotlinx.android.synthetic.main.activity_exam_quizs.vpViewPager
 import kotlinx.android.synthetic.main.activity_quiz.loader
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_Title
 import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
-import kotlinx.android.synthetic.main.custom_toolbar.toolbar
 import libs.mjn.prettydialog.PrettyDialog
 
 class ExamQuizsActivity : AppCompatActivity() {
@@ -36,12 +34,13 @@ class ExamQuizsActivity : AppCompatActivity() {
     var categoryTest = ""
     val TAG = "ExamQuizsActivity"
     lateinit var rvAdapter: QuestionPositionAdapter
-    lateinit var questions: ArrayList<QuizQuestion>
+    lateinit var questions: ArrayList<Question>
     lateinit var quizModel: QuizQuestion
     private var quizDurationInMillis: Long = 12 * 60 * 1000
     private var isQuizRunning: Boolean = false
     private var isResult: Boolean = false
     var time = ""
+    var timeTaken = ""
     var pos = 0
     var totalTimeInSeconds = 0
 
@@ -54,9 +53,6 @@ class ExamQuizsActivity : AppCompatActivity() {
 
         initUi()
         handleClicks()
-        loader.setAnimation(R.raw.loader)
-        loader.visibility = View.VISIBLE
-        loader.playAnimation()
 
 
     }
@@ -95,7 +91,9 @@ class ExamQuizsActivity : AppCompatActivity() {
                     intent.putExtra("WrongAnswer",wrongAnswer.size)
                     intent.putExtra("TotalQuestions",questions.size)
                     intent.putExtra("Time",time)
+                    intent.putExtra("TotalTime",timeTaken)
                     startActivity(intent)
+                    finish()
                     Log.d(TAG, "Quiz result saved successfully!")
                 }
                 .addOnFailureListener { e ->
@@ -111,50 +109,41 @@ class ExamQuizsActivity : AppCompatActivity() {
         isResult = intentData.getBooleanExtra("ResultSolution", false)
         Log.e(TAG, "isResult: $isResult")
 
+        if (!isResult){
+            val receivedBundle = intent.extras
+            if (receivedBundle != null) {
+                questions = receivedBundle.getParcelableArrayList<Question>("questionsList") as ArrayList<Question>
+                val receivedTestTitle = receivedBundle.getString("testTitle")
+                timeTaken= receivedBundle.getString("timeTaken").toString()
+                if (questions != null) {
+                    // Use the receivedQuestions list in your activity as needed
+                    Log.e(TAG, "questions ==>: $questions" )
+                }
+            }
+        }
+
+
         if (isResult) {
+            loader.setAnimation(R.raw.loader)
+            loader.visibility = View.VISIBLE
+            loader.playAnimation()
             getResultData()
         }
         else {
-            val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("SSC_QUIZS_ALL/Quizes")
 
-            database.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    loader.visibility = View.GONE
-                    toolbarQuiz.visibility = View.VISIBLE
-                    if (!isQuizRunning) {
-                        startQuizTimer()
-                    }
+            if (!isQuizRunning) {
+                startQuizTimer(timeTaken)
+            }
 
-                    // Fetch the list of QuizQuestion objects
-                    val quizQuestionList = dataSnapshot.child("Questions").getValue(object : GenericTypeIndicator<List<QuizQuestion>>() {})
-                    if (quizQuestionList != null) {
-                        questions = ArrayList(quizQuestionList)
-                    } else {
-                        // Handle the case when there are no questions in the database
-                        questions = ArrayList()
-                    }
+            loader.visibility = View.GONE
+            val adapter = ExamAdapter(this@ExamQuizsActivity, questions, isResult)
+            vpViewPager.adapter = adapter
 
-                    Log.e(TAG, "onDataChange: $questions")
-                    Log.d("SelectedUI", "resultDataList ===>: $questions")
 
-                    val adapter = ExamAdapter(this@ExamQuizsActivity, questions, isResult)
-                    vpViewPager.adapter = adapter
-
-                    questions[0].isVisited = true
-
-                    rvAdapter = QuestionPositionAdapter(this@ExamQuizsActivity, questions)
-                    val layoutManager = LinearLayoutManager(this@ExamQuizsActivity, RecyclerView.HORIZONTAL, false)
-                    rvQuestions.layoutManager = layoutManager
-                    rvQuestions.adapter = rvAdapter
-
-                    // Process the fetched data here, such as displaying it in the UI
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // This method will be called when there is an error in fetching data
-                    // Handle the error here
-                }
-            })
+            rvAdapter = QuestionPositionAdapter(this@ExamQuizsActivity, questions)
+            val layoutManager = LinearLayoutManager(this@ExamQuizsActivity, RecyclerView.HORIZONTAL, false)
+            rvQuestions.layoutManager = layoutManager
+            rvQuestions.adapter = rvAdapter
 
         }
 
@@ -188,34 +177,6 @@ class ExamQuizsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getData() {
-        val database = FirebaseDatabase.getInstance().getReference("SSC_QUIZS_ALL/Quizes")
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                loader.visibility = View.GONE
-                val description = dataSnapshot.child("Description").getValue(String::class.java)
-                val questions = dataSnapshot.child("Questions")
-                    .getValue(object : GenericTypeIndicator<List<QuizQuestion>>() {})
-
-
-                /* val description = dataSnapshot.child("Description").getValue(String::class.java)
-                 val questions = dataSnapshot.child("Questions")
-                     .getValue(object : GenericTypeIndicator<List<QuizQuestion>>() {})*/
-
-                // Do something with the quiz object
-                // Log.e(TAG, "quizQuestions: $quizQuestions")
-
-                /*
-
-
-                                */
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors here
-            }
-        })
-    }
 
     private fun getResultData() {
 
@@ -227,14 +188,14 @@ class ExamQuizsActivity : AppCompatActivity() {
 
                 loader.visibility = View.GONE
                 toolbarQuiz.visibility = View.VISIBLE
-                action_bar_Title.text ="Your Result"
+                action_bar_Title.text ="Solutions"
                 btnSubmit.text ="Back"
 
 
                 for (childSnapshot in dataSnapshot.children) {
 
                      questions = childSnapshot.child("questions")
-                         .getValue(object : GenericTypeIndicator<List<QuizQuestion>>() {}) as ArrayList<QuizQuestion>
+                         .getValue(object : GenericTypeIndicator<List<Question>>() {}) as ArrayList<Question>
 
                  /*   val quizResult = questions?.let { QuizQuestion() }
                     if (quizResult != null) {
@@ -245,7 +206,7 @@ class ExamQuizsActivity : AppCompatActivity() {
                     Log.d("SelectedUI", "QuizResults ===>: $questions")
                     val adapter = ExamAdapter(
                         this@ExamQuizsActivity,
-                        questions as ArrayList<QuizQuestion>, isResult
+                        questions as ArrayList<Question>, isResult
                     )
                     vpViewPager.adapter = adapter
 
@@ -284,15 +245,21 @@ class ExamQuizsActivity : AppCompatActivity() {
     }
 
 
-    private fun startQuizTimer() {
+    private fun startQuizTimer(timeTakenAll: String) {
+
+        // Convert the dynamic time to total seconds
+        val timeParts = timeTakenAll.split(":")
+        val hours = timeParts[0].toInt()
+        val minutes = timeParts[1].toInt()
+        val seconds = timeParts[2].toInt()
+        totalTimeInSeconds = (hours * 3600) + (minutes * 60) + seconds
         object : CountDownTimer(quizDurationInMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                val hours = (millisUntilFinished / (1000 * 60 * 60)) % 24
-                val minutes = (millisUntilFinished / (1000 * 60)) % 60
-                val seconds = (millisUntilFinished / 1000) % 60
-                totalTimeInSeconds = ((hours * 3600) + (minutes * 60) + seconds).toInt()
-                Log.e("startQuizTimer", "totalTimeInSeconds: $totalTimeInSeconds", )
-                val timerText = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                val timeHours = (millisUntilFinished / (1000 * 60 * 60)) % 24
+                val timeMinutes = (millisUntilFinished / (1000 * 60)) % 60
+                val timeSeconds = (millisUntilFinished / 1000) % 60
+
+                val timerText = String.format("%02d:%02d:%02d", timeHours, timeMinutes, timeSeconds)
                 action_bar_Title.text = timerText
                 time = timerText
             }

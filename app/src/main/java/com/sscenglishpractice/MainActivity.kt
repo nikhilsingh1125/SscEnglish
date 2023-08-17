@@ -2,19 +2,15 @@ package com.sscenglishpractice
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.sscenglishpractice.adapter.QuestionAdapter
 import com.sscenglishpractice.model.ListCategoryData
-import kotlinx.android.synthetic.main.activity_home.ad_view_home
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.custom_toolbar.*
+import kotlinx.android.synthetic.main.activity_main.recyclerView
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_back
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
+import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,10 +32,6 @@ class MainActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        MobileAds.initialize(this)
-
-        val adRequest = AdRequest.Builder().build()
-        ad_view_topic.loadAd(adRequest)
 
         if (type == "CGL") {
             array.add(ListCategoryData("Synonyms", ""))

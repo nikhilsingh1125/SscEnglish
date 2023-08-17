@@ -12,7 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewSolutionAdapter
 import com.sscenglishpractice.model.ResultShowData
 import kotlinx.android.synthetic.main.activity_quiz.loader
-import kotlinx.android.synthetic.main.activity_view_solution.ad_view_solutions
 import kotlinx.android.synthetic.main.activity_view_solution.idViewPagerSol
 import libs.mjn.prettydialog.PrettyDialog
 
@@ -37,10 +36,6 @@ class ViewSolutionActivity : AppCompatActivity() {
 
         arrResultDetailsData = arrayListOf()
 
-        MobileAds.initialize(this)
-
-        val adRequest = AdRequest.Builder().build()
-        ad_view_solutions.loadAd(adRequest)
 
         val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val categoryType = sharedPreferences.getString("categoryData", null)
@@ -140,7 +135,7 @@ class ViewSolutionActivity : AppCompatActivity() {
     }
 
 
-    fun clickOnBtnNext(position: Int, array: ArrayList<ResultShowData>) {
+    fun clickOnBtnNext() {
         idViewPagerSol.setCurrentItem(idViewPagerSol.currentItem + 1, true)
     }
 
@@ -248,5 +243,9 @@ class ViewSolutionActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 //        deleteCollection()
+    }
+
+    fun clickOnBtnPrev() {
+        idViewPagerSol.setCurrentItem(idViewPagerSol.currentItem - 1, true)
     }
 }

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sscenglishpractice.ExamQuizsActivity
 import com.sscenglishpractice.R
+import com.sscenglishpractice.model.Question
 import com.sscenglishpractice.model.QuizQuestion
 import com.sscenglishpractice.model.ResultShowData
 import com.sscenglishquiz.model.QuestionData
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.row_questions_pos.view.txtQuestionPos
 
 class QuestionPositionAdapter(
     private val context: Context,
-    val arrayList: ArrayList<QuizQuestion>
+    val arrayList: ArrayList<Question>
 ) : RecyclerView.Adapter<QuestionPositionAdapter.ViewHolder>() {
 
     private var selectedItem = -1 // -1 indicates no item is initially selected

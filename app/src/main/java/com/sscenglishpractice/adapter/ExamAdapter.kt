@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.sscenglishpractice.ExamQuizsActivity
 import com.sscenglishpractice.R
+import com.sscenglishpractice.model.Question
 import com.sscenglishpractice.model.QuizQuestion
 import kotlinx.android.synthetic.main.row_exam_quizes.view.btnNextExam
 import kotlinx.android.synthetic.main.row_exam_quizes.view.btnPrev
@@ -39,7 +40,7 @@ import java.util.Objects
 
 class ExamAdapter(
     val context: Context,
-    val arrayList: ArrayList<QuizQuestion>,
+    val arrayList: ArrayList<Question>,
     val isResult: Boolean?
 ) : PagerAdapter() {
 
@@ -93,7 +94,7 @@ class ExamAdapter(
         return itemView
     }
 
-    private fun resultUi(model: QuizQuestion, itemView: View, position: Int) {
+    private fun resultUi(model: Question, itemView: View, position: Int) {
 
         itemView.cvAExam.isEnabled = false
         itemView.cvBExam.isEnabled = false
@@ -127,7 +128,7 @@ class ExamAdapter(
         correctOrIncorrectAnswer(model,itemView)
     }
 
-    private fun correctOrIncorrectAnswer(model: QuizQuestion, itemView: View) {
+    private fun correctOrIncorrectAnswer(model: Question, itemView: View) {
 
 
         // Assuming these properties exist in the model class
@@ -256,7 +257,7 @@ class ExamAdapter(
 
     }
 
-    private fun handleClicks(itemView: View, model: QuizQuestion, position: Int) {
+    private fun handleClicks(itemView: View, model: Question, position: Int) {
 
         itemView.cvAExam.setOnClickListener {
             selectOption(itemView, model, position, "A",model.option_A)
@@ -274,7 +275,7 @@ class ExamAdapter(
 
     private fun selectOption(
         itemView: View,
-        model: QuizQuestion,
+        model: Question,
         position: Int,
         selectedOption: String,
         options: String?
@@ -288,7 +289,7 @@ class ExamAdapter(
         updateOptionSelectedUI(itemView, model, selectedOption,options)
     }
 
-    private fun initUi(model: QuizQuestion, itemView: View, position: Int) {
+    private fun initUi(model: Question, itemView: View, position: Int) {
 
         if (model.Type_of_question == "") {
             itemView.txtTypeQuestion.visibility = View.GONE
@@ -319,7 +320,7 @@ class ExamAdapter(
 
     private fun updateOptionSelectedUI(
         itemView: View,
-        model: QuizQuestion,
+        model: Question,
         selectedOption: String,
         options: String?
     ) {

@@ -1,13 +1,9 @@
 package com.sscenglishpractice
 
-import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -17,24 +13,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.messaging.FirebaseMessaging
 import com.sscenglishpractice.adapter.BannerAdapter
 import com.sscenglishpractice.adapter.HomeAdapter
 import com.sscenglishpractice.model.CategoryModel
 import com.sscenglishpractice.model.HomeBannerData
 import com.sscenglishpractice.utils.Constants
-import kotlinx.android.synthetic.main.activity_home.ad_view_home
 import kotlinx.android.synthetic.main.activity_home.indicator
 import kotlinx.android.synthetic.main.activity_home.viewPagerMain
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.custom_toolbar.*
-import libs.mjn.prettydialog.PrettyDialog
+import kotlinx.android.synthetic.main.activity_main.recyclerView
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
+import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
 
 
 class HomeActivity : AppCompatActivity() {
@@ -46,31 +37,15 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val TAG = "HomeActivity"
-
-        MobileAds.initialize(this)
-
         Constants.checkAndUpdateApp(this)
+       /* MobileAds.initialize(this)
+
+
         val adRequest = AdRequest.Builder().build()
-        ad_view_home.loadAd(adRequest)
+        ad_view_home.c(adRequest)*/
 
         addBannerImages()
 
-
-        RewardedAd.load(
-            this,
-            "ca-app-pub-3940256099942544/5224354917",
-            adRequest,
-            object : RewardedAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    adError.toString().let { Log.d(TAG, it) }
-                    rewardedAd = null
-                }
-
-                override fun onAdLoaded(ad: RewardedAd) {
-                    Log.d(TAG, "Ad was loaded.")
-                    rewardedAd = ad
-                }
-            })
 
 
         action_bar_share.setOnClickListener {
@@ -117,8 +92,8 @@ class HomeActivity : AppCompatActivity() {
     private fun addBannerImages() {
 
         val images = ArrayList<HomeBannerData>()
-        images.add(HomeBannerData(R.drawable.quotes_banner))
         images.add(HomeBannerData(R.drawable.quotes))
+        images.add(HomeBannerData(R.drawable.banner_2))
 
 
         val mViewPagerAdapter = BannerAdapter(this@HomeActivity, images)
@@ -149,7 +124,7 @@ class HomeActivity : AppCompatActivity() {
 
         if (position == 0) {
 //            Toast.makeText(this, "Upcoming Feature", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, ExamQuizsActivity::class.java)
+            val intent = Intent(this, QuizCategoryActivity::class.java)
             intent.putExtra("TYPE", "2023")
             startActivity(intent)
         } else if (position == 1) {
