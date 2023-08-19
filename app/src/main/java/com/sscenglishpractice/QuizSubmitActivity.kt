@@ -41,16 +41,15 @@ class QuizSubmitActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_submit)
 
-        val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
 
         action_bar_Title.text = "Overall Result"
         btnSubmit.visibility = View.GONE
         action_bar_share.visibility = View.GONE
 
-        MobileAds.initialize(this)
+//        MobileAds.initialize(this)
 
 
-        RewardedAd.load(
+  /*      RewardedAd.load(
             this,
             "ca-app-pub-7484865336777284/3660075926",
             adRequest,
@@ -64,20 +63,23 @@ class QuizSubmitActivity : AppCompatActivity() {
                     Log.d(TAGAD, "Ad was loaded.")
                     rewardedAd = ad
                 }
-            })
+            })*/
 
-
-        val correctAnswer = sharedPreferences.getString("correctAnswer", null)?.toIntOrNull()
-        val totalQuestion = sharedPreferences.getString("totalQuestion", null)?.toIntOrNull()
-        val incorrectAnswer = sharedPreferences.getString("incorrectAnswer", null)
-        val title = sharedPreferences.getString("Title", null)
-        val category = sharedPreferences.getString("categoryData", null)
+        val intent = intent
+        val correctAnswer = intent.getIntExtra("correctAnswer",0)
+        val totalQuestion = intent.getIntExtra("totalQuestion",0)
+        val incorrectAnswer = intent.getIntExtra("incorrectAnswer",0)
+        val title = intent.getStringExtra("Title")
+        val category = intent.getStringExtra("categoryData")
+        val categoryType = intent.getStringExtra("Type")
 
         Log.e("Result", "correctAnswer: $correctAnswer")
         Log.e("Result", "totalQuestion: $totalQuestion")
         Log.e("Result", "incorrectAnswer: $incorrectAnswer")
+        Log.e("QuizResultsPractice", "category: $category")
+        Log.e("QuizResultsPractice", "categoryType: $categoryType")
 
-        val accuracy = if (correctAnswer != null && totalQuestion != null && totalQuestion > 0) {
+        val accuracy = if (totalQuestion > 0) {
             (correctAnswer.toDouble() / totalQuestion.toDouble()) * 100
         } else {
             0f
@@ -92,7 +94,7 @@ class QuizSubmitActivity : AppCompatActivity() {
         Log.e("Accuracy", "title: $title")
 
         txtCorrectCount.text = correctAnswer.toString()
-        txtWrongCount.text = incorrectAnswer
+        txtWrongCount.text = incorrectAnswer.toString()
         txtCorrectAccuracy.text = "$accuracy1%"
 
 
@@ -143,15 +145,18 @@ class QuizSubmitActivity : AppCompatActivity() {
         Log.d("QuizSubmitActivity", "totalQuestion 3: $totalQuestion")
 
         btnViewSolution.setOnClickListener {
-            rewardedAd?.let { ad ->
+            val intent1 = Intent(this, ViewSolutionActivity::class.java)
+            intent1.putExtra("categoryType",category)
+            intent1.putExtra("TypeCat",categoryType)
+            startActivity(intent1)
+          /*  rewardedAd?.let { ad ->
                 ad.show(this, OnUserEarnedRewardListener { rewardItem ->
-                    startActivity(Intent(this, ViewSolutionActivity::class.java))
-                    finishAffinity()
+
                 })
             } ?: run {
                 startActivity(Intent(this, ViewSolutionActivity::class.java))
-                finishAffinity()
-            }
+                finish()
+            }*/
         }
 
 

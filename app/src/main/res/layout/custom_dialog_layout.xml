@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/general_sans_medium"
-                android:text="Total Attempt"
+                android:text="Total Questions"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp" />
 

@@ -31,7 +31,6 @@ object Constants {
     }
 
 
-
     // Fetch the current version code of the installed app
     fun getCurrentVersionCode(context: Context): Int {
         return try {
@@ -61,28 +60,34 @@ object Constants {
                 // Handle the update button click to redirect to Play Store
                 val appPackageName = context.packageName
                 try {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=$appPackageName")
+                        )
+                    )
                 } catch (e: ActivityNotFoundException) {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=ssc+vocab+booster&c=apps&hl=en-IN")))
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/search?q=ssc+vocab+booster&c=apps&hl=en-IN")
+                        )
+                    )
                 }
-                pDialog.dismiss()
             }
             .show()
 
 
     }
 
+
     // Check for update and show the popup if available
-    fun checkAndUpdateApp(context: Context) {
-        val currentVersionCode = getCurrentVersionCode(context)
-        if (currentVersionCode < latestVersionCode) {
-            showUpdateDialog(context)
-        }
-    }
+
 
     fun getBookmarkDataForCategory(category: String) {
         val firestore = FirebaseFirestore.getInstance()
-        val collectionRef = firestore.collection("category").document(category).collection("bookData")
+        val collectionRef =
+            firestore.collection("category").document(category).collection("bookData")
 
         collectionRef.get()
             .addOnSuccessListener { querySnapshot ->
@@ -99,11 +104,15 @@ object Constants {
             }
             .addOnFailureListener { e ->
                 // Handle any errors
-                Log.e("SelectedUI", "Error fetching bookmarked data for category $category: ${e.message}", e)
+                Log.e(
+                    "SelectedUI",
+                    "Error fetching bookmarked data for category $category: ${e.message}",
+                    e
+                )
             }
     }
 
-    fun getCategoryNames(){
+    fun getCategoryNames() {
         val firestore = FirebaseFirestore.getInstance()
         val collectionRef = firestore.collection("category")
 
@@ -125,7 +134,6 @@ object Constants {
             }
 
     }
-
 
 
 }

@@ -14,7 +14,9 @@ class QuestionData(
     var selectedOptionsAnswer : String? = null,
     var testCategory : String? =null,
     var isBookmark : Boolean = false,
-    var isSelectedAnswer : Boolean = false
+    var isSelectedAnswer : Boolean = false,
+    var isSkipAnswer : Boolean = false,
+    var isWrongAnswer : Boolean = false,
 ) {
     override fun toString(): String {
         return "Question $question_count: $question\n" +

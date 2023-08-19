@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.sscenglishpractice.adapter.BannerAdapter
 import com.sscenglishpractice.adapter.HomeAdapter
@@ -24,6 +25,7 @@ import com.sscenglishpractice.utils.Constants
 import kotlinx.android.synthetic.main.activity_home.indicator
 import kotlinx.android.synthetic.main.activity_home.viewPagerMain
 import kotlinx.android.synthetic.main.activity_main.recyclerView
+import kotlinx.android.synthetic.main.custom_toolbar.action_about
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
 import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
 
@@ -37,8 +39,11 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val TAG = "HomeActivity"
-        Constants.checkAndUpdateApp(this)
+
+        getVersion()
+
        /* MobileAds.initialize(this)
+
 
 
         val adRequest = AdRequest.Builder().build()
@@ -48,8 +53,13 @@ class HomeActivity : AppCompatActivity() {
 
 
 
+
         action_bar_share.setOnClickListener {
             Constants.shareApp(this)
+        }
+        action_about.visibility = View.VISIBLE
+        action_about.setOnClickListener {
+            startActivity(Intent(this,AboutUsActivity::class.java))
         }
         btnSubmit.visibility = View.GONE
 
@@ -123,8 +133,7 @@ class HomeActivity : AppCompatActivity() {
     fun goToCategory(model: CategoryModel, position: Int) {
 
         if (position == 0) {
-//            Toast.makeText(this, "Upcoming Feature", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, QuizCategoryActivity::class.java)
+            val intent = Intent(this, CategoryActivity::class.java)
             intent.putExtra("TYPE", "2023")
             startActivity(intent)
         } else if (position == 1) {
@@ -160,6 +169,45 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
+    fun getVersion() {
+        val db = FirebaseFirestore.getInstance()
 
+        // Reference to a collection
+        val collectionRef = db.collection("app_version")
+
+        // Get documents in the collection
+        collectionRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                Log.d("FirestoreData", "querySnapshot: $querySnapshot")
+                for (doc in querySnapshot) {
+                    val versionData = doc.data
+                    val documentId = doc.id
+                    val versionCodeValue = versionData["version_code"]
+
+                    if (versionCodeValue is Number) {
+                        val versionCode = versionCodeValue.toInt()
+                        Log.d("FirestoreData", "Document ID: $documentId, versionCode: $versionCode")
+                        checkAndUpdateApp(versionCode)
+                    } else {
+                        Log.e("FirestoreData", "Invalid versionCode format in document: $documentId")
+                    }
+                }
+            }
+            .addOnFailureListener { error ->
+                Log.e("FirestoreError", "Error getting documents: $error")
+            }
+
+
+    }
+
+
+
+    fun checkAndUpdateApp(versionCode: Int) {
+        val currentVersionCode = Constants.getCurrentVersionCode(this)
+
+        if (currentVersionCode < versionCode) {
+            Constants.showUpdateDialog(this)
+        }
+    }
 
 }

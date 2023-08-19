@@ -1,19 +1,27 @@
 package com.sscenglishpractice
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewSolutionAdapter
+import com.sscenglishpractice.model.Question
+import com.sscenglishpractice.model.QuestionRes
 import com.sscenglishpractice.model.ResultShowData
+import com.sscenglishquiz.model.QuestionData
 import kotlinx.android.synthetic.main.activity_quiz.loader
 import kotlinx.android.synthetic.main.activity_view_solution.idViewPagerSol
-import libs.mjn.prettydialog.PrettyDialog
+import kotlinx.android.synthetic.main.custom_toolbar.action_about
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_Title
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_back
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
+import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
 
 class ViewSolutionActivity : AppCompatActivity() {
 
@@ -22,6 +30,7 @@ class ViewSolutionActivity : AppCompatActivity() {
     var title = ""
     lateinit var db : FirebaseFirestore
     var categoryTest =""
+    lateinit var questions: ArrayList<ResultShowData>
     private lateinit var arrResultDetailsData: ArrayList<ResultShowData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,102 +45,142 @@ class ViewSolutionActivity : AppCompatActivity() {
 
         arrResultDetailsData = arrayListOf()
 
+        action_about.visibility = View.GONE
+        action_bar_share.visibility = View.GONE
+        btnSubmit.visibility = View.GONE
+        action_bar_back.visibility = View.VISIBLE
+        action_bar_back.setOnClickListener {
+            onBackPressed()
+        }
 
-        val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-        val categoryType = sharedPreferences.getString("categoryData", null)
+        action_bar_Title.text = "Result View"
 
-        Log.d(TAG, "categoryType: $categoryType")
+        val intent = intent
+        val category = intent.getStringExtra("categoryType")
+        val typeCat = intent.getStringExtra("TypeCat")
+        Log.d("QuizResultsPractice", "categoryType: $category")
+        Log.d("QuizResultsPractice", "typeCat: $typeCat")
 
 
-        getDataSolutions(categoryType)
+        getDataSolutions(typeCat,category)
     }
 
-    private fun getDataSolutions(categoryType: String?) {
-        val firestore = FirebaseFirestore.getInstance()
-        val collectionRef = firestore.collection("your_collection_name")
+    private fun getDataSolutions(typeCat: String?, category: String?) {
 
-// Assuming you have the category and subcollection names
-        if (categoryType != null) {
-            categoryTest = categoryType
-        }
-        val subcollection = "your_subcollection_name"
+        val databaseReference = FirebaseDatabase.getInstance().getReference("QuizResultsPractice/$typeCat")
 
-        if (categoryTest != null) {
-
-            collectionRef.document(categoryTest).collection(subcollection).get()
-                .addOnSuccessListener { querySnapshot ->
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Handle data changes
+                if (snapshot.exists()) {
                     loader.visibility = View.GONE
-                    // Data retrieval successful
-                    val resultDataList = ArrayList<ResultShowData>()
+                    val questionsSnapshot = snapshot.child("questions")
+                    val questionsList = questionsSnapshot.getValue(object : GenericTypeIndicator<List<QuestionRes>>() {}) as ArrayList<QuestionRes>
 
-                    for (documentSnapshot in querySnapshot.documents) {
-                        val resultShowData = documentSnapshot.toObject(ResultShowData::class.java)
-                        if (resultShowData != null) {
-                            resultDataList.add(resultShowData)
-                        }
-                    }
-
-                    Log.d("SelectedUI", "resultDataList ===>: $resultDataList")
-                    val adapter = ViewSolutionAdapter(this@ViewSolutionActivity, resultDataList,categoryTest)
+                    // After retrieving the questions list, set up your ViewPager
+                    val adapter = ViewSolutionAdapter(this@ViewSolutionActivity, questionsList, categoryTest)
                     idViewPagerSol.adapter = adapter
-
-
-                    val arraySolutions = resultDataList
-                    Log.d("firestore", "arraySolutions: $arraySolutions")
-                    for (resultShowData in resultDataList) {
-                        val questionCount = resultShowData.question_count
-                        val question = resultShowData.question
-                        val answer = resultShowData.answer
-                        val options_A = resultShowData.option_A
-                        val options_B = resultShowData.option_B
-                        val options_C = resultShowData.option_C
-                        val options_D = resultShowData.option_D
-                        val solution = resultShowData.Solutions
-                        val selectedAnswer = resultShowData.selectedAnswer
-                        val optionsSelected = resultShowData.optionsSelected
-
-                        // Access other properties as needed
-                        val testCategory = resultShowData.testCategory
-
-                        Log.d(TAG, "Question Count: $questionCount")
-                        Log.d(TAG, "Question: $question")
-                        Log.d(TAG, "Answer: $answer")
-                        Log.d(TAG, "Option A: $options_A")
-                        Log.d(TAG, "Option B: $options_B")
-                        Log.d(TAG, "Option C: $options_C")
-                        Log.d(TAG, "Option D: $options_D")
-                        Log.d(TAG, "Solution: $solution")
-                        Log.d(TAG, "Selected Answer: $selectedAnswer")
-                        Log.d(TAG, "Options Selected: $optionsSelected")
-                        Log.d(TAG, "Test Category: $testCategory")
-
-                        val resultString = resultShowData.toString()
-                        Log.d(TAG, "ResultShowData: $resultString")
-                        // Perform any other operations or log additional properties
-                    }
-
-                    val resultStringList = ArrayList<String>()
-
-                    for (resultShowData in resultDataList) {
-                        val resultString = resultShowData.toString()
-                        resultStringList.add(resultString)
-                    }
-
-                    Log.d("SelectedUI", "array====>: $resultStringList")
-
-// Print the resultStringList or use it as needed
-                    for (resultString in resultStringList) {
-                        Log.d(TAG, "ResultShowData: $resultString")
-                    }
-
-
-                    // Process the resultDataList or update your UI with the retrieved data
                 }
-                .addOnFailureListener { e ->
-                    // Handle any errors
-                    Log.e("SelectedUI", "Error retrieving data for category: $categoryTest - ${e.message}", e)
-                }
-        }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+                Log.e(TAG, "Failed to retrieve quiz result: ${error.message}", error.toException())
+            }
+        })
+
+
+
+
+
+
+
+
+        /*   val firestore = FirebaseFirestore.getInstance()
+           val collectionRef = firestore.collection("your_collection_name")
+
+   // Assuming you have the category and subcollection names
+           if (categoryType != null) {
+               categoryTest = categoryType
+           }
+           val subcollection = "your_subcollection_name"
+
+           if (categoryTest != null) {
+
+               collectionRef.document(categoryTest).collection(subcollection).get()
+                   .addOnSuccessListener { querySnapshot ->
+                       loader.visibility = View.GONE
+                       // Data retrieval successful
+                       val resultDataList = ArrayList<ResultShowData>()
+
+                       for (documentSnapshot in querySnapshot.documents) {
+                           val resultShowData = documentSnapshot.toObject(ResultShowData::class.java)
+                           if (resultShowData != null) {
+                               resultDataList.add(resultShowData)
+                           }
+                       }
+
+                       Log.d("SelectedUI", "resultDataList ===>: $resultDataList")
+                       val adapter = ViewSolutionAdapter(this@ViewSolutionActivity, resultDataList,categoryTest)
+                       idViewPagerSol.adapter = adapter
+
+
+                       val arraySolutions = resultDataList
+                       Log.d("firestore", "arraySolutions: $arraySolutions")
+                       for (resultShowData in resultDataList) {
+                           val questionCount = resultShowData.question_count
+                           val question = resultShowData.question
+                           val answer = resultShowData.answer
+                           val options_A = resultShowData.option_A
+                           val options_B = resultShowData.option_B
+                           val options_C = resultShowData.option_C
+                           val options_D = resultShowData.option_D
+                           val solution = resultShowData.Solutions
+                           val selectedAnswer = resultShowData.selectedAnswer
+                           val optionsSelected = resultShowData.optionsSelected
+
+                           // Access other properties as needed
+                           val testCategory = resultShowData.testCategory
+
+                           Log.d(TAG, "Question Count: $questionCount")
+                           Log.d(TAG, "Question: $question")
+                           Log.d(TAG, "Answer: $answer")
+                           Log.d(TAG, "Option A: $options_A")
+                           Log.d(TAG, "Option B: $options_B")
+                           Log.d(TAG, "Option C: $options_C")
+                           Log.d(TAG, "Option D: $options_D")
+                           Log.d(TAG, "Solution: $solution")
+                           Log.d(TAG, "Selected Answer: $selectedAnswer")
+                           Log.d(TAG, "Options Selected: $optionsSelected")
+                           Log.d(TAG, "Test Category: $testCategory")
+
+                           val resultString = resultShowData.toString()
+                           Log.d(TAG, "ResultShowData: $resultString")
+                           // Perform any other operations or log additional properties
+                       }
+
+                       val resultStringList = ArrayList<String>()
+
+                       for (resultShowData in resultDataList) {
+                           val resultString = resultShowData.toString()
+                           resultStringList.add(resultString)
+                       }
+
+                       Log.d("SelectedUI", "array====>: $resultStringList")
+
+   // Print the resultStringList or use it as needed
+                       for (resultString in resultStringList) {
+                           Log.d(TAG, "ResultShowData: $resultString")
+                       }
+
+
+                       // Process the resultDataList or update your UI with the retrieved data
+                   }
+                   .addOnFailureListener { e ->
+                       // Handle any errors
+                       Log.e("SelectedUI", "Error retrieving data for category: $categoryTest - ${e.message}", e)
+                   }
+           }*/
     }
 
 
@@ -139,9 +188,9 @@ class ViewSolutionActivity : AppCompatActivity() {
         idViewPagerSol.setCurrentItem(idViewPagerSol.currentItem + 1, true)
     }
 
-    override fun onBackPressed() {
+    /*override fun onBackPressed() {
 
-        val pDialog = PrettyDialog(this)
+    *//*    val pDialog = PrettyDialog(this)
         pDialog
             .setTitle(getString(R.string.app_name))
             .setMessage("Are you sure you don't want continue?")
@@ -163,10 +212,10 @@ class ViewSolutionActivity : AppCompatActivity() {
                 R.color.black_light
             )  // button background color
             { pDialog.dismiss() }
-            .show()
-    }
+            .show()*//*
+    }*/
 
-    private fun deleteCollection() {
+ /*   private fun deleteCollection() {
         val firestore = FirebaseFirestore.getInstance()
         val collectionRef = firestore.collection("your_collection_name")
 
@@ -238,7 +287,7 @@ class ViewSolutionActivity : AppCompatActivity() {
                 )
             }
 
-    }
+    }*/
 
     override fun onDestroy() {
         super.onDestroy()

@@ -14,6 +14,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.sscenglishpractice.HomeActivity
 import com.sscenglishpractice.R
 import com.sscenglishpractice.ViewSolutionActivity
+import com.sscenglishpractice.model.QuestionRes
 import com.sscenglishpractice.model.ResultShowData
 import kotlinx.android.synthetic.main.row_question_list.view.btnSubmit
 import kotlinx.android.synthetic.main.row_solution_list.view.btnNextSol
@@ -47,7 +48,7 @@ import java.util.Objects
 
 class ViewSolutionAdapter(
     val context: Context,
-    val arrayList: ArrayList<ResultShowData>,
+    val arrayList: ArrayList<QuestionRes>,
     val categoryType: String?,
 ) :
     PagerAdapter() {
@@ -86,7 +87,7 @@ class ViewSolutionAdapter(
         }, 100)
 
 
-        itemView.txtChosenAnswer.text =  "Selected Answer : "+model.selectedOptions
+        itemView.txtChosenAnswer.text =  "Selected Answer : "+model.selectedOptionsAnswer
         itemView.txtSelectedAnswer.text = "Correct Answer : " +model.answer
         resultSelectedUI(itemView, model)
 
@@ -152,7 +153,7 @@ class ViewSolutionAdapter(
     }
 
 
-    private fun resultSelectedUI(itemView: View, model: ResultShowData?) {
+    private fun resultSelectedUI(itemView: View, model: QuestionRes?) {
         val selectedAnswer = model?.selectedAnswer
         val correctAnswer = model?.answer
 
@@ -166,8 +167,8 @@ class ViewSolutionAdapter(
         // Change the background color of the selected answer option if given answer is true and matches the correct answer
         if (model != null) {
 
-            Log.e("updateOptionSelectedUI", " Solutions: ${model.Solutions}")
-            if (model.Solutions != null) {
+            Log.e("updateOptionSelectedUI", " Solutions: ${model.solutions}")
+            if (model.solutions != null) {
                 var isSolutionVisible = false
 
                 // Set initial visibility of buttons
@@ -178,13 +179,13 @@ class ViewSolutionAdapter(
                     if (!isSolutionVisible) {
                         isSolutionVisible = true
                         // Show the solution
-                        if (model.Solutions == "") {
+                        if (model.solutions == "") {
                             itemView.solutionTextViewSol.visibility = View.VISIBLE
                             itemView.solutionTextViewSol.text = "Solution will be available soon"
                             itemView.seeSolutionButtonSol.visibility = View.GONE
                             itemView.hideSolutionButtonSol.visibility = View.VISIBLE
                         } else {
-                            itemView.solutionTextViewSol.text = model.Solutions
+                            itemView.solutionTextViewSol.text = model.solutions
                             itemView.solutionTextViewSol.visibility = View.VISIBLE
                             itemView.seeSolutionButtonSol.visibility = View.GONE
                             itemView.hideSolutionButtonSol.visibility = View.VISIBLE
@@ -208,11 +209,11 @@ class ViewSolutionAdapter(
             }
 
             Log.e("resultSelectedUI", "answer ==>${model.answer} selectedAnswer==> ${model.selectedAnswer}")
-            Log.e("resultSelectedUI", "answer ==>${model.answer} selectedOptions==> ${model.selectedOptions}")
+            Log.e("resultSelectedUI", "answer ==>${model.answer} selectedOptions==> ${model.selectedOptionsAnswer}")
             when (model.optionsSelected) {
 
                 "A" -> {
-                    if (model.answer == model.selectedOptions) {
+                    if (model.answer == model.selectedOptionsAnswer) {
 
                         itemView.cvASol.background = ContextCompat.getDrawable(
                             context,
@@ -237,7 +238,7 @@ class ViewSolutionAdapter(
                 }
 
                 "B" -> {
-                    if (model.answer == model.selectedOptions) {
+                    if (model.answer == model.selectedOptionsAnswer) {
                         itemView.cvBSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_selected_answer
@@ -260,7 +261,7 @@ class ViewSolutionAdapter(
                 }
 
                 "C" -> {
-                    if (model.answer == model.selectedOptions) {
+                    if (model.answer == model.selectedOptionsAnswer) {
                         itemView.cvCSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_selected_answer
@@ -284,7 +285,7 @@ class ViewSolutionAdapter(
                 }
 
                 "D" -> {
-                    if (model.answer == model.selectedOptions) {
+                    if (model.answer == model.selectedOptionsAnswer) {
                         itemView.cvDSol.background = ContextCompat.getDrawable(
                             context,
                             R.drawable.bg_selected_answer

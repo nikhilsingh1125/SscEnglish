@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.ExamQuizsActivity
 import com.sscenglishpractice.QuizActivity
@@ -100,6 +102,9 @@ class ViewPagerAdapter(
         }
         handleClicks(itemView, model, position)
 
+        model.isSkipAnswer = !(model.isSelectedAnswer && model.isGivenAnswer)
+
+        Log.e("Answers", " isSkipAnswer :${model.isSkipAnswer} ")
     /*    itemView.imgBookmarkUnfill.setOnClickListener {
             if (!model.isBookmark) {
                 itemView.imgBookmarkFill.visibility = View.VISIBLE
@@ -154,16 +159,27 @@ class ViewPagerAdapter(
 
         itemView.btnSubmit.setOnClickListener {
 
+
+            val givenAnswer = arrayList.filter { it.isGivenAnswer}
+            val correctAnswer = givenAnswer.filter { it.selectedOptionsAnswer == it.answer }
+            val wrongAnswer = givenAnswer.filter { it.selectedOptionsAnswer != it.answer }
+
+// Extract question_count values from answered questions
+            val answeredQuestionIds = givenAnswer.map { it.question_count }.toSet()
+
+// Find skipped questions
+            val skippedQuestions = arrayList.filter { it.question_count !in answeredQuestionIds }
+
+            Log.d("Answers", "givenAnswer ==>${givenAnswer.size}")
+            Log.d("Answers", "correctAns ==>${correctAnswer.size}")
+            Log.d("Answers", "wrongAnswer ==>${wrongAnswer.size}")
+            Log.d("Answers", "questions ==>${arrayList.size}")
+            Log.d("Answers", "skippedQuestions ==>${skippedQuestions.size}")
+
             skipedAnswer = arrayList.size - givenAnswerCount
             Log.e("instantiateItem", "skipedAnswer: $skipedAnswer")
             (context as QuizActivity).clickOnSubmitNext(
-                position,
-                correctAnswerCount,
-                incorrectAnswerCount,
-                arrayList.size,
-                givenAnswerCount,
-                skipedAnswer,
-                title, category,model,arrayList
+                title, category,arrayList
             )
             val resultDataList = mutableListOf<DbResultShowData>()
             var serialNumber = 1
@@ -207,104 +223,11 @@ class ViewPagerAdapter(
             }
 
             Log.e("instantiateItem", "resultDataList==>: $resultDataList", )
-            val firestore = FirebaseFirestore.getInstance()
-            val collectionRef = firestore.collection("your_collection_name")
 
-// Assuming you have a list of ResultShowData objects called 'resultDataList'
-            for (question in resultDataList) {
-                val questionId = question.question_count ?: ""
-                val category = category // Replace with the actual category name
-
-                val documentRef =
-                    collectionRef.document(category).collection("your_subcollection_name")
-                        .document(questionId)
-                documentRef.set(question)
-                    .addOnSuccessListener {
-                        // Data saved successfully for the current question
-                        Log.d("SelectedUI", "Data saved successfully for question: $questionId")
-                    }
-                    .addOnFailureListener { e ->
-                        // Handle any errors
-                        Log.e(
-                            "SelectedUI",
-                            "Error saving data for question: $questionId - ${e.message}",
-                            e
-                        )
-                    }
-            }
         }
 
     }
 
-
-    /*    private fun selectOptionA(
-            itemView: View,
-            model: QuestionData?,
-            position: Int,
-            optionA: String?,
-            s1: String
-        ) {
-
-            model?.optionsSelected = "A"
-            optionASelected = true
-            optionBSelected = false
-            optionCSelected = false
-            optionDSelected = false
-
-            if (model != null) {
-                updateOptionSelectedUI(itemView, model, selectedOption, options)
-                model.isSelectedAnswer = true
-                if (optionASelected){
-                        model.selectedOptionsAnswer = model.option_A
-                    }
-                }
-        }
-
-        private fun selectOptionB(itemView: View, model: QuestionData?) {
-            model?.optionsSelected = "B"
-            optionASelected = false
-            optionBSelected = true
-            optionCSelected = false
-            optionDSelected = false
-            if (model != null) {
-                updateOptionSelectedUI(itemView, model, selectedOption, options)
-                model.isSelectedAnswer = true
-                if (optionBSelected){
-                    model.selectedOptionsAnswer = model.option_B
-                }
-            }
-        }
-
-        private fun selectOptionC(itemView: View, model: QuestionData?) {
-            model?.optionsSelected = "C"
-            optionASelected = false
-            optionBSelected = false
-            optionCSelected = true
-            optionDSelected = false
-            if (model != null) {
-                updateOptionSelectedUI(itemView, model, selectedOption, options)
-                model.isSelectedAnswer = true
-                if (optionCSelected){
-                    model.selectedOptionsAnswer = model.option_C
-                }
-            }
-        }
-
-        private fun selectOptionD(itemView: View, model: QuestionData?) {
-            model?.optionsSelected = "D"
-            optionASelected = false
-            optionBSelected = false
-            optionCSelected = false
-            optionDSelected = true
-            updateOptionSelectedUI(itemView, model, selectedOption, options)
-
-            if (optionDSelected){
-                if (model != null) {
-                    model.isSelectedAnswer = true
-                    model.selectedOptionsAnswer = model.option_D
-                }
-            }
-        }*/
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
         container.removeView(obj as View)
@@ -374,19 +297,6 @@ class ViewPagerAdapter(
         itemView.cvB.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
         itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
         itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer_quiz)
-
-      /*  if (options.equals("A")) {
-            itemView.cvA.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
-        }
-        if (options.equals("B")) {
-            itemView.cvB.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
-        }
-        if (options.equals("C")) {
-            itemView.cvC.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
-        }
-        if (options.equals("D")) {
-            itemView.cvD.background = ContextCompat.getDrawable(context, R.drawable.bg_answer)
-        }*/
 
         val selectedAnswer = if (optionASelected) {
             model?.option_A

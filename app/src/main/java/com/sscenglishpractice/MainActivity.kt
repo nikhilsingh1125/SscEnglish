@@ -50,6 +50,11 @@ class MainActivity : AppCompatActivity() {
             array.add(ListCategoryData("Oneword", ""))
             array.add(ListCategoryData("Idioms and pharses", ""))
         }
+        else if (type == "Stenographer") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
         else if (type == "MTS") {
             array.add(ListCategoryData("Synonyms", ""))
             array.add(ListCategoryData("Antonyms", ""))
@@ -92,6 +97,12 @@ class MainActivity : AppCompatActivity() {
             array.add(ListCategoryData("Oneword", ""))
             array.add(ListCategoryData("Idioms and pharses", ""))
         }
+        else if (type == "CPO_2020") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
 
         else if (type == "CGL_2019") {
             array.add(ListCategoryData("Synonyms", ""))
@@ -112,6 +123,18 @@ class MainActivity : AppCompatActivity() {
             array.add(ListCategoryData("Idioms and pharses", ""))
         }
         else if (type == "CHSL_2019") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
+        else if (type == "CGL_2023") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
+        else if (type == "PHASE_2023") {
             array.add(ListCategoryData("Synonyms", ""))
             array.add(ListCategoryData("Antonyms", ""))
             array.add(ListCategoryData("Oneword", ""))
@@ -202,6 +225,21 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("TYPE", "MTS_4")
                 intent.putExtra("Title", "IDIOMS 2022")
                 intent.putExtra("Category", "MTS IDIOMS 2022")
+            }
+        }
+        else if (type == "Stenographer") {
+            if (position == 0) {
+                intent.putExtra("TYPE", "Stenographer_1")
+                intent.putExtra("Title", "SYNONYMS 2022")
+                intent.putExtra("Category", "Stenographer SYNONYMS 2022")
+            } else if (position == 1) {
+                intent.putExtra("TYPE", "Stenographer_2")
+                intent.putExtra("Title", "ANTONYMS 2022")
+                intent.putExtra("Category", "Stenographer ANTONYMS 2022")
+            }  else if (position == 2) {
+                intent.putExtra("TYPE", "Stenographer_3")
+                intent.putExtra("Title", "IDIOMS 2022")
+                intent.putExtra("Category", "Stenographer IDIOMS 2022")
             }
         }
 
@@ -321,6 +359,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        else if (type == "CPO_2020") {
+            if (position == 0) {
+                intent.putExtra("TYPE", "CPO_2020_1")
+                intent.putExtra("Title", "SYNONYMS 2020")
+                intent.putExtra("Category", "CPO SYNONYMS 2020")
+            } else if (position == 1) {
+                intent.putExtra("TYPE", "CPO_2020_2")
+                intent.putExtra("Title", "ANTONYMS 2020")
+                intent.putExtra("Category", "CPO ANTONYMS 2020")
+            } else if (position == 2) {
+                intent.putExtra("TYPE", "CPO_2020_3")
+                intent.putExtra("Title", "ONEWORD 2020")
+                intent.putExtra("Category", "CPO ONEWORD 2020")
+            } else if (position == 3) {
+                intent.putExtra("TYPE", "CPO_2020_4")
+                intent.putExtra("Title", "IDIOMS 2020")
+                intent.putExtra("Category", "CPO IDIOMS 2020")
+            }
+        }
+
         else if (type == "CGL_2019") {
             if (position == 0) {
                 intent.putExtra("TYPE", "CGL_2019_1")
@@ -398,7 +456,44 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("Category", "CHSL IDIOMS 2019")
             }
         }
-
+        else if (type == "CGL_2023") {
+            if (position == 0) {
+                intent.putExtra("TYPE", "CGL_2023_1")
+                intent.putExtra("Title", "SYNONYMS 2023")
+                intent.putExtra("Category", "CGL SYNONYMS 2023")
+            } else if (position == 1) {
+                intent.putExtra("TYPE", "CGL_2023_2")
+                intent.putExtra("Title", "ANTONYMS 2023")
+                intent.putExtra("Category", "CGL ANTONYMS 2023")
+            } else if (position == 2) {
+                intent.putExtra("TYPE", "CGL_2023_3")
+                intent.putExtra("Title", "ONEWORD 2023")
+                intent.putExtra("Category", "CGL ONEWORD 2023")
+            } else if (position == 3) {
+                intent.putExtra("TYPE", "CGL_2023_4")
+                intent.putExtra("Title", "IDIOMS 2023")
+                intent.putExtra("Category", "CGL IDIOMS 2023")
+            }
+        }
+        else if (type == "PHASE_2023") {
+            if (position == 0) {
+                intent.putExtra("TYPE", "PHASE_2023_1")
+                intent.putExtra("Title", "SYNONYMS 2023")
+                intent.putExtra("Category", "CGL SYNONYMS 2023")
+            } else if (position == 1) {
+                intent.putExtra("TYPE", "PHASE_2023_2")
+                intent.putExtra("Title", "ANTONYMS 2023")
+                intent.putExtra("Category", "CGL ANTONYMS 2023")
+            } else if (position == 2) {
+                intent.putExtra("TYPE", "PHASE_2023_3")
+                intent.putExtra("Title", "ONEWORD 2023")
+                intent.putExtra("Category", "CGL ONEWORD 2023")
+            } else if (position == 3) {
+                intent.putExtra("TYPE", "PHASE_2023_4")
+                intent.putExtra("Title", "IDIOMS 2023")
+                intent.putExtra("Category", "CGL IDIOMS 2023")
+            }
+        }
 
 
         startActivity(intent)

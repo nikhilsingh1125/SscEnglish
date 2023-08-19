@@ -53,6 +53,7 @@ class CategoryActivity : AppCompatActivity() {
             array.add(ListCategoryData("SSC CHSL", "SSC CHSL 2022 Tier-I"))
             array.add(ListCategoryData("SSC CPO", "SSC CPO 2022 Tier-I"))
             array.add(ListCategoryData("SSC MTS", "SSC MTS 2022 Tier-I"))
+            array.add(ListCategoryData("SSC Stenographer", "SSC Stenographer Grade ‘C’ & ‘D’ 2022 Tier-I"))
         } else if (type == "2021") {
             array.add(ListCategoryData("SSC CGL", "SSC CGL 2021 Tier-I"))
             array.add(ListCategoryData("SSC CHSL", "SSC CHSL 2021 Tier-I"))
@@ -61,12 +62,14 @@ class CategoryActivity : AppCompatActivity() {
             array.add(ListCategoryData("SSC CGL", "SSC CGL 2020 Tier-I"))
             array.add(ListCategoryData("SSC CHSL", "SSC CHSL 2020 Tier-I"))
             array.add(ListCategoryData("SSC MTS", "SSC MTS 2020 Tier-I"))
+            array.add(ListCategoryData("SSC CPO", "SSC CPO 2020 Tier-I"))
         } else if (type == "2019") {
             array.add(ListCategoryData("SSC CGL", "SSC CGL 2019 Tier-I"))
             array.add(ListCategoryData("SSC MTS", "SSC MTS 2019 Tier-I"))
             array.add(ListCategoryData("SSC CPO", "SSC CPO 2019 Tier-I"))
             array.add(ListCategoryData("SSC CHSL", "SSC CHSL 2019 Tier-I"))
         } else if (type == "2023") {
+            array.add(ListCategoryData("SSC CGL", "SSC CGL 2023 Tier-I"))
             array.add(ListCategoryData("SSC PHASE", "SSC PHASE 11 2023 Tier-I"))
         }
 
@@ -89,6 +92,8 @@ class CategoryActivity : AppCompatActivity() {
                 intent.putExtra("TYPE", "CPO")
             } else if (position == 3) {
                 intent.putExtra("TYPE", "MTS")
+            } else if (position == 4) {
+                intent.putExtra("TYPE", "Stenographer")
             }
         } else if (type == "2021") {
             if (position == 0) {
@@ -105,6 +110,8 @@ class CategoryActivity : AppCompatActivity() {
                 intent.putExtra("TYPE", "MTS_2020")
             } else if (position == 2) {
                 intent.putExtra("TYPE", "CHSL_2020")
+            } else if (position == 3) {
+                intent.putExtra("TYPE", "CPO_2020")
             }
         } else if (type == "2019") {
             if (position == 0) {
@@ -116,6 +123,12 @@ class CategoryActivity : AppCompatActivity() {
             }
             else if (position == 3) {
                 intent.putExtra("TYPE", "CHSL_2019")
+            }
+        }else if (type == "2023") {
+            if (position == 0) {
+                intent.putExtra("TYPE", "CGL_2023")
+            } else if (position == 1) {
+                intent.putExtra("TYPE", "PHASE_2023")
             }
         }
 
