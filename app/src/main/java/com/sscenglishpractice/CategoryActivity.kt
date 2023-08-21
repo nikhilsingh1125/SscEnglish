@@ -71,6 +71,7 @@ class CategoryActivity : AppCompatActivity() {
         } else if (type == "2023") {
             array.add(ListCategoryData("SSC CGL", "SSC CGL 2023 Tier-I"))
             array.add(ListCategoryData("SSC PHASE", "SSC PHASE 11 2023 Tier-I"))
+            array.add(ListCategoryData("SSC CHSL", "SSC CHSL 2023 Tier-I"))
         }
 
 
@@ -129,6 +130,9 @@ class CategoryActivity : AppCompatActivity() {
                 intent.putExtra("TYPE", "CGL_2023")
             } else if (position == 1) {
                 intent.putExtra("TYPE", "PHASE_2023")
+            }
+            else if (position == 2) {
+                intent.putExtra("TYPE", "CHSL_2023")
             }
         }
 

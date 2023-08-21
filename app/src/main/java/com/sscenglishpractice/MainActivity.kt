@@ -140,6 +140,12 @@ class MainActivity : AppCompatActivity() {
             array.add(ListCategoryData("Oneword", ""))
             array.add(ListCategoryData("Idioms and pharses", ""))
         }
+        else if (type == "CHSL_2023") {
+            array.add(ListCategoryData("Synonyms", ""))
+            array.add(ListCategoryData("Antonyms", ""))
+            array.add(ListCategoryData("Oneword", ""))
+            array.add(ListCategoryData("Idioms and pharses", ""))
+        }
 
 
         recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -494,9 +500,28 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("Category", "CGL IDIOMS 2023")
             }
         }
+        else if (type == "CHSL_2023") {
+            if (position == 0) {
+                intent.putExtra("TYPE", "CHSL_2023_1")
+                intent.putExtra("Title", "SYNONYMS 2023")
+                intent.putExtra("Category", "CHSL SYNONYMS 2023")
+            } else if (position == 1) {
+                intent.putExtra("TYPE", "CHSL_2023_2")
+                intent.putExtra("Title", "ANTONYMS 2023")
+                intent.putExtra("Category", "CHSL ANTONYMS 2023")
+            } else if (position == 2) {
+                intent.putExtra("TYPE", "CHSL_2023_3")
+                intent.putExtra("Title", "ONEWORD 2023")
+                intent.putExtra("Category", "CHSL ONEWORD 2023")
+            } else if (position == 3) {
+                intent.putExtra("TYPE", "CHSL_2023_4")
+                intent.putExtra("Title", "IDIOMS 2023")
+                intent.putExtra("Category", "CHSL IDIOMS 2023")
+            }
 
+        }
 
-        startActivity(intent)
+            startActivity(intent)
     }
 
 }

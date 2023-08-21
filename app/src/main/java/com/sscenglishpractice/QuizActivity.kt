@@ -1738,7 +1738,8 @@ class QuizActivity : AppCompatActivity() {
                     // Handle errors here
                 }
             })
-        } else if (type == "CGL_2023_1") {
+        }
+        else if (type == "CGL_2023_1") {
             val database =
                 FirebaseDatabase.getInstance().getReference("SSC_CGL_2023/SYNONYMS_2023")
             database.addValueEventListener(object : ValueEventListener {
@@ -1763,7 +1764,8 @@ class QuizActivity : AppCompatActivity() {
                     // Handle errors here
                 }
             })
-        } else if (type == "CGL_2023_2") {
+        }
+        else if (type == "CGL_2023_2") {
             val database =
                 FirebaseDatabase.getInstance().getReference("SSC_CGL_2023/ANTONYMS_2023")
             database.addValueEventListener(object : ValueEventListener {
@@ -1788,7 +1790,8 @@ class QuizActivity : AppCompatActivity() {
                     // Handle errors here
                 }
             })
-        } else if (type == "CGL_2023_3") {
+        }
+        else if (type == "CGL_2023_3") {
             val database =
                 FirebaseDatabase.getInstance().getReference("SSC_CGL_2023/ONE_WORDS_2023")
             database.addValueEventListener(object : ValueEventListener {
@@ -1813,7 +1816,8 @@ class QuizActivity : AppCompatActivity() {
                     // Handle errors here
                 }
             })
-        } else if (type == "CGL_2023_4") {
+        }
+        else if (type == "CGL_2023_4") {
             val database =
                 FirebaseDatabase.getInstance().getReference("SSC_CGL_2023/IDIOMS_2023")
             database.addValueEventListener(object : ValueEventListener {
@@ -1838,7 +1842,9 @@ class QuizActivity : AppCompatActivity() {
                     // Handle errors here
                 }
             })
-        } else if (type == "PHASE_2023_1") {
+        }
+
+        else if (type == "PHASE_2023_1") {
             val database =
                 FirebaseDatabase.getInstance().getReference("SSC_PHASE_2023/SYNONYMS_2023")
             database.addValueEventListener(object : ValueEventListener {
@@ -1913,9 +1919,40 @@ class QuizActivity : AppCompatActivity() {
                     // Handle errors here
                 }
             })
-        } else if (type == "PHASE_2023_4") {
+        }
+        else if (type == "PHASE_2023_4") {
             val database =
                 FirebaseDatabase.getInstance().getReference("SSC_PHASE_2023/IDIOMS_2023")
+            database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    loader.visibility = View.GONE
+                    val description = dataSnapshot.child("Description").getValue(String::class.java)
+                    val questions = dataSnapshot.child("Questions")
+                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
+                    val quiz = QuestionWiseModel(
+                        "IDIOMS_2019",
+                        description,
+                        questions as ArrayList<QuestionData>
+                    )
+                    // Do something with the quiz object
+                    Log.e(TAG, "onDataChange: $questions")
+
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
+                    idViewPager.adapter = adapter
+                }
+
+
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors here
+                }
+            })
+        }
+
+
+        else if (type == "CHSL_2023_1") {
+            val database =
+                FirebaseDatabase.getInstance().getReference("SSC_CHSL_2023/SYNONYMS_2023")
             database.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     loader.visibility = View.GONE
@@ -1939,6 +1976,85 @@ class QuizActivity : AppCompatActivity() {
                 }
             })
         }
+        else if (type == "CHSL_2023_2") {
+            val database =
+                FirebaseDatabase.getInstance().getReference("SSC_CHSL_2023/ANTONYMS_2023")
+            database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    loader.visibility = View.GONE
+                    val description = dataSnapshot.child("Description").getValue(String::class.java)
+                    val questions = dataSnapshot.child("Questions")
+                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
+                    val quiz = QuestionWiseModel(
+                        "IDIOMS_2019",
+                        description,
+                        questions as ArrayList<QuestionData>
+                    )
+                    // Do something with the quiz object
+                    Log.e(TAG, "onDataChange: $questions")
+
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
+                    idViewPager.adapter = adapter
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors here
+                }
+            })
+        }
+        else if (type == "CHSL_2023_3") {
+            val database =
+                FirebaseDatabase.getInstance().getReference("SSC_CHSL_2023/ONE_WORDS_2023")
+            database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    loader.visibility = View.GONE
+                    val description = dataSnapshot.child("Description").getValue(String::class.java)
+                    val questions = dataSnapshot.child("Questions")
+                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
+                    val quiz = QuestionWiseModel(
+                        "IDIOMS_2019",
+                        description,
+                        questions as ArrayList<QuestionData>
+                    )
+                    // Do something with the quiz object
+                    Log.e(TAG, "onDataChange: $questions")
+
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
+                    idViewPager.adapter = adapter
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors here
+                }
+            })
+        }
+        else if (type == "CHSL_2023_4") {
+            val database =
+                FirebaseDatabase.getInstance().getReference("SSC_CHSL_2023/IDIOMS_2023")
+            database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    loader.visibility = View.GONE
+                    val description = dataSnapshot.child("Description").getValue(String::class.java)
+                    val questions = dataSnapshot.child("Questions")
+                        .getValue(object : GenericTypeIndicator<List<QuestionData>>() {})
+                    val quiz = QuestionWiseModel(
+                        "IDIOMS_2019",
+                        description,
+                        questions as ArrayList<QuestionData>
+                    )
+                    // Do something with the quiz object
+                    Log.e(TAG, "onDataChange: $questions")
+
+                    val adapter = ViewPagerAdapter(this@QuizActivity, questions, title, category)
+                    idViewPager.adapter = adapter
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors here
+                }
+            })
+        }
+
     }
 
     private fun keepObserve() {

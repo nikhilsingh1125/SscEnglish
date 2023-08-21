@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
     private fun addBannerImages() {
 
         val images = ArrayList<HomeBannerData>()
-        images.add(HomeBannerData(R.drawable.quotes))
+        images.add(HomeBannerData(R.drawable.quotes_banner))
         images.add(HomeBannerData(R.drawable.banner_2))
 
 
@@ -205,7 +205,7 @@ class HomeActivity : AppCompatActivity() {
     fun checkAndUpdateApp(versionCode: Int) {
         val currentVersionCode = Constants.getCurrentVersionCode(this)
 
-        if (currentVersionCode < versionCode) {
+        if (currentVersionCode != versionCode) {
             Constants.showUpdateDialog(this)
         }
     }
