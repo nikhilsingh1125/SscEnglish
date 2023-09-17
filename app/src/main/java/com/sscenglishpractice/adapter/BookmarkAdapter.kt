@@ -12,6 +12,7 @@ import com.sscenglishpractice.BookmarkQuizActivity
 import com.sscenglishpractice.R
 import com.sscenglishpractice.model.BookmarkedModel
 import kotlinx.android.synthetic.main.row_quiz_category.view.btnStart
+import kotlinx.android.synthetic.main.row_quiz_category.view.llLocked
 import kotlinx.android.synthetic.main.row_quiz_category.view.txtCatTitle
 
 class BookmarkAdapter(
@@ -30,6 +31,7 @@ class BookmarkAdapter(
         val model = arrayList[position]
 
         holder.itemView.txtCatTitle.text = model.name
+        holder.itemView.llLocked.visibility = View.GONE
 
 
         holder.itemView.btnStart.setOnClickListener {

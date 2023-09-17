@@ -123,7 +123,7 @@ class HomeCategoryActivity : AppCompatActivity() {
         } else if (position == 1) {
             startActivity(Intent(this, QuizCategoryActivity::class.java))
         } else if (position == 2) {
-            Toast.makeText(this, "Upcoming Feature", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, BookmarkSaveActivity::class.java))
         } else if (position == 3) {
             startActivity(Intent(this, AboutUsActivity::class.java))
         }

@@ -3,6 +3,8 @@ package com.sscenglishpractice
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -56,6 +58,29 @@ class ExamQuizsActivity : AppCompatActivity() {
     var wrongAns = 0
     private var mInterstitialAd: InterstitialAd? = null
     lateinit var adRequest :AdRequest
+    private var timerHandler: Handler = Handler(Looper.getMainLooper())
+
+    private val timerRunnable = object : Runnable {
+        override fun run() {
+            if (totalTimeInSeconds > 0) {
+                val timeHours = totalTimeInSeconds / 3600
+                val timeMinutes = (totalTimeInSeconds % 3600) / 60
+                val timeSeconds = totalTimeInSeconds % 60
+
+                val timerText = String.format("%02d:%02d:%02d", timeHours, timeMinutes, timeSeconds)
+                action_bar_Title.text = timerText
+                time = timerText
+
+                totalTimeInSeconds--
+                timerHandler.postDelayed(this, 1000)
+            } else {
+                action_bar_Title.text = "00:00:00"
+                isQuizRunning = false
+            }
+        }
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -313,30 +338,14 @@ class ExamQuizsActivity : AppCompatActivity() {
 
 
     private fun startQuizTimer(timeTakenAll: String) {
-
-        // Convert the dynamic time to total seconds
         val timeParts = timeTakenAll.split(":")
         val hours = timeParts[0].toInt()
         val minutes = timeParts[1].toInt()
         val seconds = timeParts[2].toInt()
         totalTimeInSeconds = (hours * 3600) + (minutes * 60) + seconds
-        object : CountDownTimer(quizDurationInMillis, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val timeHours = (millisUntilFinished / (1000 * 60 * 60)) % 24
-                val timeMinutes = (millisUntilFinished / (1000 * 60)) % 60
-                val timeSeconds = (millisUntilFinished / 1000) % 60
 
-                val timerText = String.format("%02d:%02d:%02d", timeHours, timeMinutes, timeSeconds)
-                action_bar_Title.text = timerText
-                time = timerText
-            }
-
-            override fun onFinish() {
-                action_bar_Title.text = "00:00:00"
-                isQuizRunning = false
-            }
-        }.start()
-
+        // Start the timer
+        timerHandler.post(timerRunnable)
         isQuizRunning = true
     }
 

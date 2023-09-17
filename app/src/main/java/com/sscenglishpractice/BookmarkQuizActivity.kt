@@ -18,21 +18,6 @@ class BookmarkQuizActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_bookmark)
 
-
-     /*   loader.setAnimation(R.raw.loader)
-        loader.visibility = View.VISIBLE
-        loader.playAnimation()
-
-        btnSubmit.visibility = View.GONE
-        action_bar_Title.text = "BookMark Question"
-
-        action_bar_back.visibility = View.VISIBLE
-        action_bar_share.visibility = View.GONE*/
-
-       /* action_bar_back.setOnClickListener {
-            onBackPressed()
-        }*/
-
         initBookmark()
     }
 

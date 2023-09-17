@@ -7,7 +7,8 @@ data class QuizCategoryModel(
     val Description: String = "",
     val Questions: List<Question> = emptyList(),
     val Test_Title: String = "",
-    val Time_taken: String = ""
+    val Time_taken: String = "",
+    var isQuizLocked: Boolean = true,
 )
 
 data class Question(

@@ -98,7 +98,7 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
                         android:src="@drawable/unfill_book"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/imgBookmarkFill"

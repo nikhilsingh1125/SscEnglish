@@ -2,10 +2,12 @@ package com.sscenglishpractice.adapter
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -77,6 +79,7 @@ class ViewPagerAdapter(
 
     // on below line we are initializing
     // our item and inflating our layout file
+    @SuppressLint("HardwareIds")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         // on below line we are initializing
@@ -137,7 +140,8 @@ class ViewPagerAdapter(
             itemView.imgBookmarkUnfill.visibility = View.VISIBLE
         }
 
-
+        val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        Log.e("ViewPager", "deviceId ==> : $deviceId")
         itemView.imgBookmarkUnfill.setOnClickListener {
             if (!model.isBookmark) {
                 itemView.imgBookmarkFill.visibility = View.VISIBLE
@@ -147,7 +151,7 @@ class ViewPagerAdapter(
                 // Update bookmark state in SharedPreferences
                 sharedPrefs.edit().putBoolean(questionIdentifier, true).apply()
 
-                saveBookmarkedQuestions(model)
+                saveBookmarkedQuestions(model,deviceId)
             }
         }
 
@@ -161,7 +165,7 @@ class ViewPagerAdapter(
                 sharedPrefs.edit().putBoolean(questionIdentifier, false).apply()
 
                 // Call the removeBookmarkedQuestionFromDatabase function with the question's type, category, and identifier
-                removeBookmarkForQuestion(model,category)
+                removeBookmarkForQuestion(model,category,deviceId)
             }
         }
 
@@ -596,10 +600,12 @@ class ViewPagerAdapter(
     private fun saveBookmarkedQuestionsToDatabase(
         bookmarkedQuestions: List<QuestionData>,
         category: String,
-        model: QuestionData
+        model: QuestionData,
+        deviceId: String // Pass the deviceId as a parameter
     ) {
         val firebaseDatabase = FirebaseDatabase.getInstance()
-        val databaseReference = firebaseDatabase.reference.child("bookmarked_questions")
+        // Create a reference using the deviceId to make it unique per device
+        val databaseReference = firebaseDatabase.reference.child("bookmarked_questions").child(deviceId)
 
         // Create a set to keep track of saved questions and answers
         val savedQuestionsAndAnswers = mutableSetOf<Pair<String, String>>()
@@ -626,13 +632,10 @@ class ViewPagerAdapter(
                         if (!savedQuestionsAndAnswers.contains(pair)) {
                             // Create data to be saved in the database
 
-
-                            val arrayRemoveBook = arrayList.filter { !it.isBookmark }
                             // Create a unique identifier for each question
-                            val questionIdentifier = databaseReference.child("categories").child(category).push().key.toString()
+                            val questionIdentifier =
+                                databaseReference.child("categories").child(category).push().key.toString()
                             model.questionIdentifier = questionIdentifier
-                            Log.e("RemoveBookmark", "saveBookmarked ==> :$questionIdentifier")
-                            Log.e("RemoveBookmark", "saveBookmarked ==> :${arrayRemoveBook.size}")
 
                             val dataToSave = mapOf(
                                 "question" to questionText,
@@ -675,14 +678,15 @@ class ViewPagerAdapter(
 
 
 
-    fun saveBookmarkedQuestions(model: QuestionData) {
+
+    fun saveBookmarkedQuestions(model: QuestionData, deviceId: String) {
         val bookmarkedQuestions = getBookmarkedQuestions()
-        saveBookmarkedQuestionsToDatabase(bookmarkedQuestions,category,model)
+        saveBookmarkedQuestionsToDatabase(bookmarkedQuestions,category,model,deviceId)
     }
 
-    fun removeBookmarkForQuestion(question: QuestionData, category: String) {
+    fun removeBookmarkForQuestion(question: QuestionData, category: String, deviceId: String) {
         val firebaseDatabase = FirebaseDatabase.getInstance()
-        val databaseReference = firebaseDatabase.reference.child("bookmarked_questions")
+        val databaseReference = firebaseDatabase.reference.child("bookmarked_questions").child(deviceId)
 
         val questionIdentifier = question.questionIdentifier
 

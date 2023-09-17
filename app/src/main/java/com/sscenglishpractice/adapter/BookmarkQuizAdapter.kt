@@ -2,10 +2,12 @@ package com.sscenglishpractice.adapter
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -70,6 +72,7 @@ class BookmarkQuizAdapter(
 
     // on below line we are initializing
     // our item and inflating our layout file
+    @SuppressLint("HardwareIds")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         // on below line we are initializing
@@ -132,13 +135,14 @@ class BookmarkQuizAdapter(
                 saveBookmarkedQuestions(model)
             }
         }*/
-
+        val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        Log.e("BookMarkActivity", "deviceId ==> : $deviceId")
         itemView.imgBookmarkFill.setOnClickListener {
             if (model.isBookmark) {
                 itemView.imgBookmarkFill.visibility = View.GONE
                 itemView.imgBookmarkUnfill.visibility = View.VISIBLE
                 model.isBookmark = false
-                removeBookmarkForQuestion(model, title,itemView)
+                removeBookmarkForQuestion(model, title,deviceId)
             }
         }
 
@@ -499,16 +503,17 @@ class BookmarkQuizAdapter(
     }
 
 
-    fun removeBookmarkForQuestion(question: QuestionData, category: String, itemView: View) {
+    fun removeBookmarkForQuestion(
+        question: QuestionData,
+        category: String,
+        deviceId: String,
+    ) {
         val firebaseDatabase = FirebaseDatabase.getInstance()
-        val databaseReference = firebaseDatabase.reference.child("bookmarked_questions")
-
+        val databaseReference = firebaseDatabase.reference.child("bookmarked_questions").child(deviceId)
 
         val questionIdentifier = question.questionIdentifier
 
         Log.e("RemoveBookmark", "questionIdentifier ==> :$questionIdentifier ")
-        Log.e("RemoveBookmark", "category ==> :$category ")
-
 
         // Remove the question using the unique identifier
         if (questionIdentifier != null) {

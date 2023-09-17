@@ -1,6 +1,8 @@
 package com.sscenglishpractice
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -27,6 +29,7 @@ import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
 class BookmarkSaveActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
 
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookmark_save2)
@@ -40,30 +43,21 @@ class BookmarkSaveActivity : AppCompatActivity() {
         loader.setAnimation(R.raw.loader)
         loader.visibility = View.VISIBLE
         loader.playAnimation()
-        getResultData()
+
+
+        val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        Log.e("BookMarkActivity", "deviceId ==> : $deviceId")
+        getResultData(deviceId)
 
         action_bar_back.setOnClickListener {
             onBackPressed()
         }
 
-        val savedCategory = Constants.getCategoryFromSharedPreferences(this)
-
-        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val category = sh.getString("Category", "")
-
-        Log.e("BookMarkActivity", "category: $category")
-
-        if (category != null) {
-            getResultData()
-        } else {
-            Toast.makeText(this, "Data Not Available", Toast.LENGTH_SHORT).show()
-        }
-
     }
 
-    private fun getResultData() {
+    private fun getResultData(deviceId: String) {
 
-        database = FirebaseDatabase.getInstance().reference.child("bookmarked_questions")
+        database = FirebaseDatabase.getInstance().reference.child("bookmarked_questions").child(deviceId)
             .child("categories")
 
 
