@@ -1,10 +1,13 @@
 package com.sscenglishpractice.utils
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.provider.Settings
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.R
@@ -83,6 +86,13 @@ object Constants {
 
     // Check for update and show the popup if available
 
+    @SuppressLint("HardwareIds")
+    fun getDeviceId(context: Context): String? {
+        return Settings.Secure.getString(
+            context.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+    }
 
     fun getBookmarkDataForCategory(category: String) {
         val firestore = FirebaseFirestore.getInstance()
@@ -133,6 +143,26 @@ object Constants {
                 Log.e("SelectedUI", "Error fetching category names: ${e.message}", e)
             }
 
+    }
+
+    fun saveCategoryToSharedPreferences(context: Context, category: String) {
+        val sharedPreferencesFileName = "BookMarkPref"
+
+        val sharedPreferences = context.getSharedPreferences(sharedPreferencesFileName, Context.MODE_PRIVATE)
+
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+
+        editor.putString("category", category)
+
+        editor.apply()
+    }
+
+    fun getCategoryFromSharedPreferences(context: Context): String? {
+        val sharedPreferencesFileName = "BookMarkPref"
+
+        val sharedPreferences = context.getSharedPreferences(sharedPreferencesFileName, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString("category", null)
     }
 
 

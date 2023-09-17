@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QuizActivity"
+    android:background="@color/dark_blue"
+   >
+
+  <!--  <LinearLayout
+        android:id="@+id/toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+
+        <include layout="@layout/custom_toolbar" />
+    </LinearLayout>-->
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/idViewPagerBookmark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       />
+
+ <!-- <com.google.android.gms.ads.AdView
+      android:id="@+id/ad_view_quiz"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:layout_alignParentBottom="true"
+      app:adSize="BANNER"
+      android:visibility="visible"
+      app:adUnitId="@string/quiz_banner_ad_unit_id"
+      />-->
+
+
+
+  <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:lottie_loop="true" />
+</RelativeLayout>

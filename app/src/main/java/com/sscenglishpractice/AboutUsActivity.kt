@@ -7,12 +7,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.sscenglishpractice.utils.Constants
 import kotlinx.android.synthetic.main.activity_about_us.btnGmail
 import kotlinx.android.synthetic.main.activity_about_us.btnRating
 import kotlinx.android.synthetic.main.activity_about_us.btnTelegram
 import kotlinx.android.synthetic.main.activity_about_us.txtVersionName
-import kotlinx.android.synthetic.main.custom_toolbar.action_about
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_Title
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_back
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
@@ -25,7 +23,6 @@ class AboutUsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_about_us)
 
 
-        action_about.visibility = View.GONE
         action_bar_share.visibility = View.GONE
         btnSubmit.visibility = View.GONE
         action_bar_back.visibility = View.VISIBLE
@@ -68,7 +65,7 @@ class AboutUsActivity : AppCompatActivity() {
         }
 
         btnRating.setOnClickListener {
-            val playStoreUrl = "https://play.google.com/store/search?q=ssc+vocab+booster&c=apps&hl=en-IN"
+            val playStoreUrl = "https://play.google.com/store/apps/details?id=com.sscenglishpractice"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(playStoreUrl))
 
             if (intent.resolveActivity(packageManager) != null) {

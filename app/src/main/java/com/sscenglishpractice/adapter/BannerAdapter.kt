@@ -8,6 +8,8 @@ import android.widget.LinearLayout
 import androidx.annotation.NonNull
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.sscenglishpractice.model.HomeBannerData
 import kotlinx.android.synthetic.main.image_view_banner.view.imageViewMain
 import java.util.Objects
@@ -46,10 +48,13 @@ internal class BannerAdapter(context: Context, images: ArrayList<HomeBannerData>
         val itemView: View = mLayoutInflater.inflate(com.sscenglishpractice.R.layout.image_view_banner, container, false)
 
         val model = images[position]
+
+        val requestOptions = RequestOptions().transform(RoundedCorners(20))
         model.let {
             Glide.with(context)
-                .load(it.banner)
-                .into(itemView.imageViewMain);
+                .load(model.banner)
+                .apply(requestOptions)
+                .into(itemView.imageViewMain)
         }
 
 

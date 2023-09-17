@@ -11,13 +11,10 @@ import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sscenglishpractice.adapter.ViewSolutionAdapter
-import com.sscenglishpractice.model.Question
 import com.sscenglishpractice.model.QuestionRes
 import com.sscenglishpractice.model.ResultShowData
-import com.sscenglishquiz.model.QuestionData
 import kotlinx.android.synthetic.main.activity_quiz.loader
 import kotlinx.android.synthetic.main.activity_view_solution.idViewPagerSol
-import kotlinx.android.synthetic.main.custom_toolbar.action_about
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_Title
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_back
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
@@ -45,7 +42,7 @@ class ViewSolutionActivity : AppCompatActivity() {
 
         arrResultDetailsData = arrayListOf()
 
-        action_about.visibility = View.GONE
+
         action_bar_share.visibility = View.GONE
         btnSubmit.visibility = View.GONE
         action_bar_back.visibility = View.VISIBLE

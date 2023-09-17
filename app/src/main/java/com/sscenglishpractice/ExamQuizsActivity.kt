@@ -9,6 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -23,6 +30,7 @@ import com.sscenglishpractice.model.QuizResult
 import kotlinx.android.synthetic.main.activity_exam_quizs.rvQuestions
 import kotlinx.android.synthetic.main.activity_exam_quizs.toolbarQuiz
 import kotlinx.android.synthetic.main.activity_exam_quizs.vpViewPager
+import kotlinx.android.synthetic.main.activity_home_category.adView
 import kotlinx.android.synthetic.main.activity_quiz.loader
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_Title
 import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
@@ -43,16 +51,36 @@ class ExamQuizsActivity : AppCompatActivity() {
     var timeTaken = ""
     var pos = 0
     var totalTimeInSeconds = 0
-
+    var receivedTestTitle =""
     var correctAns = 0
     var wrongAns = 0
+    private var mInterstitialAd: InterstitialAd? = null
+    lateinit var adRequest :AdRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exam_quizs)
-
+        adRequest = AdRequest.Builder().build()
         initUi()
         handleClicks()
+        MobileAds.initialize(this) {}
+        adView.loadAd(adRequest)
+
+
+
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                adError.toString().let { Log.d(TAG, it) }
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                Log.d(TAG, "Ad was loaded.")
+                mInterstitialAd = interstitialAd
+            }
+        })
+
+
 
 
     }
@@ -61,44 +89,79 @@ class ExamQuizsActivity : AppCompatActivity() {
 
         btnSubmit.setOnClickListener {
 
-            if (questions[pos].isGivenAnswer) {
-                if (questions[pos].userSelectAnswer == questions[pos].answer) {
-                    correctAns++
-                } else {
-                    wrongAns++
+            if (mInterstitialAd != null) {
+                mInterstitialAd?.show(this)
+                mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                    override fun onAdClicked() {
+                        // Called when a click is recorded for an ad.
+                        Log.d(TAG, "Ad was clicked.")
+                    }
+
+                    override fun onAdDismissedFullScreenContent() {
+                        // Called when ad is dismissed.
+                        Log.d(TAG, "Ad dismissed fullscreen content.")
+                        if (questions[pos].isGivenAnswer) {
+                            if (questions[pos].userSelectAnswer == questions[pos].answer) {
+                                correctAns++
+                            } else {
+                                wrongAns++
+                            }
+                        }
+
+                        val givenAnswer = questions.filter { it.isGivenAnswer }
+                        val correctAnswer = givenAnswer.filter { it.userSelectAnswer == it.answer }
+                        val wrongAnswer = givenAnswer.filter { it.userSelectAnswer != it.answer }
+
+                        val count = correctAnswer.size
+                        Log.d("Answers", "givenAnswer ==>${givenAnswer.size}")
+                        Log.d("Answers", "correctAns ==>${correctAnswer.size}")
+                        Log.d("Answers", "wrongAnswer ==>${wrongAnswer.size}")
+                        Log.d("Answers", "questions ==>${questions.size}")
+
+                        loader.visibility = View.VISIBLE
+                        loader.playAnimation()
+                        val quizResult = QuizResult(questions)
+                        val databaseReference = FirebaseDatabase.getInstance().getReference("QuizResults")
+                        databaseReference.push().setValue(quizResult)
+                            .addOnSuccessListener {
+                                loader.visibility = View.GONE
+                                val intent = Intent(this@ExamQuizsActivity, QuizResultActivity::class.java)
+                                intent.putExtra("CorrectAnswer", correctAnswer.size)
+                                intent.putExtra("WrongAnswer", wrongAnswer.size)
+                                intent.putExtra("TotalQuestions", questions.size)
+                                intent.putExtra("Time", time)
+                                intent.putExtra("TotalTime", timeTaken)
+                                startActivity(intent)
+                                finish()
+                                Log.d(TAG, "Quiz result saved successfully!")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e(TAG, "Failed to save quiz result: ${e.message}", e)
+                            }
+                        mInterstitialAd = null
+                    }
+
+                    override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                        // Called when ad fails to show.
+                        Log.e(TAG, "Ad failed to show fullscreen content.")
+                        mInterstitialAd = null
+                    }
+
+                    override fun onAdImpression() {
+                        // Called when an impression is recorded for an ad.
+                        Log.d(TAG, "Ad recorded an impression.")
+                    }
+
+                    override fun onAdShowedFullScreenContent() {
+                        // Called when ad is shown.
+                        Log.d(TAG, "Ad showed fullscreen content.")
+                    }
                 }
             }
+            else {
+                Log.d("TAG", "The interstitial ad wasn't ready yet.")
 
-            val givenAnswer = questions.filter { it.isGivenAnswer}
-            val correctAnswer = givenAnswer.filter { it.userSelectAnswer == it.answer }
-            val wrongAnswer = givenAnswer.filter { it.userSelectAnswer != it.answer }
-
-            val count = correctAnswer.size
-            Log.d("Answers", "givenAnswer ==>${givenAnswer.size}")
-            Log.d("Answers", "correctAns ==>${correctAnswer.size}")
-            Log.d("Answers", "wrongAnswer ==>${wrongAnswer.size}")
-            Log.d("Answers", "questions ==>${questions.size}")
-
-            loader.visibility = View.VISIBLE
-            loader.playAnimation()
-            val quizResult = QuizResult(questions)
-            val databaseReference = FirebaseDatabase.getInstance().getReference("QuizResults")
-            databaseReference.push().setValue(quizResult)
-                .addOnSuccessListener {
-                    loader.visibility = View.GONE
-                    val intent = Intent(this, QuizResultActivity::class.java)
-                    intent.putExtra("CorrectAnswer",correctAnswer.size)
-                    intent.putExtra("WrongAnswer",wrongAnswer.size)
-                    intent.putExtra("TotalQuestions",questions.size)
-                    intent.putExtra("Time",time)
-                    intent.putExtra("TotalTime",timeTaken)
-                    startActivity(intent)
-                    finish()
-                    Log.d(TAG, "Quiz result saved successfully!")
-                }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Failed to save quiz result: ${e.message}", e)
-                }
+            }
 
         }
     }
@@ -109,16 +172,14 @@ class ExamQuizsActivity : AppCompatActivity() {
         isResult = intentData.getBooleanExtra("ResultSolution", false)
         Log.e(TAG, "isResult: $isResult")
 
-        if (!isResult){
+        if (!isResult) {
             val receivedBundle = intent.extras
             if (receivedBundle != null) {
-                questions = receivedBundle.getParcelableArrayList<Question>("questionsList") as ArrayList<Question>
-                val receivedTestTitle = receivedBundle.getString("testTitle")
-                timeTaken= receivedBundle.getString("timeTaken").toString()
-                if (questions != null) {
-                    // Use the receivedQuestions list in your activity as needed
-                    Log.e(TAG, "questions ==>: $questions" )
-                }
+                questions =
+                    receivedBundle.getParcelableArrayList<Question>("questionsList") as ArrayList<Question>
+                 receivedTestTitle = receivedBundle.getString("testTitle").toString()
+                timeTaken = receivedBundle.getString("timeTaken").toString()
+                Log.e(TAG, "questions ==>: $questions")
             }
         }
 
@@ -128,11 +189,15 @@ class ExamQuizsActivity : AppCompatActivity() {
             loader.visibility = View.VISIBLE
             loader.playAnimation()
             getResultData()
-        }
-        else {
+        } else {
 
+            Log.e(TAG, "timeTaken ==> : $timeTaken", )
             if (!isQuizRunning) {
-                startQuizTimer(timeTaken)
+                if (timeTaken != "null") {
+                    startQuizTimer(timeTaken)
+                } else {
+                    action_bar_Title.text = receivedTestTitle
+                }
             }
 
             loader.visibility = View.GONE
@@ -141,7 +206,8 @@ class ExamQuizsActivity : AppCompatActivity() {
 
 
             rvAdapter = QuestionPositionAdapter(this@ExamQuizsActivity, questions)
-            val layoutManager = LinearLayoutManager(this@ExamQuizsActivity, RecyclerView.HORIZONTAL, false)
+            val layoutManager =
+                LinearLayoutManager(this@ExamQuizsActivity, RecyclerView.HORIZONTAL, false)
             rvQuestions.layoutManager = layoutManager
             rvQuestions.adapter = rvAdapter
 
@@ -172,7 +238,7 @@ class ExamQuizsActivity : AppCompatActivity() {
             }
         })
 
-        if (time == "00:00:00"){
+        if (time == "00:00:00") {
             timeEndDialog()
         }
     }
@@ -188,20 +254,21 @@ class ExamQuizsActivity : AppCompatActivity() {
 
                 loader.visibility = View.GONE
                 toolbarQuiz.visibility = View.VISIBLE
-                action_bar_Title.text ="Solutions"
-                btnSubmit.text ="Back"
+                action_bar_Title.text = "Solutions"
+                btnSubmit.text = "Back"
 
 
                 for (childSnapshot in dataSnapshot.children) {
 
-                     questions = childSnapshot.child("questions")
-                         .getValue(object : GenericTypeIndicator<List<Question>>() {}) as ArrayList<Question>
+                    questions = childSnapshot.child("questions")
+                        .getValue(object :
+                            GenericTypeIndicator<List<Question>>() {}) as ArrayList<Question>
 
-                 /*   val quizResult = questions?.let { QuizQuestion() }
-                    if (quizResult != null) {
-                        quizResults.add(quizResult)
-                        Log.d("SelectedUI", "QuizResults ===>: $questions")
-                    }*/
+                    /*   val quizResult = questions?.let { QuizQuestion() }
+                       if (quizResult != null) {
+                           quizResults.add(quizResult)
+                           Log.d("SelectedUI", "QuizResults ===>: $questions")
+                       }*/
 
                     Log.d("SelectedUI", "QuizResults ===>: $questions")
                     val adapter = ExamAdapter(
@@ -273,7 +340,7 @@ class ExamQuizsActivity : AppCompatActivity() {
         isQuizRunning = true
     }
 
-    fun timeEndDialog(){
+    fun timeEndDialog() {
         val pDialog = PrettyDialog(this)
         pDialog
             .setTitle(getString(R.string.app_name))
@@ -286,7 +353,7 @@ class ExamQuizsActivity : AppCompatActivity() {
             )  // button background color
             {
                 pDialog.dismiss()
-                val intent = Intent(this,QuizResultActivity::class.java)
+                val intent = Intent(this, QuizResultActivity::class.java)
                 startActivity(intent)
                 finish()
             }

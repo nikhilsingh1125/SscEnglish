@@ -3,6 +3,7 @@ package com.sscenglishpractice.adapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -10,12 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
-import com.sscenglishpractice.ExamQuizsActivity
+import com.google.firebase.database.ValueEventListener
 import com.sscenglishpractice.QuizActivity
 import com.sscenglishpractice.R
 import com.sscenglishpractice.utils.AppDatabase
@@ -23,9 +25,7 @@ import com.sscenglishquiz.model.DbResultShowData
 import com.sscenglishquiz.model.QuestionData
 import com.sscenglishpractice.model.ResultShowData
 import kotlinx.android.synthetic.main.custom_toolbar.view.btnSubmit
-import kotlinx.android.synthetic.main.row_exam_quizes.view.btnPrev
 import kotlinx.android.synthetic.main.row_question_list.view.*
-import kotlinx.android.synthetic.main.row_solution_list.view.btnPrevResult
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -35,7 +35,8 @@ class ViewPagerAdapter(
     val context: Context,
     val arrayList: ArrayList<QuestionData>,
     val title: String,
-    val category: String
+    val category: String,
+    val type: String
 ) :
     PagerAdapter() {
     // on below line we are creating a method
@@ -53,6 +54,11 @@ class ViewPagerAdapter(
     var givenAnswerCount = 0
     val resultDataList = mutableListOf<ResultShowData>()
     var skipedAnswer = 0
+    val bookmarkStates: MutableMap<String, Boolean> = mutableMapOf()
+    private val sharedPrefs: SharedPreferences = context.getSharedPreferences(
+        "bookmark_prefs",
+        Context.MODE_PRIVATE
+    )
 
     private val selectedAnswers =
         HashMap<Int, String?>() // Store selected answers for each question position
@@ -86,8 +92,9 @@ class ViewPagerAdapter(
 
 
 
-        val model = arrayList.get(position)
+        val model = arrayList[position]
 
+        Log.e("instantiateItem", " Type_of_question===> : ${model.Type_of_question}", )
         itemView.txtQuizTitle.text = title
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -104,23 +111,62 @@ class ViewPagerAdapter(
 
         model.isSkipAnswer = !(model.isSelectedAnswer && model.isGivenAnswer)
 
-        Log.e("Answers", " isSkipAnswer :${model.isSkipAnswer} ")
-    /*    itemView.imgBookmarkUnfill.setOnClickListener {
+        if (model.Type_of_question.isNullOrBlank()){
+            itemView.txtTypeQuestion.visibility = View.GONE
+        }
+        else{
+            itemView.txtTypeQuestion.visibility = View.VISIBLE
+            itemView.txtTypeQuestion.text = model.Type_of_question
+        }
+
+//        val questionIdentifier = model.generateIdentifier()
+
+        val questionIdentifier = model.generateIdentifier()
+        val isBookmarked = sharedPrefs.getBoolean(questionIdentifier, false)
+
+        Log.e("Answers", "questionIdentifier ==> :${model.questionIdentifier} ")
+        Log.e("Answers", "isBookmarked ==> :${isBookmarked} ")
+        Log.e("Answers", "model.isBookmark ==> :${model.isBookmark} ")
+        Log.e("Answers", "model.questionIdentifier ==> :${model.questionIdentifier} ")
+        // Update bookmark UI based on the loaded state
+        if (model.isBookmark) {
+            itemView.imgBookmarkFill.visibility = View.VISIBLE
+            itemView.imgBookmarkUnfill.visibility = View.GONE
+        } else {
+            itemView.imgBookmarkFill.visibility = View.GONE
+            itemView.imgBookmarkUnfill.visibility = View.VISIBLE
+        }
+
+
+        itemView.imgBookmarkUnfill.setOnClickListener {
             if (!model.isBookmark) {
                 itemView.imgBookmarkFill.visibility = View.VISIBLE
-                itemView.imgBookmarkUnfill.visibility = View.GONE // Hide the unfill bookmark icon
+                itemView.imgBookmarkUnfill.visibility = View.GONE
                 model.isBookmark = true
+
+                // Update bookmark state in SharedPreferences
+                sharedPrefs.edit().putBoolean(questionIdentifier, true).apply()
+
+                saveBookmarkedQuestions(model)
             }
         }
 
         itemView.imgBookmarkFill.setOnClickListener {
             if (model.isBookmark) {
-                itemView.imgBookmarkFill.visibility = View.GONE // Hide the fill bookmark icon
+                itemView.imgBookmarkFill.visibility = View.GONE
                 itemView.imgBookmarkUnfill.visibility = View.VISIBLE
                 model.isBookmark = false
-            }
-        }*/
 
+                // Update bookmark state in SharedPreferences
+                sharedPrefs.edit().putBoolean(questionIdentifier, false).apply()
+
+                // Call the removeBookmarkedQuestionFromDatabase function with the question's type, category, and identifier
+                removeBookmarkForQuestion(model,category)
+            }
+        }
+
+
+        Log.e("GenerateIdentifier", " isSkipAnswer :${model.isBookmark} ")
 
         // on the below line we are adding this
         // item view to the container.
@@ -540,6 +586,125 @@ class ViewPagerAdapter(
         // Start the animation
         animatorSet.start()
     }
+
+
+
+    fun getBookmarkedQuestions(): List<QuestionData> {
+        return arrayList.filter { it.isBookmark }
+    }
+
+    private fun saveBookmarkedQuestionsToDatabase(
+        bookmarkedQuestions: List<QuestionData>,
+        category: String,
+        model: QuestionData
+    ) {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseReference = firebaseDatabase.reference.child("bookmarked_questions")
+
+        // Create a set to keep track of saved questions and answers
+        val savedQuestionsAndAnswers = mutableSetOf<Pair<String, String>>()
+
+        // Retrieve existing questions and answers if any
+        databaseReference.child("categories").child(category)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (childSnapshot in dataSnapshot.children) {
+                        val question = childSnapshot.child("question").getValue(String::class.java)
+                        val answer = childSnapshot.child("answer").getValue(String::class.java)
+                        if (question != null && answer != null) {
+                            savedQuestionsAndAnswers.add(Pair(question, answer))
+                        }
+                    }
+
+                    // Now, you can save new questions if they are not already in the set
+                    for (question in bookmarkedQuestions) {
+                        val questionText = question.question
+                        val answerText = question.answer
+
+                        // Check if the question and answer pair already exists
+                        val pair = Pair(questionText, answerText)
+                        if (!savedQuestionsAndAnswers.contains(pair)) {
+                            // Create data to be saved in the database
+
+
+                            val arrayRemoveBook = arrayList.filter { !it.isBookmark }
+                            // Create a unique identifier for each question
+                            val questionIdentifier = databaseReference.child("categories").child(category).push().key.toString()
+                            model.questionIdentifier = questionIdentifier
+                            Log.e("RemoveBookmark", "saveBookmarked ==> :$questionIdentifier")
+                            Log.e("RemoveBookmark", "saveBookmarked ==> :${arrayRemoveBook.size}")
+
+                            val dataToSave = mapOf(
+                                "question" to questionText,
+                                "answer" to answerText,
+                                "questionIdentifier" to model.questionIdentifier,
+                                "option_A" to question.option_A,
+                                "option_B" to question.option_B,
+                                "option_C" to question.option_C,
+                                "option_D" to question.option_D,
+                                "Solutions" to question.Solutions,
+                                "isGivenAnswer" to question.isGivenAnswer,
+                                "optionsSelected" to question.optionsSelected,
+                                "selectedOptionsAnswer" to question.selectedOptionsAnswer,
+                                "testCategory" to question.testCategory,
+                                "isBookmark" to question.isBookmark,
+                                "isSelectedAnswer" to question.isSelectedAnswer,
+                                "isSkipAnswer" to question.isSkipAnswer,
+                                "isWrongAnswer" to question.isWrongAnswer,
+                                "questionIdentifier" to question.questionIdentifier
+                            )
+
+                            databaseReference.child("categories").child(category).child(questionIdentifier)
+                                .setValue(dataToSave)
+                                .addOnSuccessListener {
+                                    // Data saved successfully
+                                }
+                                .addOnFailureListener { e ->
+                                    // Handle any errors
+                                }
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle database error
+                }
+            })
+    }
+
+
+
+
+    fun saveBookmarkedQuestions(model: QuestionData) {
+        val bookmarkedQuestions = getBookmarkedQuestions()
+        saveBookmarkedQuestionsToDatabase(bookmarkedQuestions,category,model)
+    }
+
+    fun removeBookmarkForQuestion(question: QuestionData, category: String) {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseReference = firebaseDatabase.reference.child("bookmarked_questions")
+
+        val questionIdentifier = question.questionIdentifier
+
+        Log.e("RemoveBookmark", "questionIdentifier ==> :$questionIdentifier ")
+
+        // Remove the question using the unique identifier
+        if (questionIdentifier != null) {
+            databaseReference.child("categories").child(category).child(questionIdentifier)
+                .removeValue()
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Remove Bookmark", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+
+                }
+        }
+    }
+
+
+
+
+
 
 
 

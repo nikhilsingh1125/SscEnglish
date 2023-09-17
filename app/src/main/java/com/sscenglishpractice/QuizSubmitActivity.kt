@@ -99,7 +99,7 @@ class QuizSubmitActivity : AppCompatActivity() {
 
 
         val correctAnswerValue =
-            correctAnswer?.toFloat() ?: 0f // Replace with the actual value of correct answers
+            correctAnswer.toFloat() ?: 0f // Replace with the actual value of correct answers
         val incorrectAnswerValue =
             incorrectAnswer?.toFloat() ?: 0f // Replace with the actual value of incorrect answers
 
@@ -137,7 +137,8 @@ class QuizSubmitActivity : AppCompatActivity() {
 
 
         btnReattempt.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, HomeCategoryActivity::class.java))
+            finish()
         }
 
         Log.d("QuizSubmitActivity", "correctAnswer 1: $correctAnswer")

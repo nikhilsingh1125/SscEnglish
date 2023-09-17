@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -22,10 +20,9 @@ import com.sscenglishpractice.adapter.HomeAdapter
 import com.sscenglishpractice.model.CategoryModel
 import com.sscenglishpractice.model.HomeBannerData
 import com.sscenglishpractice.utils.Constants
-import kotlinx.android.synthetic.main.activity_home.indicator
-import kotlinx.android.synthetic.main.activity_home.viewPagerMain
 import kotlinx.android.synthetic.main.activity_main.recyclerView
-import kotlinx.android.synthetic.main.custom_toolbar.action_about
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_Title
+import kotlinx.android.synthetic.main.custom_toolbar.action_bar_back
 import kotlinx.android.synthetic.main.custom_toolbar.action_bar_share
 import kotlinx.android.synthetic.main.custom_toolbar.btnSubmit
 
@@ -40,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
 
         val TAG = "HomeActivity"
 
-        getVersion()
+//        getVersion()
 
        /* MobileAds.initialize(this)
 
@@ -49,19 +46,18 @@ class HomeActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         ad_view_home.c(adRequest)*/
 
-        addBannerImages()
+//        addBannerImages()
 
 
-
-
-        action_bar_share.setOnClickListener {
-            Constants.shareApp(this)
-        }
-        action_about.visibility = View.VISIBLE
-        action_about.setOnClickListener {
-            startActivity(Intent(this,AboutUsActivity::class.java))
-        }
+        action_bar_share.visibility = View.GONE
         btnSubmit.visibility = View.GONE
+        action_bar_back.visibility = View.VISIBLE
+        action_bar_back.setOnClickListener {
+            onBackPressed()
+            finish()
+        }
+
+        action_bar_Title.text = "Practice"
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -106,29 +102,9 @@ class HomeActivity : AppCompatActivity() {
         images.add(HomeBannerData(R.drawable.banner_2))
 
 
-        val mViewPagerAdapter = BannerAdapter(this@HomeActivity, images)
-
-        // Adding the Adapter to the ViewPager
-
-        // Adding the Adapter to the ViewPager
-        viewPagerMain.adapter = mViewPagerAdapter
-        indicator.setViewPager(viewPagerMain)
     }
 
     private var doubleBackToExitPressedOnce = false
-    override fun onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed()
-            return
-        }
-
-        this.doubleBackToExitPressedOnce = true
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
-
-        Handler(Looper.getMainLooper()).postDelayed(Runnable {
-            doubleBackToExitPressedOnce = false
-        }, 2000)
-    }
 
     fun goToCategory(model: CategoryModel, position: Int) {
 

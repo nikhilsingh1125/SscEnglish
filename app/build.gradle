@@ -21,12 +21,25 @@ android {
 
     buildTypes {
         release {
-            debuggable false
+            debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
     }
+
+   /* flavorDimensions "default"
+    productFlavors {
+        appProduction {
+            manifestPlaceholders = [appLabel: "Ssc Vocab Booster"]
+            buildConfigField("String", "AD_ID", "\"your_debug_ad_id_here\"")
+        }
+        appTesting {
+            manifestPlaceholders = [appLabel: "Testing Ssc Vocab Booste"]
+            buildConfigField("String", "AD_UNIT_ID", "\"ca-app-pub-3940256099942544~3347511713\"")
+        }
+    }*/
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

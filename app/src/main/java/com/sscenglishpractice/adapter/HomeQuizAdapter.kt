@@ -7,14 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.sscenglishpractice.ExamQuizsActivity
-import com.sscenglishpractice.HomeActivity
 import com.sscenglishpractice.R
 import com.sscenglishpractice.model.QuizCategoryModel
-import kotlinx.android.synthetic.main.row_home_category.view.*
 import kotlinx.android.synthetic.main.row_quiz_category.view.btnStart
-import kotlinx.android.synthetic.main.row_quiz_category.view.txtCatDececription
 import kotlinx.android.synthetic.main.row_quiz_category.view.txtCatTitle
 
 class HomeQuizAdapter(
@@ -32,10 +28,8 @@ class HomeQuizAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model = arrayList[position]
         holder.itemView.txtCatTitle.text = model.Test_Title
-        holder.itemView.txtCatDececription.text = model.Description
 
         holder.itemView.btnStart.setOnClickListener {
-
             val intent = Intent(context, ExamQuizsActivity::class.java)
             val bundle = Bundle()
             bundle.putParcelableArrayList("questionsList", ArrayList(model.Questions))

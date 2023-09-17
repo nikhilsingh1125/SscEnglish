@@ -26,7 +26,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/yellow"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="@dimen/_14sdp"
+                android:text="Quiz Menu"
+                android:textAllCaps="false"
+                android:textColor="@color/dark_blue"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
             <com.airbnb.lottie.LottieAnimationView
+                android:layout_below="@+id/btnHome"
                 android:id="@+id/result_bird"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_200sdp"

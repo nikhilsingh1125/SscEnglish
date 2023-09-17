@@ -11,6 +11,7 @@ import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.sscenglishpractice.adapter.QuestionPositionAdapter
 import com.sscenglishpractice.model.QuizQuestion
+import kotlinx.android.synthetic.main.activity_quiz_result.btnHome
 import kotlinx.android.synthetic.main.activity_quiz_result.btnViewSolutionQuiz
 import kotlinx.android.synthetic.main.activity_quiz_result.result_bird
 import kotlinx.android.synthetic.main.activity_quiz_result.txtCorrectAccuracy
@@ -104,6 +105,13 @@ class QuizResultActivity : AppCompatActivity() {
             val intent = Intent(this,ExamQuizsActivity::class.java)
             intent.putExtra("ResultSolution",isSolutionResult)
             startActivity(intent)
+            finish()
+        }
+
+        btnHome.setOnClickListener {
+            val intent = Intent(this,QuizCategoryActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

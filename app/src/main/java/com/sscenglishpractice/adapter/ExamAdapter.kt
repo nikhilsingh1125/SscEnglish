@@ -24,7 +24,9 @@ import kotlinx.android.synthetic.main.row_exam_quizes.view.imgAExam
 import kotlinx.android.synthetic.main.row_exam_quizes.view.imgBExam
 import kotlinx.android.synthetic.main.row_exam_quizes.view.imgCExam
 import kotlinx.android.synthetic.main.row_exam_quizes.view.imgDExam
+import kotlinx.android.synthetic.main.row_exam_quizes.view.llSolutionsExam
 import kotlinx.android.synthetic.main.row_exam_quizes.view.quizQuestionExam
+import kotlinx.android.synthetic.main.row_exam_quizes.view.solutionTextView
 import kotlinx.android.synthetic.main.row_exam_quizes.view.txtAnswerBExam
 import kotlinx.android.synthetic.main.row_exam_quizes.view.txtAnswerCExam
 import kotlinx.android.synthetic.main.row_exam_quizes.view.txtAnswerDExam
@@ -96,6 +98,14 @@ class ExamAdapter(
 
     private fun resultUi(model: Question, itemView: View, position: Int) {
 
+        if (model.Solutions.isNullOrEmpty()){
+            itemView.llSolutionsExam.visibility = View.GONE
+        }
+        else
+        {
+            itemView.llSolutionsExam.visibility = View.VISIBLE
+        }
+        itemView.solutionTextView.text = model.Solutions
         itemView.cvAExam.isEnabled = false
         itemView.cvBExam.isEnabled = false
         itemView.cvCExam.isEnabled = false

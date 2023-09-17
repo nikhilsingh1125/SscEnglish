@@ -1,20 +1,29 @@
 package com.sscenglishpractice
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import kotlinx.android.synthetic.main.row_question_list.view.txtTotalQuestions
+import android.provider.Settings
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.sscenglishpractice.utils.Constants
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        val deviceId =  Constants.getDeviceId(this)
+        Log.d("SplashActivity", "Device ID: $deviceId")
+
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this,HomeActivity::class.java))
+            startActivity(Intent(this,HomeCategoryActivity::class.java))
             finish()
         }, 2000)
     }
+
+
 }

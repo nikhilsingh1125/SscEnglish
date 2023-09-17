@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_blue"
     android:orientation="vertical">
 
@@ -14,6 +14,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
 
             <LinearLayout
                 android:id="@+id/llQuiz"
@@ -89,43 +90,54 @@
 
                     </LinearLayout>
 
-             <!--       <ImageView
-                        android:visibility="visible"
-                        android:id="@+id/imgBookmarkUnfill"
-                        android:padding="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/unfill_book"
-                       />-->
                     <ImageView
-                        android:visibility="gone"
-                        android:id="@+id/imgBookmarkFill"
-                        android:padding="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_alignParentEnd="true"
+                        android:id="@+id/imgBookmarkUnfill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/unfill_book"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/imgBookmarkFill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
                         android:src="@drawable/fill_book"
-                        />
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/quizQuestion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:fontFamily="@font/general_sans_medium"
-                        android:padding="@dimen/_10sdp"
-                        android:text="question"
-                        android:textColor="@color/light_white"
-                        android:textSize="@dimen/_18ssp" />
+                <TextView
+                    android:id="@+id/txtTypeQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/helvetica_rounded_bold_5871d05ead8de"
+                    android:padding="@dimen/_6sdp"
+                    android:text="Questions :"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold" />
 
-
+                <TextView
+                    android:id="@+id/quizQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/general_sans_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="question"
+                    android:textColor="@color/light_white"
+                    android:textSize="@dimen/_15ssp" />
 
 
             </LinearLayout>
@@ -201,7 +213,7 @@
                             android:fontFamily="@font/general_sans_medium"
                             android:text="question"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_12ssp" />
 
                     </LinearLayout>
 
@@ -263,7 +275,7 @@
                             android:fontFamily="@font/general_sans_medium"
                             android:text="question"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_12ssp" />
 
                     </LinearLayout>
 
@@ -323,7 +335,7 @@
                             android:fontFamily="@font/general_sans_medium"
                             android:text="question"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_12ssp" />
 
                     </LinearLayout>
 
@@ -384,7 +396,7 @@
                             android:fontFamily="@font/general_sans_medium"
                             android:text="question"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_12ssp" />
 
                     </LinearLayout>
 
@@ -449,13 +461,12 @@
         </RelativeLayout>
     </ScrollView>
 
-
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="@dimen/_5sdp"
-        app:cardElevation="@dimen/_7sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/dark_blue"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_7sdp"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -465,18 +476,18 @@
 
             <LinearLayout
                 android:id="@+id/btnPrevQuiz"
-                android:layout_marginEnd="@dimen/_2sdp"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_solution_quiz">
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_solution_quiz"
+                android:gravity="center">
 
                 <ImageView
-                    android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_left"/>
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:src="@drawable/arrow_left" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -493,12 +504,12 @@
 
             <LinearLayout
                 android:id="@+id/btnNext"
-                android:layout_marginStart="@dimen/_2sdp"
-                android:gravity="center"
-                android:background="@drawable/btn_next_bg"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_next_bg"
+                android:gravity="center">
 
 
                 <TextView
@@ -513,9 +524,9 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:src="@drawable/arrow_right"
                     app:tint="@color/dark_blue" />
             </LinearLayout>
