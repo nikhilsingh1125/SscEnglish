@@ -1,364 +1,538 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/quiz_background"
-    android:orientation="vertical"
-  >
+    android:background="@color/dark_blue"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/llQuiz"
-        android:background="@drawable/quiz_bg"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_220sdp"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-       <!-- <LinearLayout
-            android:layout_marginTop="@dimen/_20sdp"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_10sdp"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:id="@+id/llQuiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp">
+
+                    <TextView
+                        android:id="@+id/txtQuizTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:fontFamily="@font/pt_sans_bold"
+                        android:text="Title"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15ssp" />
+
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:background="@drawable/bg_submit"
+                        android:fontFamily="@font/pt_sans_bold"
+                        android:text="Submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/dark_blue" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="Questions :"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_13ssp" />
+
+                        <TextView
+                            android:id="@+id/txtTotalQuestions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="0"
+                            android:textColor="@color/light_white"
+                            android:textSize="@dimen/_16ssp" />
+
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imgBookmarkUnfill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/unfill_book"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/imgBookmarkFill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/fill_book"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/txtTypeQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/helvetica_rounded_bold_5871d05ead8de"
+                    android:padding="@dimen/_6sdp"
+                    android:text="Questions :"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/quizQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/general_sans_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="question"
+                    android:textColor="@color/light_white"
+                    android:textSize="@dimen/_15ssp" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llQuiz"
+                android:layout_marginTop="@dimen/_50sdp">
+
+                <LinearLayout
+                    android:id="@+id/llAnswers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_13sdp">
+
+
+                    <LinearLayout
+                        android:id="@+id/cvA"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_answer_quiz"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtA"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@drawable/bg_answer"
+                                android:fontFamily="@font/general_sans_semibold"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="A"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <ImageView
+                                android:id="@+id/imgA"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/right"
+                                android:visibility="gone" />
+
+                            <ImageView
+                                android:id="@+id/wrongA"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/cross"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtAnswerA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="question"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/cvB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_answer_quiz"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtB"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@drawable/bg_answer"
+                                android:fontFamily="@font/general_sans_semibold"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="B"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <ImageView
+                                android:id="@+id/imgB"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/right"
+                                android:visibility="invisible" />
+
+                            <ImageView
+                                android:id="@+id/wrongB"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/cross"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtAnswerB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="question"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/cvC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_answer_quiz"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtC"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@drawable/bg_answer"
+                                android:fontFamily="@font/general_sans_semibold"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="C"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <ImageView
+                                android:id="@+id/imgC"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/right"
+                                android:visibility="invisible" />
+
+                            <ImageView
+                                android:id="@+id/wrongC"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/cross"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtAnswerC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="question"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/cvD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_answer_quiz"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtD"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@drawable/bg_answer"
+                                android:fontFamily="@font/general_sans_semibold"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="D"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <ImageView
+                                android:id="@+id/imgD"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/right"
+                                android:visibility="invisible" />
+
+                            <ImageView
+                                android:id="@+id/wrongD"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/cross"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtAnswerD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="question"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSolutions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/llAnswers"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/seeSolutionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_solution"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:text="See Solution"
+                        android:textColor="@color/quiz_background" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/hideSolutionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/hide_solution"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:text="Hide Solution"
+                        android:textColor="@color/quiz_background"
+                        android:visibility="gone" />
+
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/solutionTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginTop="16dp"
+                            android:textColor="@color/quiz_background"
+                            android:textSize="16sp"
+                            android:visibility="gone" />
+
+                    </ScrollView>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/dark_blue"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_7sdp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
             android:weightSum="2">
 
             <LinearLayout
-                android:layout_marginEnd="@dimen/_5sdp"
+                android:id="@+id/btnPrevQuiz"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_2sdp"
                 android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:background="@drawable/bg_solution_quiz"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:src="@drawable/arrow_left" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_extra_bold"
-                    android:text="Current Questions: "
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-
-                <TextView
-                    android:id="@+id/txtCorrect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/raleway_extra_bold"
-                    android:text=""
-                    android:textColor="#00FF57"
-                    android:textSize="@dimen/_18ssp" />
-
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Prev"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginStart="@dimen/_5sdp"
+                android:id="@+id/btnNext"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_2sdp"
                 android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:background="@drawable/btn_next_bg"
+                android:gravity="center">
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_extra_bold"
-                    android:text="InCurrent Questions: "
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Next"
+                    android:textAllCaps="false"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtInCorrect"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/raleway_extra_bold"
-                    android:text=""
-                    android:textColor="#F30000"
-                    android:textSize="@dimen/_18ssp" />
-
-
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:src="@drawable/arrow_right"
+                    app:tint="@color/dark_blue" />
             </LinearLayout>
 
-        </LinearLayout>-->
+        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:textColor="@color/black"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/bg_submit"
-            android:fontFamily="@font/pt_sans_bold"
-            android:layout_gravity="end"
-            android:textAllCaps="false"/>
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:layout_marginStart="@dimen/_10sdp"
-            android:id="@+id/txtQuestionCount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:fontFamily="@font/general_sans_medium"
-            android:text="question"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_22ssp" />
-
-        <TextView
-            android:layout_marginStart="@dimen/_10sdp"
-            android:id="@+id/quizQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/general_sans_medium"
-            android:text="question"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_19ssp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_below="@+id/llQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_40sdp"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/_13sdp">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_8sdp"
-            app:cardUseCompatPadding="true">
-
-            <LinearLayout
-                android:id="@+id/cvA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:background="@drawable/bg_answer"
-                        android:fontFamily="@font/general_sans_semibold"
-                        android:gravity="center"
-                        android:padding="@dimen/_8sdp"
-                        android:text="A"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12ssp" />
-
-                    <ImageView
-                        android:id="@+id/imgA"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:src="@drawable/right"
-                        android:visibility="invisible" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/txtAnswerA"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/general_sans_medium"
-                    android:text="question"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_20ssp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_8sdp"
-            app:cardUseCompatPadding="true">
-
-            <LinearLayout
-                android:id="@+id/cvB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:background="@drawable/bg_answer"
-                        android:fontFamily="@font/general_sans_semibold"
-                        android:gravity="center"
-                        android:padding="@dimen/_8sdp"
-                        android:text="B"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12ssp" />
-
-                    <ImageView
-                        android:id="@+id/imgB"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:src="@drawable/right"
-                        android:visibility="invisible" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/txtAnswerB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/general_sans_medium"
-                    android:text="question"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_20ssp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_8sdp"
-            app:cardUseCompatPadding="true">
-
-            <LinearLayout
-                android:id="@+id/cvC"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:background="@drawable/bg_answer"
-                        android:fontFamily="@font/general_sans_semibold"
-                        android:gravity="center"
-                        android:padding="@dimen/_8sdp"
-                        android:text="C"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12ssp" />
-
-                    <ImageView
-                        android:id="@+id/imgC"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:src="@drawable/right"
-                        android:visibility="invisible" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/txtAnswerC"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/general_sans_medium"
-                    android:text="question"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_20ssp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_8sdp"
-            app:cardUseCompatPadding="true">
-
-            <LinearLayout
-                android:id="@+id/cvD"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:background="@drawable/bg_answer"
-                        android:fontFamily="@font/general_sans_semibold"
-                        android:gravity="center"
-                        android:padding="@dimen/_8sdp"
-                        android:text="D"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12ssp" />
-
-                    <ImageView
-                        android:id="@+id/imgD"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:src="@drawable/right"
-                        android:visibility="invisible" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/txtAnswerD"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/general_sans_medium"
-                    android:text="question"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_20ssp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-    </LinearLayout>
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:textColor="@color/white"
-        android:id="@+id/btnNext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/purple"
-        android:fontFamily="@font/roboto_regular"
-        android:padding="@dimen/_10sdp"
-        android:text="next"
-        android:textSize="@dimen/_15ssp" />
-
-
-</RelativeLayout>
+</LinearLayout>

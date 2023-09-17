@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".HomeActivity"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <include layout="@layout/custom_toolbar"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/_10sdp"
-        android:paddingHorizontal="@dimen/_10sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recyclerView"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_blue"
+            android:orientation="vertical"
+            tools:context=".HomeActivity">
 
-</LinearLayout>
+            <include layout="@layout/custom_toolbar" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:paddingHorizontal="@dimen/_10sdp" />
+        </LinearLayout>
+
+
+</layout>

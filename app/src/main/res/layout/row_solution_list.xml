@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_blue"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/llQuiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_10sdp">
+
+                    <TextView
+                        android:id="@+id/txtQuizTitleSol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:fontFamily="@font/pt_sans_bold"
+                        android:text="Title"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15ssp" />
+
+
+                    <!--   <androidx.appcompat.widget.AppCompatButton
+                           android:id="@+id/btnSubmit"
+                           android:layout_width="wrap_content"
+                           android:layout_height="@dimen/_30sdp"
+                           android:layout_alignParentEnd="true"
+                           android:layout_centerVertical="true"
+                           android:layout_gravity="end"
+                           android:layout_marginEnd="@dimen/_10sdp"
+                           android:background="@drawable/bg_submit"
+                           android:fontFamily="@font/pt_sans_bold"
+                           android:text="Submit"
+                           android:textAllCaps="false"
+                           android:textColor="@color/dark_blue" />-->
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_10sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:fontFamily="@font/general_sans_medium"
+                        android:text="Questions :"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp" />
+
+                    <TextView
+                        android:id="@+id/txtTotalQuestionsSol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="0"
+                        android:textColor="@color/light_white"
+                        android:textSize="@dimen/_16ssp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/quizQuestionSol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/general_sans_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="question"
+                    android:textColor="@color/light_white"
+                    android:textSize="@dimen/_18ssp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:weightSum="4">
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtSelectedAnswer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="Selected Answer :"
+                            android:textColor="@color/yellow"
+                            android:textSize="@dimen/_13ssp" />
+
+                        <TextView
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:id="@+id/txtChosenAnswer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="Correct Answer :"
+                            android:textColor="@color/green_dark"
+                            android:textSize="@dimen/_13ssp" />
+
+                    </LinearLayout>
+
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llQuiz"
+                android:layout_marginTop="@dimen/_50sdp">
+
+                <LinearLayout
+                    android:id="@+id/llAnswers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_13sdp">
+
+
+                    <LinearLayout
+                        android:id="@+id/cvASol"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_answer_quiz"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtASol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@drawable/bg_answer"
+                                android:fontFamily="@font/general_sans_semibold"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="A"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <ImageView
+                                android:id="@+id/imgASol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/right"
+                                android:visibility="gone" />
+
+                            <ImageView
+                                android:id="@+id/wrongASol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/cross"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtAnswerASol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="question"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/cvBSol"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_answer_quiz"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtBSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@drawable/bg_answer"
+                                android:fontFamily="@font/general_sans_semibold"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="B"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <ImageView
+                                android:id="@+id/imgBSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/right"
+                                android:visibility="invisible" />
+
+                            <ImageView
+                                android:id="@+id/wrongBSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/cross"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtAnswerBSol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="question"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/cvCSol"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_answer_quiz"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtCSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@drawable/bg_answer"
+                                android:fontFamily="@font/general_sans_semibold"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="C"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <ImageView
+                                android:id="@+id/imgCSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/right"
+                                android:visibility="invisible" />
+
+                            <ImageView
+                                android:id="@+id/wrongCSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/cross"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtAnswerCSol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="question"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/cvDSol"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_answer_quiz"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtDSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@drawable/bg_answer"
+                                android:fontFamily="@font/general_sans_semibold"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="D"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <ImageView
+                                android:id="@+id/imgDSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/right"
+                                android:visibility="invisible" />
+
+                            <ImageView
+                                android:id="@+id/wrongDSol"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/cross"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtAnswerDSol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/general_sans_medium"
+                            android:text="question"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSolutionsSol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/llAnswers"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/seeSolutionButtonSol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_solution"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:text="See Solution"
+                        android:textColor="@color/quiz_background" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/hideSolutionButtonSol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/hide_solution"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:text="Hide Solution"
+                        android:textColor="@color/quiz_background"
+                        android:visibility="gone" />
+
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/solutionTextViewSol"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginTop="16dp"
+                            android:textColor="@color/quiz_background"
+                            android:textSize="16sp"
+                            android:visibility="gone" />
+
+                    </ScrollView>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+<!--    <androidx.appcompat.widget.AppCompatButton
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/quiz_next_bg"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Go to next question"
+        android:textAllCaps="false"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold" />-->
+
+
+    <androidx.cardview.widget.CardView
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_7sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/dark_blue"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:id="@+id/btnPrevResult"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_solution_quiz">
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_left"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Prev"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnNextSol"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:gravity="center"
+                android:background="@drawable/btn_next_bg"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Next"
+                    android:textAllCaps="false"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_right"
+                    app:tint="@color/dark_blue" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

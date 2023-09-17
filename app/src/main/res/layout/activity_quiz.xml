@@ -4,27 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/quiz_background"
-    tools:context=".QuizActivity">
+    tools:context=".QuizActivity"
+    android:background="@color/dark_blue"
+   >
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/toolbar"
+  <!--  <LinearLayout
+        android:id="@+id/toolbar_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
 
         <include layout="@layout/custom_toolbar" />
+    </LinearLayout>-->
 
-        <com.sscenglishpractice.utils.NonScrollableViewPager
-            android:id="@+id/idViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <androidx.viewpager.widget.ViewPager
+        android:layout_above="@+id/ad_view_quiz"
+        android:id="@+id/idViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       />
 
-    </LinearLayout>
+  <com.google.android.gms.ads.AdView
+      android:id="@+id/ad_view_quiz"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:layout_alignParentBottom="true"
+      app:adSize="BANNER"
+      android:visibility="visible"
+      app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+      />
 
 
 
-    <com.airbnb.lottie.LottieAnimationView
+  <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

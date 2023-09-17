@@ -6,13 +6,23 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#DDDDDD</color>
 
     <color name="quiz_background">#FFFFFF</color>
     <color name="question_blue">#191D63</color>
     <color name="green">#31CD63</color>
     <color name="right_answer">#53df83</color>
     <color name="wrong_answer">#ff6b6b</color>
+    <color name="light_red">#E94560</color>
     <color name="purple">#7995e3</color>
-    <color name="cream">#eccb8b</color>
+    <color name="green_dark">#93d334</color>
+    <color name="dark_grey">#735F32</color>
+    <color name="dark_blue">#141f23</color>
+    <color name="light_grey">#4f6067 </color>
+    <color name="light_white">#DDE6ED</color>
+    <color name="black_light">#49c0f8</color>
+    <color name="dark_green">#36444d</color>
+    <color name="yellow">#fbcc00</color>
+    <color name="cream_white">#F0F0F0</color>
+
 </resources>

@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Ssc English Practice</string>
+    <string name="app_name">Ssc Vocab Booster</string>
+    <string name="app_id">ca-app-pub-7484865336777284~1316132581</string>
+    <string name="about_us_ssc_vocab_booster_english_app">SSC Vocab Booster English App</string>
+    <string name="about_us_ssc_vocab_booster">Welcome to the SSC Vocab Booster English App, your ultimate tool for enhancing your vocabulary and conquering the English language section of the Staff Selection Commission (SSC) exams. Our app is designed with the sole aim of helping you master English vocabulary, enabling you to excel in your SSC exam preparation journey.</string>
+    <string name="our_mission">Our mission is to provide relevant and exam oriented latest vocabulary. We know that in SSC examination 80-90% vocab is repeated of previous year paper.So we try to comply all latest pyq which will help you in mock test and examination , If you practise daily 15-20min you will see drastic improvement in your
+Vocab section with in a very few weeks.
+So keep practise as much as you can and definitely you will achieve your goal.</string>
+    <string name="join_our_telegram">Join Our Telegram</string>
 </resources>
