@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
@@ -112,10 +113,25 @@ class HomeQuizAdapter(
 
     private fun loadAndShowRewardAd(holder: ViewHolder, position: Int) {
         val adRequest = AdRequest.Builder().build()
-        RewardedAd.load(context, "ca-app-pub-3940256099942544/5224354917",
+        RewardedAd.load(context, "ca-app-pub-7484865336777284/6596194988",
             adRequest, object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     adError.toString().let { Log.d("RewardedAd", it) }
+
+                    setQuizUnlocked(position)
+                    notifyItemChanged(position)
+
+                    // Start the quiz activity
+                    val intent = Intent(context, ExamQuizsActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList("questionsList", ArrayList(arrayList[position].Questions))
+                    bundle.putString("testTitle", arrayList[position].Test_Title)
+                    bundle.putString("timeTaken", arrayList[position].Time_taken)
+                    intent.putExtras(bundle)
+                    context.startActivity(intent)
+
+                    adShown = true // Set the flag to true to indicate the ad has been shown
+
                     rewardedAd = null
                 }
 
@@ -158,6 +174,10 @@ class HomeQuizAdapter(
                         adShown = true // Set the flag to true to indicate the ad has been shown
                         Log.d(TAG, "Ad dismissed fullscreen content.")
                         rewardedAd = null
+                    }
+
+                    override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                        super.onAdFailedToShowFullScreenContent(p0)
                     }
                     // Rest of the callback methods...
                 }

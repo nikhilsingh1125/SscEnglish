@@ -93,9 +93,48 @@ class ExamQuizsActivity : AppCompatActivity() {
 
 
 
-        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest, object : InterstitialAdLoadCallback() {
+        InterstitialAd.load(this,"ca-app-pub-7484865336777284/2511262709", adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 adError.toString().let { Log.d(TAG, it) }
+
+                if (questions[pos].isGivenAnswer) {
+                    if (questions[pos].userSelectAnswer == questions[pos].answer) {
+                        correctAns++
+                    } else {
+                        wrongAns++
+                    }
+                }
+
+                val givenAnswer = questions.filter { it.isGivenAnswer }
+                val correctAnswer = givenAnswer.filter { it.userSelectAnswer == it.answer }
+                val wrongAnswer = givenAnswer.filter { it.userSelectAnswer != it.answer }
+
+                val count = correctAnswer.size
+                Log.d("Answers", "givenAnswer ==>${givenAnswer.size}")
+                Log.d("Answers", "correctAns ==>${correctAnswer.size}")
+                Log.d("Answers", "wrongAnswer ==>${wrongAnswer.size}")
+                Log.d("Answers", "questions ==>${questions.size}")
+
+                loader.visibility = View.VISIBLE
+                loader.playAnimation()
+                val quizResult = QuizResult(questions)
+                val databaseReference = FirebaseDatabase.getInstance().getReference("QuizResults")
+                databaseReference.push().setValue(quizResult)
+                    .addOnSuccessListener {
+                        loader.visibility = View.GONE
+                        val intent = Intent(this@ExamQuizsActivity, QuizResultActivity::class.java)
+                        intent.putExtra("CorrectAnswer", correctAnswer.size)
+                        intent.putExtra("WrongAnswer", wrongAnswer.size)
+                        intent.putExtra("TotalQuestions", questions.size)
+                        intent.putExtra("Time", time)
+                        intent.putExtra("TotalTime", timeTaken)
+                        startActivity(intent)
+                        finish()
+                        Log.d(TAG, "Quiz result saved successfully!")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(TAG, "Failed to save quiz result: ${e.message}", e)
+                    }
                 mInterstitialAd = null
             }
 
@@ -169,6 +208,44 @@ class ExamQuizsActivity : AppCompatActivity() {
                     override fun onAdFailedToShowFullScreenContent(p0: AdError) {
                         // Called when ad fails to show.
                         Log.e(TAG, "Ad failed to show fullscreen content.")
+                        if (questions[pos].isGivenAnswer) {
+                            if (questions[pos].userSelectAnswer == questions[pos].answer) {
+                                correctAns++
+                            } else {
+                                wrongAns++
+                            }
+                        }
+
+                        val givenAnswer = questions.filter { it.isGivenAnswer }
+                        val correctAnswer = givenAnswer.filter { it.userSelectAnswer == it.answer }
+                        val wrongAnswer = givenAnswer.filter { it.userSelectAnswer != it.answer }
+
+                        val count = correctAnswer.size
+                        Log.d("Answers", "givenAnswer ==>${givenAnswer.size}")
+                        Log.d("Answers", "correctAns ==>${correctAnswer.size}")
+                        Log.d("Answers", "wrongAnswer ==>${wrongAnswer.size}")
+                        Log.d("Answers", "questions ==>${questions.size}")
+
+                        loader.visibility = View.VISIBLE
+                        loader.playAnimation()
+                        val quizResult = QuizResult(questions)
+                        val databaseReference = FirebaseDatabase.getInstance().getReference("QuizResults")
+                        databaseReference.push().setValue(quizResult)
+                            .addOnSuccessListener {
+                                loader.visibility = View.GONE
+                                val intent = Intent(this@ExamQuizsActivity, QuizResultActivity::class.java)
+                                intent.putExtra("CorrectAnswer", correctAnswer.size)
+                                intent.putExtra("WrongAnswer", wrongAnswer.size)
+                                intent.putExtra("TotalQuestions", questions.size)
+                                intent.putExtra("Time", time)
+                                intent.putExtra("TotalTime", timeTaken)
+                                startActivity(intent)
+                                finish()
+                                Log.d(TAG, "Quiz result saved successfully!")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e(TAG, "Failed to save quiz result: ${e.message}", e)
+                            }
                         mInterstitialAd = null
                     }
 
